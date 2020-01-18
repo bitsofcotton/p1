@@ -1,4 +1,4 @@
-# bitsofcotton/P1
+# bitsofcotton/p1
 Generic predictor that completely depends on data itself but doesn't win good randoms. This suppose original data have conserved value with the meaning of cdot.  
 This is the better hypothesis because any taylor series can described as cdot, and, recursive predictions are also be in taylor series, lagrange multiplier, and, orthogonal variable x and y, their taylor series are in them with same meaning (which converges).
 
