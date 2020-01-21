@@ -14,7 +14,7 @@ using namespace std;
 #include "p1.hh"
 // typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, int32_t> num_t;
 // typedef SimpleFloat<DUInt<uint64_t, 64>, DUInt<DUInt<uint64_t, 64>, 128>, 128, int16_t> num_t;
-typedef long double num_t;
+typedef float num_t;
 
 template <typename T> const T& sgn(const T& x) {
   const static T zero(0);
@@ -31,18 +31,16 @@ int main(int argc, const char* argv[]) {
   std::string s;
   int range(8);
   int slen(16);
-  int vlen(2);
   if(1 < argc)
     range = std::atoi(argv[1]);
   if(2 < argc)
     slen  = std::atoi(argv[2]);
-  if(3 < argc)
-    vlen  = std::atoi(argv[3]);
-  P1<num_t> p(slen, range, vlen);
+  P1<num_t> p(slen, range);
   SimpleVector<num_t> buf(slen + range);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = num_t(0);
   num_t d0(0);
+  num_t sd(0);
   num_t MM(0);
   num_t bd(0);
   while(std::getline(std::cin, s, '\n')) {
@@ -53,8 +51,8 @@ int main(int argc, const char* argv[]) {
       d0 += (d - bd) * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
-      buf[buf.size() - 1] = d;
-      MM  = p.next(buf);
+      buf[buf.size() - 1] = (sd += sgn(d - bd));
+      MM  = sgn(p.next(buf));
     }
     std::cout << d0 << "," << MM << std::endl;
     bd = d;
