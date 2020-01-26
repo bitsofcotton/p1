@@ -43,6 +43,7 @@ int main(int argc, const char* argv[]) {
   num_t sd(0);
   num_t MM(0);
   num_t bd(0);
+  num_t bbd(0);
   while(std::getline(std::cin, s, '\n')) {
     num_t d;
     std::stringstream ins(s);
@@ -51,11 +52,12 @@ int main(int argc, const char* argv[]) {
       d0 += (d - bd) * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
-      buf[buf.size() - 1] = d - bd;
+      buf[buf.size() - 1] = sgn(d - bd);
       MM  = sgn(p.next(buf));
+      bbd = bd;
     }
     std::cout << d0 << "," << MM << std::endl;
-    bd = d;
+    bd  = d;
   }
   return 0;
 }
