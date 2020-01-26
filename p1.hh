@@ -31,9 +31,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #if !defined(_P1_)
 
-using std::vector;
-using std::sort;
-
 // data depend prediction:
 //   in taylor series meaning,
 //     f(x)=sum a_k*x_k^k, if such with relation, f(x)=sum a_k*x_k*(x_k\pm b_k).
@@ -90,7 +87,7 @@ private:
   Mat  F;
   Vec  f;
   Mat  Pt;
-  vector<T> lastarray;
+  Vec  lastarray;
 };
 
 template <typename T> inline P1<T>::P1() {
@@ -176,7 +173,7 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
       }
       const auto R(Pt * A);
       if(A.cols() == A.rows()) {
-        rvec = R.solve(Pt * (one * ratio + b));
+        rvec = Pt * (one * ratio + b);
         goto pnext;
       }
 #if defined(_OPENMP)
@@ -258,19 +255,19 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
       const auto Pr(Pt.transpose() * rvec);
             auto err(Pr - b - one * ratio);
             T    errorM(0);
+/*
             T    eratio(1);
       for(int i = 0; i < b.size(); i ++)
         if(T(0) < err[i] && threshold_inner < abs(Pr[i]))
-          eratio = max(eratio, err[i] / Pr[i]);
+          eratio = max(eratio, (b[i] + ratio) / Pr[i]);
       rvec /= eratio;
       err   = Pr / eratio - b - one * ratio;
-      for(int i = 0; i < b.size(); i ++)
-        if(!isfinite(err[i]) || errorM < err[i])
-          errorM = err[i];
-      rvec  = R.solve(rvec);
+*/
+      for(int i = 0; i < b.size(); i ++) if(errorM < err[i])
+        errorM = err[i];
       if(isfinite(errorM) && errorM <= sqrt(threshold_inner) * normb0) {
         lasterr -= ratio0;
-        fvec     = rvec;
+        fvec     = R.solve(rvec);
       }
     }
     M = a.dot(fvec);
