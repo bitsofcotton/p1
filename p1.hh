@@ -68,6 +68,7 @@ public:
   inline ~P1();
   const T& next(const Vec& in);
   T    lasterr;
+  Vec  fvec;
 private:
   Vec  a;
   Mat  A;
@@ -87,7 +88,6 @@ private:
   Mat  F;
   Vec  f;
   Mat  Pt;
-  Vec  lastarray;
 };
 
 template <typename T> inline P1<T>::P1() {
@@ -120,9 +120,7 @@ template <typename T> inline P1<T>::P1(const int& statlen, const int& varlen) {
   Pt.resize(A.cols(), A.rows());
   F.resize(A.cols(), A.cols());
   f.resize(A.cols());
-  lastarray.resize(statlen);
-  for(int i = 0; i < lastarray.size(); i ++)
-    lastarray[i] = T(0);
+  fvec.resize(A.cols());
 }
 
 template <typename T> inline P1<T>::~P1() {
@@ -148,11 +146,10 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
     a[i] = in[statlen + varlen - i - 1];
   a[varlen] = MM;
   try {
-    Vec fvec(a.size());
     for(int i = 0; i < fvec.size(); i ++)
       fvec[i] = T(0);
     lasterr = MM * T(4);
-    for(T ratio0 = MM * T(2); threshold_inner <= ratio0; ratio0 /= T(2)) {
+    for(auto ratio0(MM * T(2)); MM * threshold_inner <= ratio0; ratio0 /= T(2)) {
       const auto ratio(lasterr - ratio0);
       int n_fixed;
       T   ratiob;
@@ -255,24 +252,12 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
             T    errorM(0);
       for(int i = 0; i < b.size(); i ++) if(errorM < err[i])
         errorM = err[i];
-      // std::cerr << errorM << std::endl;
       if(isfinite(errorM) && errorM <= sqrt(threshold_inner) * normb0) {
         lasterr -= ratio0;
         fvec     = R.solve(rvec);
       }
     }
     M = a.dot(fvec);
-    for(int i = 1; i < lastarray.size(); i ++)
-      lastarray[i - 1] = lastarray[i];
-    lastarray[lastarray.size() - 1] = lasterr;
-    T avg(0);
-    for(int i = 0; i < lastarray.size(); i ++)
-      avg += lastarray[i];
-    avg /= T(lastarray.size());
-    lasterr  = T(0);
-    for(int i = 0; i < lastarray.size(); i ++)
-      lasterr += pow(lastarray[i] - avg, T(2));
-    lasterr /= avg * avg;
   } catch (const char* e) {
     M = T(0);
   }
