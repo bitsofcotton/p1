@@ -11,3 +11,7 @@ This is the better hypothesis because any taylor series can described as inner p
 
 # How to use (command line):
     ./p1 <variable range> <status range> < data.txt
+
+# Tips
+If P1 class lasterr has larger absolute value than minimum change, this is useless for the problem nor unreliable for them.
+If status length is not enough, edge clear change will come with suddenly. This is observable by P1::fvec inner product cosine value.
