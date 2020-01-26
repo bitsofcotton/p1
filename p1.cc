@@ -51,7 +51,7 @@ int main(int argc, const char* argv[]) {
       d0 += (d - bd) * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
-      buf[buf.size() - 1] = (sd += sgn(d - bd));
+      buf[buf.size() - 1] = d - bd;
       MM  = sgn(p.next(buf));
     }
     std::cout << d0 << "," << MM << std::endl;
