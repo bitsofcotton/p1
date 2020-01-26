@@ -8,13 +8,13 @@
 #include <complex>
 #include <cmath>
 using namespace std;
-// template <typename T> using complex = Complex<T>;
+//template <typename T> using complex = Complex<T>;
 #include "simplelin.hh"
 
 #include "p1.hh"
-// typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, int32_t> num_t;
+//typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, int32_t> num_t;
 // typedef SimpleFloat<DUInt<uint64_t, 64>, DUInt<DUInt<uint64_t, 64>, 128>, 128, int16_t> num_t;
-typedef float num_t;
+typedef double num_t;
 
 template <typename T> const T& sgn(const T& x) {
   const static T zero(0);
