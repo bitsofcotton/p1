@@ -151,9 +151,8 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
     Vec fvec(a.size());
     for(int i = 0; i < fvec.size(); i ++)
       fvec[i] = T(0);
-    lasterr = T(1) / threshold_inner;
-    for(T ratio0 = T(1) / threshold_inner / T(2);
-        threshold_inner <= ratio0; ratio0 /= T(2)) {
+    lasterr = MM * T(4);
+    for(T ratio0 = MM * T(2); threshold_inner <= ratio0; ratio0 /= T(2)) {
       const auto ratio(lasterr - ratio0);
       int n_fixed;
       T   ratiob;
@@ -252,19 +251,11 @@ template <typename T> const T& P1<T>::next(const Vec& in) {
       } else
         rvec = Pt * (on * ratiob + deltab + b);
      pnext:
-      const auto Pr(Pt.transpose() * rvec);
-            auto err(Pr - b - one * ratio);
+      const auto err(Pt.transpose() * rvec - b - one * ratio);
             T    errorM(0);
-/*
-            T    eratio(1);
-      for(int i = 0; i < b.size(); i ++)
-        if(T(0) < err[i] && threshold_inner < abs(Pr[i]))
-          eratio = max(eratio, (b[i] + ratio) / Pr[i]);
-      rvec /= eratio;
-      err   = Pr / eratio - b - one * ratio;
-*/
       for(int i = 0; i < b.size(); i ++) if(errorM < err[i])
         errorM = err[i];
+      // std::cerr << errorM << std::endl;
       if(isfinite(errorM) && errorM <= sqrt(threshold_inner) * normb0) {
         lasterr -= ratio0;
         fvec     = R.solve(rvec);
