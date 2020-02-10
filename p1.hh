@@ -256,7 +256,7 @@ template <typename T> const T& P1<T>::next(const Vec& in, const int& step) {
         fvec     = R.solve(rvec);
       }
     }
-    M = a.dot(fvec);
+    M = a.dot(fvec) + in[0];
   } catch (const char* e) {
     M = T(0);
   }
