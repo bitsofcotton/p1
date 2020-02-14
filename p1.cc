@@ -32,32 +32,36 @@ int main(int argc, const char* argv[]) {
   int range(8);
   int slen(16);
   if(1 < argc)
-    range = std::atoi(argv[1]);
+    range  = std::atoi(argv[1]);
   if(2 < argc)
-    slen  = std::atoi(argv[2]);
+    slen   = std::atoi(argv[2]);
   P1<num_t> p(slen, range);
   SimpleVector<num_t> buf(slen + range);
+  SimpleMatrix<num_t> fmat(range, range + 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = num_t(0);
   num_t d0(0);
-  num_t sd(0);
   num_t MM(0);
   num_t bd(0);
-  num_t bbd(0);
+  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     num_t d;
     std::stringstream ins(s);
     ins >> d;
     if(d != bd && bd != num_t(0)) {
-      d0 += (d - bd) * MM;
+      d0 += d * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
       buf[buf.size() - 1] = d - bd;
-      MM  = sgn(p.next(buf));
-      bbd = bd;
+      if(buf[0] != num_t(0)) {
+        fmat.row((t ++) % fmat.rows()) = p.next(buf);
+        MM = num_t(0);
+        for(int i = 0; i < fmat.rows(); i ++)
+          MM += fmat((t + i) % fmat.rows(), fmat.rows() - i - 1);
+      }
     }
-    std::cout << d0 << "," << MM << std::endl;
-    bd  = d;
+    std::cout << d0 << "," << MM << "," << p.lasterr << std::endl;
+    bd = d;
   }
   return 0;
 }
