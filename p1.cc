@@ -49,7 +49,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     if(d != bd && bd != num_t(0)) {
-      d0 += d00 = d * MM;
+      d0 += d * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
       buf[buf.size() - 1] = d - bd;
