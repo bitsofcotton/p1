@@ -14,4 +14,5 @@ This is the better hypothesis because any taylor series can described as inner p
 
 # Tips
 If P1 class lasterr has larger absolute value than minimum change, this is useless for the problem nor unreliable for them.
-If status length is not enough, edge clear change will come with suddenly. This is observable by each P1::fvec inner product cosine value.
+If status length is not enough, edge clear change will come with suddenly. This is observable by each P1::fvec inner product cosine value.  
+And, if the status length is enough, vanish can be used to drill the conserved value, otherwise, edge clear catastrophy can destroy the advantage.
