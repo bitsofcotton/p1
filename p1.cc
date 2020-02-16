@@ -37,27 +37,25 @@ int main(int argc, const char* argv[]) {
     slen   = std::atoi(argv[2]);
   P1<num_t> p(slen, range);
   SimpleVector<num_t> buf(slen + range);
-  SimpleMatrix<num_t> fmat(range, range + 1);
+  SimpleVector<num_t> sbuf(range);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = num_t(0);
   num_t d0(0);
   num_t MM(0);
   num_t bd(0);
-  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     num_t d;
     std::stringstream ins(s);
     ins >> d;
     if(d != bd && bd != num_t(0)) {
-      d0 += d * MM;
+      d0 += (d - bd) * MM;
       for(int i = 1; i < buf.size(); i ++)
         buf[i - 1] = buf[i];
       buf[buf.size() - 1] = d - bd;
       if(buf[0] != num_t(0)) {
-        fmat.row((t ++) % fmat.rows()) = p.next(buf);
-        MM = num_t(0);
-        for(int i = 0; i < fmat.rows(); i ++)
-          MM += fmat((t + i) % fmat.rows(), fmat.rows() - i - 1);
+        for(int i = 0; i < sbuf.size(); i ++)
+          sbuf[i] = buf[i - sbuf.size() + buf.size()];
+        MM = sbuf.dot(p.next(buf, 1, true));
       }
     }
     std::cout << d0 << "," << MM << "," << p.lasterr << std::endl;

@@ -64,7 +64,7 @@ public:
   typedef SimpleVector<T> Vec;
   typedef SimpleMatrix<T> Mat;
   inline P1();
-  inline P1(const int& statlen, const int& varlen);
+  inline P1(const int& statlen, const int& varlen, const bool& addconst = false);
   inline ~P1();
   const Vec& next(const Vec& in, const int& step = 1, const bool& vanish = false);
   T    lasterr;
@@ -74,6 +74,7 @@ private:
   Vec  b;
   int  statlen;
   int  varlen;
+  bool addconst;
   T    threshold_feas;
   T    threshold_p0;
   T    threshold_inner;
@@ -89,16 +90,18 @@ private:
 };
 
 template <typename T> inline P1<T>::P1() {
-  statlen = varlen = 0;
+  statlen  = varlen = 0;
+  addconst = false;
   threshold_feas = threshold_p0 = threshold_inner = lasterr = T(0);
 }
 
-template <typename T> inline P1<T>::P1(const int& statlen, const int& varlen) {
+template <typename T> inline P1<T>::P1(const int& statlen, const int& varlen, const bool& addconst) {
   assert(1 < varlen && varlen < statlen);
-  this->statlen = statlen;
-  this->varlen  = varlen;
+  this->statlen  = statlen;
+  this->varlen   = varlen;
+  this->addconst = addconst;
   b.resize(statlen * 2 + 1);
-  A.resize(b.size(), varlen + 1);
+  A.resize(b.size(), varlen + (addconst ? 1 : 0));
   lasterr = T(0);
   const auto epsilon(std::numeric_limits<T>::epsilon());
   // const auto epsilon(T(1) >> short(62));
@@ -125,25 +128,22 @@ template <typename T> inline P1<T>::~P1() {
 }
 
 template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in, const int& step, const bool& vanish) {
-  assert(in.size() == statlen + varlen + step - 1);
+  assert(in.size() == statlen + varlen * step);
   T MM(0);
-  for(int i = 0; i < statlen; i ++)
+  for(int i = 0; i < statlen; i ++) {
     for(int j = 0; j < varlen; j ++)
-      MM = max(MM, abs(A(i, j) = in[i + varlen - j - 1 + (vanish ? step : 0)]));
-  if(vanish) {
-    for(int j = 0; j < statlen; j ++)
-      b[j] = T(0);
-    A(statlen * 2, varlen) = b[statlen * 2] = - T(1);
-  } else {
-    for(int j = 0; j < statlen; j ++)
-      MM = max(MM, abs(b[j] = in[j + varlen + step - 1]));
-    A(statlen * 2, varlen) = b[statlen * 2] = T(0);
+      MM = max(MM, abs(A(i, j) = in[i + (varlen - j - 1) * step + (vanish ? step : 0)]));
+    if(vanish)
+      b[i] = T(0);
+    else
+      MM = max(MM, abs(b[i] = in[i + varlen * step]));
   }
   for(int i = 0; i < statlen; i ++) {
-    A(i, varlen)       =   MM;
+    if(addconst) A(i, varlen) = MM;
     A.row(statlen + i) = - A.row(i);
     b[statlen + i]     = - b[i];
   }
+  A(statlen * 2, 0) = b[statlen * 2] = - T(1);
   A /= MM;
   b /= MM;
   try {
