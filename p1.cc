@@ -55,7 +55,7 @@ int main(int argc, const char* argv[]) {
       if(buf[0] != num_t(0)) {
         for(int i = 0; i < sbuf.size(); i ++)
           sbuf[i] = buf[i - sbuf.size() + buf.size()];
-        MM = sbuf.dot(p.next(buf, 1, true));
+        MM = sbuf.dot(p.next(buf, num_t(1), 1, true));
       }
     }
     std::cout << d0 << "," << MM << "," << p.lasterr << std::endl;
