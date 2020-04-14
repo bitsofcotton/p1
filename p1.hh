@@ -146,6 +146,15 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in, cons
   for(int i = 0; i < fvec.size(); i ++)
     fvec[i] = T(0);
   lasterr = A.rows() + A.cols();
+  for(int i = 0; i < Pt.rows(); i ++)
+    for(int j = 0; j < Pt.cols(); j ++)
+      Pt(i, j) = T(0);
+  for(int i = 0; i < A.cols(); i ++) {
+    const auto Atrowi(A.col(i));
+    const auto work(Atrowi - Pt.projectionPt(Atrowi));
+    Pt.row(i) = work / sqrt(work.dot(work));
+  }
+  const auto R(Pt * A);
   for(auto ratio0(lasterr / T(2));
            threshold_inner <= ratio0;
            ratio0 /= T(2)) {
@@ -158,15 +167,6 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in, cons
     Vec deltab;
     Vec mbb;
     Vec bb;
-    for(int i = 0; i < Pt.rows(); i ++)
-      for(int j = 0; j < Pt.cols(); j ++)
-        Pt(i, j) = T(0);
-    for(int i = 0; i < A.cols(); i ++) {
-      const auto Atrowi(A.col(i));
-      const auto work(Atrowi - Pt.projectionPt(Atrowi));
-      Pt.row(i) = work / sqrt(work.dot(work));
-    }
-    const auto R(Pt * A);
     if(A.cols() == A.rows()) {
       rvec = Pt * b;
       goto pnext;
