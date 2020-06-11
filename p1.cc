@@ -5,21 +5,20 @@
 #include <vector>
 #include <assert.h>
 
+/*
 #include <complex>
 #include <cmath>
 using namespace std;
 typedef double num_t;
-/*
+*/
 #include "ifloat.hh"
 template <typename T> using complex = Complex<T>;
-typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, int32_t> num_t;
-// typedef SimpleFloat<DUInt<uint64_t, 64>, DUInt<DUInt<uint64_t, 64>, 128>, 128, int16_t> num_t;
-*/
+typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, Signed<DUInt<uint64_t, 64>, 128> > num_t;
 
 #include "simplelin.hh"
 #include "p1.hh"
 
-typedef P1C<num_t, P1C<num_t, P1C<num_t, P1C<num_t, P1B<num_t> > > > > p_t;
+typedef P1B<num_t> p_t;
 
 template <typename T> const T& sgn(const T& x) {
   const static T zero(0);

@@ -3,10 +3,8 @@ Generic predictor that completely depends on data itself but doesn't win good ra
 This is the better hypothesis because any taylor series can described as inner product, and, recursive predictions are also be in taylor series, lagrange multiplier, and, orthogonal variable x and y, their taylor series are in them with same meaning (which converges). And, if there's a triangular series like wavelet transform like fourier transform, and, their linear operations, also they are in this form. And, if the original stream is uncontinuous at all, it relates {(-1)^k} stream multiplication with subtracting cont. . It trivialy in this form. And, some strategic copycats also in this form.
 
 # How to use:
-    P1<double> p(40, 20);
-    SimpleVector<double> b(40 + 20);
-    // ... on b operation.
-    pred = p.next(b);
+    P1B<double> p(40, 20);
+    xnext = p.next(x);
     ...
 
 # How to use (command line):
