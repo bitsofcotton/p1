@@ -5,15 +5,15 @@
 #include <vector>
 #include <assert.h>
 
-/*
 #include <complex>
 #include <cmath>
 using namespace std;
 typedef double num_t;
-*/
+/*
 #include "ifloat.hh"
 template <typename T> using complex = Complex<T>;
 typedef SimpleFloat<uint64_t, DUInt<uint64_t, 64>, 64, Signed<DUInt<uint64_t, 64>, 128> > num_t;
+*/
 
 #include "simplelin.hh"
 #include "p1.hh"
