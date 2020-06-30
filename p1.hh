@@ -276,7 +276,7 @@ public:
   inline P1B();
   inline P1B(const int& stat, const int& var);
   inline ~P1B();
-  inline T next(const T& in);
+  inline T next(const T& in, const bool& vanish = false);
 private:
   P1<T> p;
   Vec   buf;
@@ -297,19 +297,18 @@ template <typename T> inline P1B<T>::~P1B() {
   ;
 }
 
-template <typename T> inline T P1B<T>::next(const T& in) {
+template <typename T> inline T P1B<T>::next(const T& in, const bool& vanish) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i] = buf[i + 1];
   buf[buf.size() - 1] = in;
-  const auto& fvec(p.next(buf));
+  const auto& fvec(p.next(buf, 1, vanish));
   T res(0);
   for(int i = 0; i < fvec.size(); i ++)
-    res += fvec[i] * buf[buf.size() - 1 - i];
+    res += vanish ? buf[buf.size() - 1 - i] / fvec[i] : buf[buf.size() - 1 - i] * fvec[i];
   if(! isfinite(res) || isnan(res))
     res  = in;
   return res;
 }
-
 
 #define _P1_
 #endif
