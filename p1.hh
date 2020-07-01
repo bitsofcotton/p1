@@ -304,7 +304,7 @@ template <typename T> inline T P1B<T>::next(const T& in, const bool& vanish) {
   const auto& fvec(p.next(buf, 1, vanish));
   T res(0);
   for(int i = 0; i < fvec.size(); i ++)
-    res += vanish ? buf[buf.size() - 1 - i] / fvec[i] : buf[buf.size() - 1 - i] * fvec[i];
+    res += vanish ? buf[buf.size() - 1 - i] * fvec[i] * T(i & 1 ? - 1 : 1) : buf[buf.size() - 1 - i] * fvec[i];
   if(! isfinite(res) || isnan(res))
     res  = in;
   return res;
