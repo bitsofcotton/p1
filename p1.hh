@@ -66,7 +66,7 @@ public:
   inline P1();
   inline P1(const int& statlen, const int& varlen);
   inline ~P1();
-  const Vec& next(const Vec& in, const int& step = 1);
+  const Vec& next(const Vec& in);
   T    lasterr;
 private:
   Vec  fvec;
@@ -124,13 +124,13 @@ template <typename T> inline P1<T>::~P1() {
   ;
 }
 
-template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in, const int& step) {
-  assert(in.size() == statlen + varlen * step);
+template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
+  assert(in.size() == statlen + varlen);
   T MM(0);
   for(int i = 0; i < statlen; i ++) {
     for(int j = 0; j < varlen; j ++)
-      MM = max(MM, abs(A(i, j) = in[i + j * step]));
-    MM = max(MM, abs(b[i] = in[i + varlen * step]));
+      MM = max(MM, abs(A(i, j) = in[i + j]));
+    MM = max(MM, abs(b[i] = in[i + varlen]));
   }
   for(int i = 0; i < statlen; i ++) {
     A.row(statlen + i) = - A.row(i);
@@ -297,7 +297,7 @@ template <typename T> inline T P1B<T>::next(const T& in) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i] = buf[i + 1];
   buf[buf.size() - 1] = in;
-  const auto& fvec(p.next(buf, 1));
+  const auto& fvec(p.next(buf));
   T res(0);
   for(int i = 0; i < fvec.size(); i ++)
     res += buf[i - fvec.size() + buf.size()] * fvec[i];
