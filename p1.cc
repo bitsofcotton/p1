@@ -37,13 +37,10 @@ int main(int argc, const char* argv[]) {
   int range(8);
   int slen(16);
   int loop(6);
-  int vanish(0);
   if(1 < argc)
     range = std::atoi(argv[1]);
   if(2 < argc)
     slen  = std::atoi(argv[2]);
-  if(3 < argc)
-    vanish = std::atoi(argv[3]);
   P1B<num_t> p(slen, range);
   num_t d0(0);
   auto  bd(d0);
@@ -54,7 +51,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     if(d != bd) {
       d0 += (d - bd) * MM;
-      MM  = p.next(d - bd, vanish);
+      MM  = p.next(d - bd);
       bd  = d;
       if(! isfinite(MM) | isnan(MM))
         MM = num_t(0);
