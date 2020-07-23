@@ -734,7 +734,7 @@ template <typename T, typename W, int bits, typename U>        SimpleFloat<T,W,b
     return *this;
   }
   if(! src.m) {
-    throw "Zero division";
+    // throw "Zero division";
     s |= 1 << NaN;
     return *this;
   }
@@ -805,13 +805,15 @@ template <typename T, typename W, int bits, typename U> inline bool             
 
 template <typename T, typename W, int bits, typename U> inline bool             SimpleFloat<T,W,bits,U>::operator <  (const SimpleFloat<T,W,bits,U>& src) const {
   if((s | src.s) & (1 << NaN))
-    throw "compair NaN";
+    // throw "compair NaN";
+    return true;
   const auto s_is_minus(s & (1 << SIGN));
   if(s_is_minus ^ (src.s & (1 << SIGN)))
     return s_is_minus;
   if(s & (1 << INF)) {
     if(src.s & (1 << INF))
-      throw "compair INF";
+      // throw "compair INF";
+      return true;
     return s_is_minus;
   }
   if(src.s & (1 << INF))
@@ -990,7 +992,7 @@ template <typename T, typename W, int bits, typename U> SimpleFloat<T,W,bits,U> 
 template <typename T, typename W, int bits, typename U> SimpleFloat<T,W,bits,U> SimpleFloat<T,W,bits,U>::exp() const {
   if(s & ((1 << INF) | (1 << NaN))) {
     if(! (s & (1 << NaN)) && (s & (1 << SIGN)))
-      return one();
+      return zero();
     return *this;
   }
   if(this->abs() <= one()) {
