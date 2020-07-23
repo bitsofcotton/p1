@@ -248,6 +248,7 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
       try {
         rvec = F.solve(f);
       } catch (const char* e) {
+        std::cerr << e << std::endl;
         continue;
       }
     } else
@@ -267,6 +268,7 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
             goto next;
         fvec = ffvec;
       } catch(const char* e) {
+        std::cerr << e << std::endl;
         continue;
       }
       lasterr -= ratio0;

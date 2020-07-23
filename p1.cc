@@ -2,8 +2,6 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
-#include <limits>
-#include <iomanip>
 #include <vector>
 #include <assert.h>
 
@@ -12,6 +10,7 @@
   #include <cmath>
   using namespace std;
   typedef long double num_t;
+  #include <limits>
 #else
   #include "ifloat.hh"
   template <typename T> using complex = Complex<T>;
@@ -41,8 +40,6 @@
 #include "p1.hh"
 
 int main(int argc, const char* argv[]) {
-  std::cout << std::setprecision(30);
-  std::string s;
   int range(8);
   int slen(16);
   if(1 < argc)
@@ -50,23 +47,23 @@ int main(int argc, const char* argv[]) {
   if(2 < argc)
     slen  = std::atoi(argv[2]);
   P1B<num_t> p(slen, range);
-  auto  q(p);
-  num_t d0(0);
-  auto  bd(d0);
-  auto  bM(d0);
-  auto  MM(d0);
+  std::string s;
+  num_t d(0);
+  auto  d0(d);
+  auto  bd(d);
+  auto  MM(d);
   int   t(0);
   while(std::getline(std::cin, s, '\n')) {
-    num_t d;
     std::stringstream ins(s);
     ins >> d;
     if(d != bd) {
-      d0 += (d - bd) * bM;
-      bM  = MM;
-      MM  = (t ++) & 1 ? p.next(d - bd) : q.next(d - bd);
-      bd  = d;
+      d0 += (d - bd) * MM;
+      MM  = p.next(d) - d;
+      if(t ++ <= slen + range)
+        MM = num_t(0);
     }
-    std::cout << d0 << "," << MM << std::endl;
+    std::cout << d0 << ", " << MM << std::endl << std::flush;
+    bd = d;
   }
   return 0;
 }
