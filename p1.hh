@@ -311,7 +311,9 @@ template <typename T> inline T P1B<T>::next(const T& in) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i] = buf[i + 1];
   buf[buf.size() - 1] = in;
-  const auto& fvec(p.next(buf));
+  auto fvec(p.next(buf));
+  if(fvec.dot(fvec) != num_t(0))
+    fvec /= sqrt(fvec.dot(fvec)) / T(fvec.size());
   T res(0);
   for(int i = 0; i < fvec.size(); i ++)
     res += buf[i - fvec.size() + buf.size()] * fvec[i];
