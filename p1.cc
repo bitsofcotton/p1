@@ -51,19 +51,17 @@ int main(int argc, const char* argv[]) {
   num_t d(0);
   auto  d0(d);
   auto  bd(d);
-  auto  MM(d);
+  auto  M0(d);
   int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
+    d0 += (d - bd) * M0;
     if(d != bd) {
-      d0 += (d - bd) * MM;
-      MM  = p.next(d) - d;
-      if(t ++ <= slen + range)
-        MM = num_t(0);
+      M0 = p.next(bd = d) - d;
+      if(t ++ <= slen + range) M0 = num_t(0);
     }
-    std::cout << d0 << ", " << MM << std::endl << std::flush;
-    bd = d;
+    std::cout << d0 << ", " << M0 << std::endl << std::flush;
   }
   return 0;
 }
