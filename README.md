@@ -6,12 +6,10 @@ Generic predictor that completely depends on data itself but doesn't win good ra
     SimpleVector<double> b(40 + 20);
     ...
     pred = p.next(b);
-    ...
-    // or we can use:
+    // Or we can use:
     P1B<double> p(40, 20);
     ...
     xnext = p.next(x);
-    ...
 
 # How to use (command line):
     ./p1 <variable range> <status range> < data.txt
