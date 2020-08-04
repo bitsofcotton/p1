@@ -50,18 +50,18 @@ int main(int argc, const char* argv[]) {
   std::string s;
   num_t d(0);
   auto  d0(d);
-  auto  bd(d);
-  auto  M0(d);
+  auto  M(d);
   int   t(0);
   while(std::getline(std::cin, s, '\n')) {
+    const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    d0 += (d - bd) * M0;
+    d0 += (d - bd) * M;
     if(d != bd) {
-      M0 = p.next(bd = d) - d;
-      if(t ++ <= slen + range) M0 = num_t(0);
+      M = p.next(d - bd);
+      if(t ++ <= slen + range || ! isfinite(M) || isnan(M)) M = num_t(0);
     }
-    std::cout << d0 << ", " << M0 << std::endl << std::flush;
+    std::cout << d0 << ", " << M << std::endl << std::flush;
   }
   return 0;
 }
