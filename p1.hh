@@ -209,14 +209,11 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
       for(int j = fidx + 1; j < on.size(); j ++)
         if(!checked[j] && on[fidx] / norm[fidx] < on[j] / norm[j])
           fidx = j;
-      if(fidx >= one.size() || on[fidx] / norm[fidx] <= threshold_inner) {
-        if(fidx < one.size())
-          on /= sqrt(norm.dot(norm));
-        if(one.size() <= fidx || n_fixed < Pverb.rows() - 1) {
-          n_fixed --;
-          break;
-        }
-      }
+      if(fidx >= one.size())
+        break;
+      on *= sqrt(norm.dot(norm)) / abs(mb.dot(on));
+      if(on[fidx] / norm[fidx] <= threshold_inner)
+        break;
       orth = Pverb.col(fidx);
       const auto norm2orth(orth.dot(orth));
       const auto mbb0(mbb[fidx]);
