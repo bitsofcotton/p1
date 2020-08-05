@@ -211,8 +211,8 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
           fidx = j;
       if(fidx >= one.size())
         break;
-      on *= sqrt(norm.dot(norm)) / abs(mb.dot(on));
-      if(on[fidx] / norm[fidx] <= threshold_inner)
+      on *= sqrt(norm.dot(norm)) / abs(mb.dot(on)) / norm[fidx];
+      if(on[fidx] <= threshold_inner)
         break;
       orth = Pverb.col(fidx);
       const auto norm2orth(orth.dot(orth));
