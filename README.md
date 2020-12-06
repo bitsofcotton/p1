@@ -26,4 +26,7 @@ If the status length is not enough, edge clear change will come with suddenly. T
 If original series is consisted with x_2:=Integrate^x_1 f(x), this prediction is valid. So in random walk case, this seems to be valid operations. (But infact, this with specific condition is ok.)
 
 # Known bug
-This don't fixes Ax<=b+1&epsilon; case, so b+1&epsilon;<=Ax case would be gained. When so, with -Ax<=-b-1&epsilon; condition, -x will be the result because Ax<=b also means -Ax<=-b in this condition.
+This don't fixes Ax<=b+1&epsilon; case, so b+1&epsilon;<=Ax case would be gained. When so, with -Ax<=-b-1&epsilon; condition, x will be also a result because Ax<=b also means -Ax<=-b in this condition.
+
+# Archive
+This repository is archived, so without bug reports, will no change.
