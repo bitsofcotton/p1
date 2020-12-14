@@ -280,6 +280,15 @@ template <typename T> const typename P1<T>::Vec& P1<T>::next(const Vec& in) {
    next:
     ;
   }
+  if(fvec.dot(fvec) != T(0)) {
+    T num(0);
+    T denom(0);
+    for(int i = 0; i < statlen - 1; i ++) {
+      num   += abs(b[i]);
+      denom += abs(fvec.dot(A.row(i)));
+    }
+    fvec *= num / denom;
+  }
   return fvec;
 }
 
@@ -315,8 +324,7 @@ template <typename T> inline T P1B<T>::next(const T& in) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i] = buf[i + 1];
   buf[buf.size() - 1] = in;
-  auto fvec(p.next(buf));
-  fvec /= sqrt(fvec.dot(fvec));
+  const auto& fvec(p.next(buf));
   T res(0);
   for(int i = 0; i < fvec.size(); i ++)
     res += buf[i - fvec.size() + buf.size()] * fvec[i];
