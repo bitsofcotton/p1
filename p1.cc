@@ -46,19 +46,27 @@ int main(int argc, const char* argv[]) {
     range = std::atoi(argv[1]);
   if(2 < argc)
     slen  = std::atoi(argv[2]);
-  P1B<num_t> p(slen, range);
+  P1B<num_t> p(abs(slen), abs(range));
   std::string s;
   num_t d(0);
   auto  d0(d);
+  auto  dd(d);
+  auto  bbd(d);
   auto  M(d);
   int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    d0 += (d - bd) * M;
+    d0 += slen < 0 ? d - bd - M : (d - bd) * M;
     if(d != bd) {
-      M = p.next(d - bd);
+      if(range < 0)
+        M = p.next(d - bd);
+      else {
+        dd += d - bbd;
+        M   = p.next(dd) - dd + (M - (d - bbd)) / num_t(2);
+        bbd = bd;
+      }
       if(t ++ <= slen + range || ! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << d0 << ", " << M << std::endl << std::flush;
