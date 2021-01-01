@@ -28,5 +28,10 @@ If original series is consisted with x_2:=Integrate^x_1 f(x), this prediction is
 # Known bug
 This don't fixes Ax<=b+1&epsilon; case, so b+1&epsilon;<=Ax case would be gained. When so, with -Ax<=-b-1&epsilon; condition, x will be also a result because Ax<=b also means -Ax<=-b in this condition.
 
+# Another Download Sites
+* https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
+* https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
+* https://ja.osdn.net/users/bitsofcotton/
+
 # Archive
 This repository is archived, so without bug reports, will no change.
