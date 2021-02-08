@@ -518,7 +518,7 @@ template <typename T, int bits> std::ostream& operator << (std::ostream& os, Sig
 template <typename T, typename W, int bits, typename U> class SimpleFloat {
 public:
   inline SimpleFloat();
-  inline SimpleFloat(const T& src);
+  template <typename V> inline SimpleFloat(const V& src);
   inline SimpleFloat(const SimpleFloat<T,W,bits,U>& src);
   inline SimpleFloat(SimpleFloat<T,W,bits,U>&& src);
   inline ~SimpleFloat();
@@ -598,13 +598,13 @@ template <typename T, typename W, int bits, typename U> inline SimpleFloat<T,W,b
   assert(0 < bits && ! (bits & 1));
 }
 
-template <typename T, typename W, int bits, typename U> inline SimpleFloat<T,W,bits,U>::SimpleFloat(const T& src) {
-  const static T tzero(0);
+template <typename T, typename W, int bits, typename U> template <typename V> inline SimpleFloat<T,W,bits,U>::SimpleFloat(const V& src) {
+  const static V vzero(0);
   s ^= s;
-  m  = src < tzero ? - src : src;
+  m  = T(src < vzero ? - src : src);
   e ^= e;
   s |= safeAdd(e, normalize(m));
-  if(src < tzero)
+  if(src < vzero)
     s |= 1 << SIGN;
   ensureFlag();
 }
@@ -734,7 +734,7 @@ template <typename T, typename W, int bits, typename U>        SimpleFloat<T,W,b
     return *this;
   }
   if(! src.m) {
-    // throw "Zero division";
+    throw "Zero division";
     s |= 1 << NaN;
     return *this;
   }
@@ -805,15 +805,13 @@ template <typename T, typename W, int bits, typename U> inline bool             
 
 template <typename T, typename W, int bits, typename U> inline bool             SimpleFloat<T,W,bits,U>::operator <  (const SimpleFloat<T,W,bits,U>& src) const {
   if((s | src.s) & (1 << NaN))
-    // throw "compair NaN";
-    return true;
+    throw "compair NaN";
   const auto s_is_minus(s & (1 << SIGN));
   if(s_is_minus ^ (src.s & (1 << SIGN)))
     return s_is_minus;
   if(s & (1 << INF)) {
     if(src.s & (1 << INF))
-      // throw "compair INF";
-      return true;
+      throw "compair INF";
     return s_is_minus;
   }
   if(src.s & (1 << INF))
@@ -960,8 +958,8 @@ template <typename T, typename W, int bits, typename U> SimpleFloat<T,W,bits,U> 
     }
     return res;
   }
-  const auto& ea(exparray());
-  const auto& iea(invexparray());
+  static const auto& ea(exparray());
+  static const auto& iea(invexparray());
         auto  result(zero());
         auto  work(*this);
   if(one_einv < work) {
@@ -1008,8 +1006,8 @@ template <typename T, typename W, int bits, typename U> SimpleFloat<T,W,bits,U> 
     }
     return res;
   }
-  const auto& en(exparray());
-  const auto& ien(invexparray());
+  static const auto& en(exparray());
+  static const auto& ien(invexparray());
         auto  work(this->abs());
         auto  result(one());
   for(int i = 1; 0 <= i && i < min(en.size(), ien.size()) && work.floor(); i ++, work >>= U(1))
@@ -1231,6 +1229,8 @@ template <typename T, typename W, int bits, typename U> inline SimpleFloat<T,W,b
   // newton's method: 0 == f'(x_n) (x_{n+1} - x_n) + f(x_n)
   //            x_{n+1} := x_n - f(x_n)/f'(x_n).
   //         where f(x) := x_n * x_n - *this
+  if(! res)
+    return res;
   return (res + *this / res) >> U(1);
 }
 

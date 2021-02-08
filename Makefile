@@ -1,14 +1,18 @@
 CXX=	clang++
+#CXX=	/usr/local/opt/llvm/bin/clang++
 LD=	${CXX}
 
 # compiler flags.
-#CXXFLAGS+=	-fopenmp
+CXXFLAGS+=	-fopenmp -L/usr/local/lib -lomp
 CXXFLAGS+=	-std=c++11 -Ofast -g0 -mtune=native
+#CXXFLAGS+=	-std=c++11 -Ofast -gfull -mtune=native
+#CXXFLAGS+=	-D_FLOAT_BITS_=64
 LDFLAGS+=	-lc++
+#LDFLAGS+=	-static
 
-CLEANFILES= *.o *.dSYM p0
+CLEANFILES= *.o *.dSYM p1
 
-all:		p0
+all:		p1
 clean:
 	@rm -rf ${CLEANFILES}
 

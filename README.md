@@ -16,7 +16,9 @@ There exists toeplitz matrix and their solver faster algorithms, so this is exte
     xnext = p.next(x);
 
 # How to use (command line):
-    ./p1 <variable range> <status range> < data.txt
+    ./p1 <status range> <variable range> < data.txt
+    # status   range < 0 for atan(input) prediction.
+    # variable range < 0 for atan(delta) prediction.
 
 # Tips
 If P1 class lasterr has larger absolute value than minimum change, this is useless for the problem nor unreliable for them.
@@ -35,3 +37,4 @@ This don't fixes Ax<=b+1&epsilon; case, so b+1&epsilon;<=Ax case would be gained
 
 # Archive
 This repository is archived, so without bug reports, will no change.
+

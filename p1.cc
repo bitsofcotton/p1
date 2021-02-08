@@ -40,36 +40,35 @@
 #include "p1.hh"
 
 int main(int argc, const char* argv[]) {
-  int range(8);
   int slen(16);
+  int range(8);
   if(1 < argc)
-    range = std::atoi(argv[1]);
+    slen  = std::atoi(argv[1]);
   if(2 < argc)
-    slen  = std::atoi(argv[2]);
+    range = std::atoi(argv[2]);
   P1B<num_t> p(abs(slen), abs(range));
   std::string s;
   num_t d(0);
   auto  d0(d);
-  auto  dd(d);
-  auto  bbd(d);
+  auto  s0(d);
+  auto  s1(d);
   auto  M(d);
-  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    d0 += slen < 0 ? d - bd - M : (d - bd) * M;
-    if(d != bd) {
-      if(range < 0)
-        M = p.next(d - bd);
-      else {
-        dd += d - bbd;
-        M   = p.next(dd) - dd + (M - (d - bbd)) / num_t(2);
-        bbd = bd;
-      }
-      if(t ++ <= slen + range || ! isfinite(M) || isnan(M)) M = num_t(0);
+    if(slen < 0) {
+      if(d0 == num_t(0)) d0 = d;
+      d = atan(d - d0);
     }
-    std::cout << d0 << ", " << M << std::endl << std::flush;
+    const auto delta(range < 0 ? atan(d - bd) : d - bd);
+    s0 += delta * M;
+    s1 += delta - M;
+    if(d != bd) {
+      M = p.next(delta);
+      if(! isfinite(M) || isnan(M)) M = num_t(0);
+    }
+    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
