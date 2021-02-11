@@ -42,11 +42,15 @@
 int main(int argc, const char* argv[]) {
   int slen(16);
   int range(8);
+  int skip(4);
   if(1 < argc)
     slen  = std::atoi(argv[1]);
   if(2 < argc)
     range = std::atoi(argv[2]);
-  P1B<num_t> p(abs(slen), abs(range));
+  if(3 < argc)
+    skip  = std::atoi(argv[3]);
+  assert(slen && range && 0 <= skip);
+  P1<num_t> p(abs(slen), abs(range));
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -65,7 +69,7 @@ int main(int argc, const char* argv[]) {
     s0 += delta * M;
     s1 += delta - M;
     if(d != bd) {
-      M = p.next(delta);
+      M = p.next(delta, skip);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
