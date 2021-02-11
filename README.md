@@ -12,18 +12,16 @@ computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
 
 # How to use:
-    P1<double> p(40, 20);
+    P1<double> p(/* status length */, /* variable dimension */);
     ...
-    // init a array.
-    for ...
-      residue = p.next(a[i], /* condition skip number */);
+    residue = p.next(/* series */, /* condition maximum skip number */);
     // Or we can use:
     ...
-    // init a array
-    const auto invariant(invariantP1<T>(a, /* variable dimension */, /* condition skip number */));
+    // init SimpleVector<T> a;
+    const auto invariant(invariantP1<T>(a, /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
-    ./p1 <status range> <variable range> <skip> < data.txt
+    ./p1 <status range> <variable range> <maximum skip> < data.txt
     # subtract invariant structure from input number series, then output.
     # status   range < 0 for atan(input) prediction subtraction.
     # variable range < 0 for atan(delta) prediction subtraction.
