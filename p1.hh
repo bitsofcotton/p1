@@ -84,6 +84,9 @@ template <typename T> const SimpleVector<T> invariantP1(const SimpleVector<T>& i
     const auto Atrowi(A.col(i));
     const auto work(Atrowi - Pt.projectionPt(Atrowi));
     Pt.row(i) = work / sqrt(work.dot(work));
+    const auto npt(Pt.row(i).dot(Pt.row(i)));
+    if(! (isfinite(npt) && ! isnan(npt)))
+      return fvec;
   }
   const auto Pt0(Pt);
   const auto R(Pt * A);
@@ -104,7 +107,6 @@ template <typename T> const SimpleVector<T> invariantP1(const SimpleVector<T>& i
       }
     if(fidx < 0)
       break;
-    assert(isfinite(on[fidx]));
     orth = Pt.col(fidx);
     const auto norm2orth(orth.dot(orth));
 #if defined(_OPENMP)

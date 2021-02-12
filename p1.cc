@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <vector>
 #include <assert.h>
@@ -39,7 +40,15 @@
 #include "simplelin.hh"
 #include "p1.hh"
 
+template <typename T> const T& sgn(const T& x) {
+  static const T zero(0);
+  static const T one(1);
+  static const T mone(- one);
+  return x != zero ? (x < zero ? mone : one) : zero;
+}
+
 int main(int argc, const char* argv[]) {
+  std::cout << std::setprecision(30);
   int slen(16);
   int range(8);
   int skip(4);
@@ -51,6 +60,7 @@ int main(int argc, const char* argv[]) {
     skip  = std::atoi(argv[3]);
   assert(slen && range && 0 <= skip);
   P1<num_t> p(abs(slen), abs(range));
+  auto  q(p);
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -66,10 +76,16 @@ int main(int argc, const char* argv[]) {
       d = atan(d - d0);
     }
     const auto delta(range < 0 ? atan(d - bd) : d - bd);
-    s0 += delta * M;
-    s1 += delta - M;
+    if(bd != num_t(0)) {
+      if(M == num_t(0))
+        s0 += delta;
+      else {
+        s0 += delta * M;
+        s1 += delta - M;
+      }
+    }
     if(d != bd) {
-      M = p.next(delta, skip);
+      M = abs(p.next(abs(delta), skip)) * sgn<num_t>(abs(q.next(sgn<num_t>(delta) + num_t(2), skip)) - num_t(2));
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;

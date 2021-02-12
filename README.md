@@ -14,11 +14,11 @@ has on the variable dimension if status dimension is enough.
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
     ...
-    residue = p.next(/* series */, /* condition maximum skip number */);
+    residue = p.next(/* value */, /* condition maximum skip number */);
     // Or we can use:
     ...
-    // init SimpleVector<T> a;
-    const auto invariant(invariantP1<T>(a, /* variable dimension */, /* condition maximum skip number */));
+    const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
+      /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
     ./p1 <status range> <variable range> <maximum skip> < data.txt
