@@ -1,15 +1,27 @@
 # bitsofcotton/p1
 Eliminate invariant structure from given series if argument is proper and
-series is deterministic.
+the series is deterministic.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
-so this is extension to them.
+so this is extension to them.  
 For another meaning of this in randtools generic tips 6 that
 excludes complexity into accuracy on inner product,
 invariantP1 function returns invariant structure that \[0, &alpha;\[ register
 computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
+If we work any one function recursion series,
+
+we can correctly vanish invariant with proper argument into p1.
+
+This is guaranteed with randtools general tips a,
+
+but we can define a function that one of a proper variable range or
+
+a proper guard length for large enough one.
+
+
+
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
@@ -27,13 +39,6 @@ has on the variable dimension if status dimension is enough.
     # subtract invariant structure from input number series, then output.
     # status   range < 0 for atan(input) prediction subtraction.
     # variable range < 0 for atan(delta) prediction subtraction.
-
-# General Tips
-If we work any one function recursion series,
-we can correctly vanish invariant with proper argument into p1.
-This is guaranteed with randtools general tips a,
-but we can define a function that one of a proper variable range or
-a proper guard length for large enough one.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
