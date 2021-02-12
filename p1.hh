@@ -60,7 +60,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     const auto right((in.size() - varlen + guard) / 2 < ii);
     if(! left && ! right)
       continue;
-    const auto i(left ? ii : ii - (in.size() - varlen + guard) / 2);
+    const auto i(left ? ii : ii - guard);
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[ii + j];
     A(i, varlen) = T(0);
