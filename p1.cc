@@ -42,10 +42,11 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int slen(16);
+  int slen(20);
   int range(8);
   int skip(4);
   int guard(4);
+  int stat(2);
   if(1 < argc)
     slen  = std::atoi(argv[1]);
   if(2 < argc)
@@ -54,8 +55,10 @@ int main(int argc, const char* argv[]) {
     skip  = std::atoi(argv[3]);
   if(4 < argc)
     guard = std::atoi(argv[4]);
-  assert(slen && range && 0 <= skip && 0 <= guard && skip + guard + range <= slen && ! (guard & 1));
-  P1<num_t> p(abs(slen), abs(range));
+  if(5 < argc)
+    stat  = std::atoi(argv[5]);
+  assert(slen && range && 0 <= skip && 0 <= guard && skip + guard + range + stat <= slen && 0 <= stat);
+  P1Istatus<num_t> p(abs(slen), abs(range), stat);
   std::string s;
   num_t d(0);
   auto  d0(d);

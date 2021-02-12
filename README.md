@@ -19,12 +19,13 @@ which x is shown variable, y is inner status bits, we can collect
 Xa=B\*y\_0.
 
 # How to use:
-    P1<double> p(/* status length */, /* variable dimension */);
+    P1Istatus<double> p(/* status length */, /* variable dimension */,
+      /* inner status length */);
     ...
-    residue = p.next(/* value */, /* condition maximum skip number */,
-      /* middle guard status length that ignored */);
+      residue = p.next(/* value */, /* condition maximum skip number */,
+        /* middle guard status length that ignored */);
+    //     p have: invariant_(abs|sgn), status_(abs|sgn) vectors.
     // Or we can use:
-    ...
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
       /* variable dimension */, /* condition maximum skip number */,
       /* middle guard condition skip number */));
