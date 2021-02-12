@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]) {
   if(5 < argc)
     stat  = std::atoi(argv[5]);
   assert(slen && range && 0 <= skip && 0 <= guard && skip + guard + range + stat <= slen && 0 <= stat);
-  P1Istatus<num_t> p(abs(slen), abs(range), stat);
+  P1Istatus<num_t> p(abs(slen), abs(range), stat, guard);
   std::string s;
   num_t d(0);
   auto  d0(d);

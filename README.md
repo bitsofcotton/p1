@@ -18,7 +18,8 @@ lagrange multipliers.
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
 which x is shown variable, y is inner status bits, we can collect
-Xa=B\*y\_0.
+Xa=B\*y\_0, this is equivalent to give residue into calculated invariant and
+make another invariant.
 
 # How to use:
     P1Istatus<double> p(/* status length */, /* variable dimension */,
