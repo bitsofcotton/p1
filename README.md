@@ -28,6 +28,11 @@ has on the variable dimension if status dimension is enough.
     # status   range < 0 for atan(input) prediction subtraction.
     # variable range < 0 for atan(delta) prediction subtraction.
 
+# General Tips
+If we work any one function recursion series,
+we can correctly vanish invariant with proper argument into p1.
+This is guaranteed with randtools general tips a.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
