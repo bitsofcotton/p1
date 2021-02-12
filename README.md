@@ -31,7 +31,8 @@ has on the variable dimension if status dimension is enough.
 # General Tips
 If we work any one function recursion series,
 we can correctly vanish invariant with proper argument into p1.
-This is guaranteed with randtools general tips a.
+This is guaranteed with randtools general tips a,
+but we can define a function that proper variable range for large enough one.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
