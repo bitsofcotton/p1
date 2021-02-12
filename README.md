@@ -1,5 +1,6 @@
 # bitsofcotton/p1
-Eliminate invariant structure from given series if argument is proper.
+Eliminate invariant structure from given series if argument is proper and
+series is deterministic.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
