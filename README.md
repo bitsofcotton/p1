@@ -10,18 +10,13 @@ excludes complexity into accuracy on inner product,
 invariantP1 function returns invariant structure that \[0, &alpha;\[ register
 computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
+
 If we work any one function recursion series,
+we can correctly vanish invariant with proper argument into p1,
+this is guaranteed with randtools general tips a,
 
-we can correctly vanish invariant with proper argument into p1.
-
-This is guaranteed with randtools general tips a,
-
-but we can define a function that one of a proper variable range or
-
+But we can define a function that one of a proper variable range or
 a proper guard length for large enough one.
-
-
-
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
