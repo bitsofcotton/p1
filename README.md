@@ -1,18 +1,20 @@
 # bitsofcotton/p1
-Eliminate invariant structure from given series if argument is proper and
-the series is deterministic.
+Eliminate invariant structure from given series if argument is proper.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
 so this is extension to them.  
+
 For another meaning of this in randtools generic tips 6 that
 excludes complexity into accuracy on inner product,
 invariantP1 function returns invariant structure that \[0, &alpha;\[ register
 computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
+
 We can weaken this variable dimension condition to status dimension and
 guard length, this is guaranteed with randtools general tips a and
 lagrange multipliers.  
+
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
 which x is shown variable, y is inner status bits, we can collect
