@@ -11,10 +11,8 @@ invariantP1 function returns invariant structure that \[0, &alpha;\[ register
 computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
 We can weaken this variable dimension condition to status dimension and
-guard length, this is guaranteed with randtools general tips a,
-
-But we can define a function that one of a proper variable range or
-a proper guard length for large enough one.
+guard length, this is guaranteed with randtools general tips a and
+lagrange multipliers.
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
