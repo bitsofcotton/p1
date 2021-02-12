@@ -14,8 +14,8 @@ We can weaken this variable dimension condition to status dimension and
 guard length, this is guaranteed with randtools general tips a and
 lagrange multipliers.  
 And, if the function has inner status variable that to be projected into
-series, the fixed point on the series with status variable dimension
-is important.
+series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
+which x is shown variable, y is inner status bits, we can collect Xa=Yb.
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
