@@ -15,7 +15,8 @@ guard length, this is guaranteed with randtools general tips a and
 lagrange multipliers.  
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
-which x is shown variable, y is inner status bits, we can collect Xa=Yb.
+which x is shown variable, y is inner status bits, we can collect
+Xa=B\*y\_0.
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
