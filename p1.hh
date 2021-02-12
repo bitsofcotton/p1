@@ -203,10 +203,12 @@ template <typename T> T P1Istatus<T>::next(const T& in, const int& skip) {
       s_sbuf[i] = s_sbuf[i + 1];
     }
     assert(s_buf.size() == s_sbuf.size());
+    const auto inslen(invariant_abs.size() - varlen - 1);
+    const auto ratio1(T(1) / sqrt(T(s_buf.size() - invariant_sgn.size() + 1) * T(invariant_sgn.size())));
     auto& vva(s_buf[ s_buf.size() - 1]);
     auto& vvs(s_sbuf[s_sbuf.size() - 1]);
-    vva = projinv_abs[projinv_abs.size() - 1] / sqrt(T(varlen));
-    vvs = projinv_sgn[projinv_abs.size() - 1] / sqrt(T(varlen));
+    vva = projinv_abs[projinv_abs.size() - 1] * ratio1;
+    vvs = projinv_sgn[projinv_abs.size() - 1] * ratio1;
     for(int i = 0; i < projinv_abs.size() - 1; i ++) {
       vva +=  buf[i - projinv_abs.size() +  buf.size()] * projinv_abs[i];
       vvs += sbuf[i - projinv_sgn.size() + sbuf.size()] * projinv_sgn[i];
@@ -223,8 +225,8 @@ template <typename T> T P1Istatus<T>::next(const T& in, const int& skip) {
       rsgn += sbuf[i - (varlen - 1) + sbuf.size()] * invariant_abs[i];
     }
     const auto inslen(invariant_abs.size() - varlen - 1);
-    rabs += T(1) / sqrt(T(s_buf.size() - invariant_abs.size() + 1) * T(invariant_abs.size()));
-    rsgn += T(1) / sqrt(T(s_buf.size() - invariant_sgn.size() + 1) * T(invariant_sgn.size()));
+    rabs += invariant_abs[varlen] * ratio1;
+    rsgn += invariant_sgn[varlen] * ratio1;
     for(int i = 0; i < inslen; i ++) {
       rabs += s_buf[ i - inslen +  s_buf.size()] * invariant_abs[i + varlen + 1];
       rsgn += s_sbuf[i - inslen + s_sbuf.size()] * invariant_sgn[i + varlen + 1];
