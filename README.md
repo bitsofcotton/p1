@@ -1,6 +1,5 @@
 # bitsofcotton/p1
-Eliminate invariant structure from given series.
-But residue might also have a different invariant structure.
+Eliminate invariant structure from given series if argument is proper.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
