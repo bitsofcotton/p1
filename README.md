@@ -14,14 +14,16 @@ has on the variable dimension if status dimension is enough.
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
     ...
-    residue = p.next(/* value */, /* condition maximum skip number */);
+    residue = p.next(/* value */, /* condition maximum skip number */,
+      /* middle guard status length that ignored */);
     // Or we can use:
     ...
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
-      /* variable dimension */, /* condition maximum skip number */));
+      /* variable dimension */, /* condition maximum skip number */,
+      /* middle guard condition skip number */));
 
 # How to use (command line):
-    ./p1 <status range> <variable range> <maximum skip> < data.txt
+    ./p1 <status range> <variable range> <maximum skip> <guard length> < data.txt
     # subtract invariant structure from input number series, then output.
     # status   range < 0 for atan(input) prediction subtraction.
     # variable range < 0 for atan(delta) prediction subtraction.
