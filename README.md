@@ -12,7 +12,9 @@ computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
 We can weaken this variable dimension condition to status dimension and
 guard length, this is guaranteed with randtools general tips a and
-lagrange multipliers.
+lagrange multipliers.  
+And, if the function has inner status variable that to be projected into
+series, the fixed point on the series is important.
 
 # How to use:
     P1<double> p(/* status length */, /* variable dimension */);
