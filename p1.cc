@@ -40,27 +40,22 @@
 #include "simplelin.hh"
 #include "p1.hh"
 
-template <typename T> const T& sgn(const T& x) {
-  static const T zero(0);
-  static const T one(1);
-  static const T mone(- one);
-  return x != zero ? (x < zero ? mone : one) : zero;
-}
-
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int slen(16);
   int range(8);
   int skip(4);
+  int guard(4);
   if(1 < argc)
     slen  = std::atoi(argv[1]);
   if(2 < argc)
     range = std::atoi(argv[2]);
   if(3 < argc)
     skip  = std::atoi(argv[3]);
-  assert(slen && range && 0 <= skip);
+  if(4 < argc)
+    guard = std::atoi(argv[4]);
+  assert(slen && range && 0 <= skip && 0 <= guard && skip + guard + range <= slen && ! (guard & 1));
   P1<num_t> p(abs(slen), abs(range));
-  auto  q(p);
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -85,7 +80,7 @@ int main(int argc, const char* argv[]) {
       }
     }
     if(d != bd) {
-      M = abs(p.next(abs(delta), skip)) * sgn<num_t>(abs(q.next(sgn<num_t>(delta) + num_t(2), skip)) - num_t(2));
+      M = p.next(delta, skip);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
