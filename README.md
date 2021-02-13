@@ -28,7 +28,7 @@ make another invariant.
       /* inner status length */, /* middle guard status length */);
     ...
       residue = p.next(/* value */, /* condition maximum skip number */);
-    //     p have: invariant_(abs|sgn), status_(abs|sgn) vectors.
+    //     p have: invariant_(abs|sgn), s_(buf|sbuf) vectors.
     // Or we can use:
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
       /* status residue calculated */,
