@@ -207,11 +207,12 @@ template <typename T> T P1Istatus<T>::next(const T& in, const int& skip) {
     s_sbuf[i] = s_sbuf[i + 1];
   }
   const auto statlen(max(varlen + s_buf.size() - buf.size() + guard, 0));
+  const auto ratio0(T(1) / sqrt(T(buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1));
   const auto ratio(T(1) / sqrt(T(buf.size() - varlen - guard) * 2 + 1) * T(varlen + statlen + 1));
   auto& vva(s_buf[ s_buf.size() - 1]);
   auto& vvs(s_sbuf[s_sbuf.size() - 1]);
-  vva = projinv_abs[projinv_abs.size() - 1] * ratio;
-  vvs = projinv_sgn[projinv_abs.size() - 1] * ratio;
+  vva = projinv_abs[projinv_abs.size() - 1] * ratio0;
+  vvs = projinv_sgn[projinv_abs.size() - 1] * ratio0;
   for(int i = 0; i < projinv_abs.size() - 1; i ++) {
     vva +=  buf[i - projinv_abs.size() +  buf.size() - guard + 1] * projinv_abs[i];
     vvs += sbuf[i - projinv_sgn.size() + sbuf.size() - guard + 1] * projinv_sgn[i];
