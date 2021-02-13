@@ -42,51 +42,66 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int slen(20);
-  int range(8);
-  int skip(4);
-  int guard(4);
-  int stat(2);
-  if(1 < argc)
-    slen  = std::atoi(argv[1]);
-  if(2 < argc)
-    range = std::atoi(argv[2]);
-  if(3 < argc)
-    skip  = std::atoi(argv[3]);
-  if(4 < argc)
-    guard = std::atoi(argv[4]);
-  if(5 < argc)
-    stat  = std::atoi(argv[5]);
-  assert(slen && range && 0 <= skip && 0 <= guard && skip + guard + range + stat <= slen && 0 <= stat);
-  P1Istatus<num_t> p(abs(slen), abs(range), stat, guard);
+  int wslen(20);
+  int vrange(8);
+  int grange(4);
+  int srange(2);
+  int ignore(2);
+  if(argc < 5) {
+    std::cerr << "p1 <whole status> <variable> <guard> <status> <ignore>" << std::endl;
+    std::cerr << "continue with p1 " << wslen << " " << vrange << " " << grange << " " << srange << " " << ignore << std::endl;
+  } else {
+    wslen  = std::atoi(argv[1]);
+    vrange = std::atoi(argv[2]);
+    grange = std::atoi(argv[3]);
+    srange = std::atoi(argv[4]);
+    ignore = std::atoi(argv[5]);
+  }
+  const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
+  assert(0 <= ignore);
+  P1Istatus<num_t> p(wslen, abs(vrange), abs(srange), abs(grange));
   std::string s;
   num_t d(0);
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
+  auto  tilt(d);
+  auto  s2(d);
+  auto  s3(d);
   auto  M(d);
+  auto  MM(d);
+  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    if(slen < 0) {
+    if(wslen < 0) {
       if(d0 == num_t(0)) d0 = d;
       d = atan(d - d0);
     }
-    const auto delta(range < 0 ? atan(d - bd) : d - bd);
+    const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(bd != num_t(0)) {
-      if(M == num_t(0))
+      if(M == num_t(0)) {
         s0 += delta;
-      else {
+        s2 += delta;
+      } else {
         s0 += delta * M;
         s1 += delta - M;
+        if(MM == num_t(0))
+          s2 += delta;
+        else {
+          s2 += delta * MM;
+          s3 += delta - MM;
+        }
+        t  ++;
       }
     }
     if(d != bd) {
-      M = p.next(delta, skip);
+      M = p.next(delta, ignore);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
+      MM = t ? M + s1 / num_t(t) : num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M << ", " << (gg ? s2 : s0) << ", " << (gg ? s3 : s1) << std::endl << std::flush;
   }
   return 0;
 }

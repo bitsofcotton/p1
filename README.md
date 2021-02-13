@@ -1,5 +1,6 @@
 # bitsofcotton/p1
-Eliminate invariant structure from given series if argument is proper.
+Eliminate invariant structure from given series if argument is proper and
+input series is deterministic with or without inner status.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
@@ -11,9 +12,10 @@ invariantP1 function returns invariant structure that \[0, &alpha;\[ register
 computer with whole input and whole deterministic computed output
 has on the variable dimension if status dimension is enough.
 
-We can weaken this variable dimension condition to status dimension and
+We can weaken this variable dimension condition to
 guard length, this is guaranteed with randtools general tips a and
 lagrange multipliers.  
+And, ideally, guard length == n! on some n in N.
 
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
@@ -23,21 +25,22 @@ make another invariant.
 
 # How to use:
     P1Istatus<double> p(/* status length */, /* variable dimension */,
-      /* inner status length */);
+      /* inner status length */, /* middle guard status length */);
     ...
-      residue = p.next(/* value */, /* condition maximum skip number */,
-        /* middle guard status length that ignored */);
+      residue = p.next(/* value */, /* condition maximum skip number */);
     //     p have: invariant_(abs|sgn), status_(abs|sgn) vectors.
     // Or we can use:
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
+      /* status residue calculated */,
       /* variable dimension */, /* condition maximum skip number */,
       /* middle guard condition skip number */));
 
 # How to use (command line):
-    ./p1 <status range> <variable range> <maximum skip> <guard length> < data.txt
+    ./p1 <whole status> <variable> <guard> <status> <ignore> < data.txt
     # subtract invariant structure from input number series, then output.
-    # status   range < 0 for atan(input) prediction subtraction.
-    # variable range < 0 for atan(delta) prediction subtraction.
+    # whole status < 0 for atan(input) prediction subtraction.
+    # variable     < 0 for atan(delta) prediction subtraction.
+    # guard        < 0 for linear prediction error correction.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
