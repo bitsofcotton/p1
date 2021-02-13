@@ -42,30 +42,36 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int wslen(20);
+  int eslen(8);
   int vrange(8);
   int grange(4);
   int srange(2);
   int ignore(2);
   if(argc < 5) {
-    std::cerr << "p1 <whole status> <variable> <guard> <status> <ignore>" << std::endl;
-    std::cerr << "continue with p1 " << wslen << " " << vrange << " " << grange << " " << srange << " " << ignore << std::endl;
+    std::cerr << "p1 <extra status> <variable> <guard> <status> <ignore>" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << srange << " " << ignore << std::endl;
   } else {
-    wslen  = std::atoi(argv[1]);
+    eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     grange = std::atoi(argv[3]);
     srange = std::atoi(argv[4]);
     ignore = std::atoi(argv[5]);
   }
-  const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
   assert(0 <= ignore);
-  P1Istatus<num_t> p(wslen, abs(vrange), abs(srange), abs(grange));
+  {
+    const auto ggrange(abs(grange));
+    for(int i = 1; i < ggrange; i ++)
+      grange *= i;
+  }
+  const auto ee(eslen  < 0 || (1 < argc && argv[1][0] == '-'));
+  const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
+  P1Istatus<num_t> p(abs(eslen) + abs(vrange) + abs(grange) + abs(ignore),
+    abs(vrange), abs(srange), abs(grange));
   std::string s;
   num_t d(0);
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
-  auto  tilt(d);
   auto  s2(d);
   auto  s3(d);
   auto  M(d);
@@ -75,7 +81,7 @@ int main(int argc, const char* argv[]) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    if(wslen < 0) {
+    if(ee) {
       if(d0 == num_t(0)) d0 = d;
       d = atan(d - d0);
     }
