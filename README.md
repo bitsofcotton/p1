@@ -36,11 +36,12 @@ make another invariant.
       /* middle guard condition skip number */));
 
 # How to use (command line):
-    ./p1 <whole status> <variable> <guard> <status> <ignore> < data.txt
+    ./p1 <extra status> <variable> <guard> <status> <ignore> < data.txt
     # subtract invariant structure from input number series, then output.
-    # whole status < 0 for atan(input) prediction subtraction.
+    # extra status < 0 for atan(input) prediction subtraction.
     # variable     < 0 for atan(delta) prediction subtraction.
     # guard        < 0 for linear prediction error correction.
+    # status       < 0 for average invariant inner product prediction subtraction.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

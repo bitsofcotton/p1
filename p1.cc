@@ -42,10 +42,10 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int eslen(8);
+  int eslen(2);
   int vrange(8);
   int grange(4);
-  int srange(2);
+  int srange(1);
   int ignore(2);
   if(argc < 5) {
     std::cerr << "p1 <extra status> <variable> <guard> <status> <ignore>" << std::endl;
@@ -65,6 +65,7 @@ int main(int argc, const char* argv[]) {
   }
   const auto ee(eslen  < 0 || (1 < argc && argv[1][0] == '-'));
   const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
+  const auto ss(srange < 0 || (4 < argc && argv[4][0] == '-'));
   P1Istatus<num_t> p(abs(eslen) + abs(vrange) + abs(grange) + abs(ignore),
     abs(vrange), abs(srange), abs(grange));
   std::string s;
@@ -103,7 +104,7 @@ int main(int argc, const char* argv[]) {
       }
     }
     if(d != bd) {
-      M = p.next(delta, ignore);
+      M = ss ? p.nextAvg(delta, ignore) : p.next(delta, ignore);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       MM = t ? M + s1 / num_t(t) : num_t(0);
     }

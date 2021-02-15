@@ -134,13 +134,16 @@ public:
   inline P1Istatus();
   inline P1Istatus(const int& stat, const int& var, const int& instat, const int& guard);
   inline ~P1Istatus();
-  inline T next(const T& in, const int& skip = 0);
+         T next(const T& in, const int& skip = 0);
+  inline T nextAvg(const T& in, const int& skip = 0);
   Vec invariant_abs;
   Vec invariant_sgn;
   Vec s_buf;
   Vec s_sbuf;
   T   rabs;
   T   rsgn;
+  std::vector<Vec> hist_abs;
+  std::vector<Vec> hist_sgn;
 private:
   inline const T& sgn(const T& x) const;
   Vec buf;
@@ -207,17 +210,27 @@ template <typename T> T P1Istatus<T>::next(const T& in, const int& skip) {
     s_sbuf[i] = s_sbuf[i + 1];
   }
   const auto statlen(max(varlen + s_buf.size() - buf.size() + guard, 0));
-  const auto ratio0(T(1) / sqrt(T(buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1));
-  const auto ratio(T(1) / sqrt(T(buf.size() - varlen - guard) * 2 + 1) * T(varlen + statlen + 1));
+  const auto ratio0(T(1) / sqrt(T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1)));
   auto& vva(s_buf[ s_buf.size() - 1]);
   auto& vvs(s_sbuf[s_sbuf.size() - 1]);
-  vva = projinv_abs[projinv_abs.size() - 1] * ratio0;
-  vvs = projinv_sgn[projinv_abs.size() - 1] * ratio0;
+  vva = projinv_abs[varlen] * ratio0;
+  vvs = projinv_sgn[varlen] * ratio0;
   for(int i = 0; i < projinv_abs.size() - 1; i ++) {
     vva +=  buf[i - projinv_abs.size() +  buf.size() - guard + 1] * projinv_abs[i];
     vvs += sbuf[i - projinv_sgn.size() + sbuf.size() - guard + 1] * projinv_sgn[i];
   }
   if(! (invariant_abs.size() && invariant_sgn.size())) return T(0);
+  if(buf.size() - varlen - guard == s_buf.size()) {
+    rabs = projinv_abs[varlen] * ratio0;
+    rsgn = projinv_sgn[varlen] * ratio0;
+    for(int i = 0; i < varlen - 1; i ++) {
+      rabs +=  buf[i - varlen +  buf.size() - guard + 1] * invariant_abs[i];
+      rsgn += sbuf[i - varlen + sbuf.size() - guard + 1] * invariant_abs[i];
+    }
+    return (rabs = abs(rabs / projinv_abs[varlen - 1])) *
+      (rsgn = sgn(abs(rsgn / projinv_sgn[varlen - 1]) - T(2)));
+  }
+  const auto ratio(T(1) / sqrt(T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + statlen + 1)));
   rabs = invariant_abs[varlen] * ratio;
   rsgn = invariant_sgn[varlen] * ratio;
   for(int i = 0; i < varlen - 1; i ++) {
@@ -230,6 +243,43 @@ template <typename T> T P1Istatus<T>::next(const T& in, const int& skip) {
   }
   return (rabs = abs(rabs / invariant_abs[varlen - 1])) *
     (rsgn = sgn(abs(rsgn / invariant_sgn[varlen - 1]) - T(2)));
+}
+
+template <typename T> inline T P1Istatus<T>::nextAvg(const T& in, const int& skip) {
+  assert(hist_abs.size() == hist_sgn.size());
+  const auto res(next(in, skip));
+  if(skip <= 0) return res;
+  const auto nostat(buf.size() - varlen - guard == s_buf.size());
+  if(hist_abs.size() < skip) {
+    if(nostat ? projinv_abs.size() : invariant_abs.size()) {
+      hist_abs.emplace_back(nostat ? projinv_abs : invariant_abs);
+      hist_sgn.emplace_back(nostat ? projinv_sgn : invariant_sgn);
+    }
+    return T(0);
+  }
+  auto avg_abs(hist_abs[0]);
+  auto avg_sgn(hist_sgn[0]);
+  for(int i = 1; i < hist_abs.size(); i ++) {
+    avg_abs += hist_abs[i];
+    avg_sgn += hist_sgn[i];
+  }
+  const auto statlen(max(varlen + s_buf.size() - buf.size() + guard, 0));
+  const auto ratio(T(1) / sqrt(nostat ?
+    T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1) :
+    T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + statlen + 1) ));
+  rabs = avg_abs[varlen] * ratio;
+  rsgn = avg_sgn[varlen] * ratio;
+  for(int i = 0; i < varlen - 1; i ++) {
+    rabs +=  buf[i - varlen +  buf.size() - guard + 1] * avg_abs[i];
+    rsgn += sbuf[i - varlen + sbuf.size() - guard + 1] * avg_abs[i];
+  }
+  if(! nostat)
+    for(int i = 0; i < statlen; i ++) {
+      rabs += s_buf[ i - statlen +  s_buf.size()] * avg_abs[i + varlen + 1];
+      rsgn += s_sbuf[i - statlen + s_sbuf.size()] * avg_sgn[i + varlen + 1];
+    }
+  return (rabs = abs(rabs / avg_abs[varlen - 1])) *
+    (rsgn = sgn(abs(rsgn / avg_sgn[varlen - 1]) - T(2)));
 }
 
 #define _P1_
