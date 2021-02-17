@@ -35,12 +35,13 @@ make another invariant.
       /* middle guard condition skip number */));
 
 # How to use (command line):
-    ./p1 <extra status> <variable> <guard> <status> <ignore> < data.txt
+    ./p1 <extra status> <variable> <guard> <status> <ignore> <origin>? < data.txt
     # subtract invariant structure from input number series, then output.
     # extra status < 0 for atan(input) prediction subtraction.
     # variable     < 0 for atan(delta) prediction subtraction.
     # guard        < 0 for linear prediction error correction.
     # status       < 0 for average invariant inner product prediction subtraction.
+    # ignore       < 0 for integer pow correction, this causes any program, origin is ideally ||f||_infty.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
