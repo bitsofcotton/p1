@@ -189,6 +189,13 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip) {
   } else if(skip < 0) {
     hist_abs.resize(1, invariant_abs);
     hist_sgn.resize(1, invariant_sgn);
+  } else {
+    for(int i = 0; i < hist_abs.size() - 1; i ++) {
+      std::swap(hist_abs[i], hist_abs[i + 1]);
+      std::swap(hist_sgn[i], hist_sgn[i + 1]);
+    }
+    hist_abs[hist_abs.size() - 1] = invariant_abs;
+    hist_sgn[hist_sgn.size() - 1] = invariant_sgn;
   }
   auto avg_abs(hist_abs[0]);
   auto avg_sgn(hist_sgn[0]);
