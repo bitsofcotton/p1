@@ -19,8 +19,8 @@ lagrange multipliers.
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0
 which x is shown variable, y is inner status bits, we can collect
-Xa=B\*y\_0, this is equivalent to give residue into calculated invariant and
-make another invariant.
+Xa=B\*y\_0, this is equivalent to with large enough X',
+X'a'=\[B\*y O\], y=some X''\*a. So this is calculate with larger variable number.
 
 # How to use:
     P1Istatus<double> p(/* status length */, /* variable dimension */,
@@ -35,13 +35,13 @@ make another invariant.
       /* middle guard condition skip number */));
 
 # How to use (command line):
-    ./p1 <extra status> <variable> <guard> <status> <ignore> <origin>? < data.txt
+    ./p1 <extra status> <variable> <guard> <ignore> <origin> < data.txt
     # subtract invariant structure from input number series, then output.
     # extra status < 0 for atan(input) prediction subtraction.
     # variable     < 0 for atan(delta) prediction subtraction.
     # guard        < 0 for linear prediction error correction.
-    # status       < 0 for average invariant inner product prediction subtraction.
-    # ignore       < 0 for integer pow correction, this causes any program, origin is ideally ||f||_infty.
+    # ignore       < 0 for average prediction subtraction with average invariant.
+    # origin      != 0 for integer pow correction, this causes any program, origin is ideally ||f||_infty.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
