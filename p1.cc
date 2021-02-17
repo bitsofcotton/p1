@@ -63,8 +63,7 @@ int main(int argc, const char* argv[]) {
   const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
   const auto ss(srange < 0 || (4 < argc && argv[4][0] == '-'));
   const auto ii(ignore < 0 || (5 < argc && argv[5][0] == '-'));
-  P1Istatus<num_t> p(abs(eslen) + abs(vrange) + abs(grange) + abs(ignore),
-    abs(vrange), abs(srange), abs(grange));
+  P1Istatus<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(srange), abs(grange));
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -85,8 +84,8 @@ int main(int argc, const char* argv[]) {
     }
     const auto delta00(vrange < 0 ? atan(d - bd) : d - bd);
     const auto delta0(ii ? delta00 : delta00);
-    const auto delta(ii ? pow(delta00 + num_t(origin), num_t(abs(vrange))) : delta00);
-    if(bd != num_t(0)) {
+    const auto delta(ii ? pow(delta00 + num_t(origin), num_t(abs(vrange) + abs(srange) + 1)) : delta00);
+    if(d != bd && bd != num_t(0)) {
       if(M == num_t(0)) {
         s0 += delta0;
         s2 += delta0;
@@ -104,7 +103,7 @@ int main(int argc, const char* argv[]) {
     }
     if(d != bd) {
       M = ss ? p.nextAvg(delta, abs(ignore)) : p.next(delta, abs(ignore));
-      M = ii ? pow(M, num_t(1) / num_t(abs(vrange))) / num_t(2) - num_t(origin) : M;
+      M = ii ? pow(M, num_t(1) / num_t(abs(vrange) + abs(srange) + 1)) / num_t(2) - num_t(origin) : M;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       MM = t ? M + s1 / num_t(t) : num_t(0);
     }
