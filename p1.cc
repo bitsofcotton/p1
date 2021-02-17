@@ -59,11 +59,6 @@ int main(int argc, const char* argv[]) {
     ignore = std::atoi(argv[5]);
     if(5 < argc) origin = std::atoi(argv[6]);
   }
-  {
-    const auto ggrange(abs(grange));
-    for(int i = 1; i < ggrange; i ++)
-      grange *= i;
-  }
   const auto ee(eslen  < 0 || (1 < argc && argv[1][0] == '-'));
   const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
   const auto ss(srange < 0 || (4 < argc && argv[4][0] == '-'));

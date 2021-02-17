@@ -15,7 +15,6 @@ has on the variable dimension if status dimension is enough.
 We can weaken this variable dimension condition to
 guard length, this is guaranteed with randtools general tips a and
 lagrange multipliers.  
-And, ideally, guard length == n! on some n in N.
 
 And, if the function has inner status variable that to be projected into
 series, with proper calculated invariant arguments, \<a,x\>+\<b,y\>==0

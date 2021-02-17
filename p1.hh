@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // this returns one of u_k that concerns 0.
 // skip attemps maximum skip status number if original data has a noised ones.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const SimpleVector<T>& stin, const int& varlen, const int& skip = 0, const int& guard = 0) {
-  assert(varlen < in.size() && stin.size() < in.size());
+  assert(varlen < in.size());
 #if defined(_FLOAT_BITS_)
   static const auto epsilon(T(1) >> int64_t(mybits - 2));
 #else
