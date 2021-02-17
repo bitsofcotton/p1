@@ -49,21 +49,20 @@ int main(int argc, const char* argv[]) {
   int ignore(2);
   int origin(0);
   if(argc < 5) {
-    std::cerr << "p1 <extra status> <variable> <guard> <status> <ignore>" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << srange << " " << ignore << std::endl;
+    std::cerr << "p1 <extra status> <variable> <guard> <ignore> <origin>" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << ignore << " " << origin << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     grange = std::atoi(argv[3]);
-    srange = std::atoi(argv[4]);
-    ignore = std::atoi(argv[5]);
-    if(5 < argc) origin = std::atoi(argv[6]);
+    ignore = std::atoi(argv[4]);
+    origin = std::atoi(argv[5]);
   }
   const auto ee(eslen  < 0 || (1 < argc && argv[1][0] == '-'));
   const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
-  const auto ss(srange < 0 || (4 < argc && argv[4][0] == '-'));
-  const auto ii(ignore < 0 || (5 < argc && argv[5][0] == '-'));
-  P1Istatus<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(srange), abs(grange));
+  const auto ii(ignore < 0 || (4 < argc && argv[4][0] == '-'));
+  const auto oo(origin < 0 || (5 < argc && argv[5][0] == '-'));
+  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(srange), abs(grange));
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -83,8 +82,8 @@ int main(int argc, const char* argv[]) {
       d = atan(d - d0);
     }
     const auto delta00(vrange < 0 ? atan(d - bd) : d - bd);
-    const auto delta0(ii ? delta00 : delta00);
-    const auto delta(ii ? pow(delta00 + num_t(origin), num_t(abs(vrange) + abs(srange) + 1)) : delta00);
+    const auto delta0(oo ? delta00 : delta00);
+    const auto delta(oo ? pow(delta00 + num_t(origin), num_t(abs(vrange) + abs(srange) + 1)) : delta00);
     if(d != bd && bd != num_t(0)) {
       if(M == num_t(0)) {
         s0 += delta0;
@@ -102,8 +101,8 @@ int main(int argc, const char* argv[]) {
       }
     }
     if(d != bd) {
-      M = ss ? p.nextAvg(delta, abs(ignore)) : p.next(delta, abs(ignore));
-      M = ii ? pow(M, num_t(1) / num_t(abs(vrange) + abs(srange) + 1)) / num_t(2) - num_t(origin) : M;
+      M = p.next(delta, ii ? abs(ignore) : - abs(ignore));
+      M = oo ? pow(M, num_t(1) / num_t(abs(vrange) + abs(srange) + 1)) / num_t(2) - num_t(origin) : M;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       MM = t ? M + s1 / num_t(t) : num_t(0);
     }
