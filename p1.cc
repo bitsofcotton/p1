@@ -48,7 +48,7 @@ int main(int argc, const char* argv[]) {
   int srange(1);
   int ignore(2);
   int origin(0);
-  if(argc < 5) {
+  if(argc < 6) {
     std::cerr << "p1 <extra status> <variable> <guard> <ignore> <origin>" << std::endl;
     std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << ignore << " " << origin << std::endl;
   } else {

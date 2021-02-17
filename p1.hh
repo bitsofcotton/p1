@@ -150,7 +150,7 @@ template <typename T> inline P1I<T>::P1I() {
 }
 
 template <typename T> inline P1I<T>::P1I(const int& stat, const int& var, const int& instat, const int& guard) {
-  buf.resize(stat + (varlen = var) + (this->guard = guard) - 1);
+  buf.resize(stat + (varlen = var) * 2 - 1+ (this->guard = guard));
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
   sbuf = buf;
@@ -186,13 +186,13 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip) {
     hist_abs.emplace_back(invariant_abs);
     hist_sgn.emplace_back(invariant_sgn);
     return T(0);
-  } else if(skip < 0) {
+  } else if(skip <= 0) {
     hist_abs.resize(1, invariant_abs);
     hist_sgn.resize(1, invariant_sgn);
   } else {
     for(int i = 0; i < hist_abs.size() - 1; i ++) {
-      std::swap(hist_abs[i], hist_abs[i + 1]);
-      std::swap(hist_sgn[i], hist_sgn[i + 1]);
+      hist_abs[i] = hist_abs[i + 1];
+      hist_sgn[i] = hist_sgn[i + 1];
     }
     hist_abs[hist_abs.size() - 1] = invariant_abs;
     hist_sgn[hist_sgn.size() - 1] = invariant_sgn;
