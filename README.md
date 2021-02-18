@@ -19,24 +19,19 @@ Xa=B\*y\_0, this is equivalent to with large enough X',
 X'a'=\[B\*y O\], y=some X''\*a.
 So this is calculate with larger variable dimension.
 
-We can weaken this variable dimension condition to
-guard length, this is guaranteed with randtools general tips a and
-lagrange multipliers.  
-
 
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */,
-      /* inner status length */, /* middle guard status length */);
+      /* inner status length */);
     ...
       residue = p.next(/* value */, /* condition maximum skip number */);
     //     p have: p.invariant vector<vector>.
     // Or we can use:
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */),
-      /* variable dimension */, /* condition maximum skip number */,
-      /* middle guard condition skip number */));
+      /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
-    ./p1 <extra> <variable> <guard> <ignore> < data.txt
+    ./p1 <extra> <variable> <ignore> < data.txt
     # subtract invariant structure from input number series, then output.
     # extra    < 0 for atan(input) prediction subtraction.
     # variable < 0 for atan(delta) prediction subtraction.

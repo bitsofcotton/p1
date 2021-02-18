@@ -44,20 +44,17 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int eslen(2);
   int vrange(8);
-  int grange(20);
   int ignore(- 2);
-  if(argc < 5) {
-    std::cerr << "p1 <extra status> <variable> <guard> <ignore>" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << ignore << std::endl;
+  if(argc < 4) {
+    std::cerr << "p1 <extra status> <variable> <ignore>" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
-    grange = std::atoi(argv[3]);
-    ignore = std::atoi(argv[4]);
+    ignore = std::atoi(argv[3]);
   }
-  assert(0 <= grange);
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
-  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(grange));
+  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
   std::string s;
   num_t d(0);
   auto  d0(d);
@@ -75,7 +72,7 @@ int main(int argc, const char* argv[]) {
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd && bd != num_t(0)) {
       s0 += delta * M;
-      s1  = M == num_t(0) ? num_t(0) : delta - M;
+      s1 += M == num_t(0) ? num_t(0) : delta - M;
     }
     if(d != bd) {
       M = p.next(delta, - ignore);
