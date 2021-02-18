@@ -130,8 +130,7 @@ public:
   inline P1I(const int& stat, const int& var, const int& guard);
   inline ~P1I();
   inline T next(const T& in, const int& skip = 0);
-  Vec invariant;
-  std::vector<Vec> hist;
+  std::vector<Vec> invariant;
 private:
   inline const T& sgn(const T& x) const;
   Vec buf;
@@ -168,20 +167,20 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip) {
   buf[buf.size() - 1] = in;
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with cheating, we calculate long term same invariant each.
-  invariant = invariantP1<T>(buf, varlen, abs(skip), guard);
-  if(hist.size() < skip) {
-    hist.emplace_back(invariant);
+  const auto invariant0(invariantP1<T>(buf, varlen, abs(skip), guard));
+  if(invariant.size() < skip) {
+    invariant.emplace_back(invariant0);
     return T(0);
   } else if(skip <= 0)
-    hist.resize(1, invariant);
+    invariant.resize(1, invariant0);
   else {
-    for(int i = 0; i < hist.size() - 1; i ++)
-      std::swap(hist[i], hist[i + 1]);
-    hist[hist.size() - 1] = invariant;
+    for(int i = 0; i < invariant.size() - 1; i ++)
+      std::swap(invariant[i], invariant[i + 1]);
+    invariant[invariant.size() - 1] = invariant0;
   }
-  auto avg(hist[0]);
-  for(int i = 1; i < hist.size(); i ++)
-    avg += hist[i];
+  auto avg(invariant[0]);
+  for(int i = 1; i < invariant.size(); i ++)
+    avg += invariant[i];
   auto res(avg[varlen] / sqrt(T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1)));
   for(int i = 0; i < varlen - 1; i ++)
     res += buf[i - varlen + buf.size() - guard + 1] * avg[i];

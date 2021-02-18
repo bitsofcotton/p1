@@ -29,7 +29,7 @@ lagrange multipliers.
       /* inner status length */, /* middle guard status length */);
     ...
       residue = p.next(/* value */, /* condition maximum skip number */);
-    //     p have: invariant_(abs|sgn), s_(buf|sbuf) vectors.
+    //     p have: p.invariant vector<vector>.
     // Or we can use:
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
       /* variable dimension */, /* condition maximum skip number */,

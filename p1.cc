@@ -55,6 +55,7 @@ int main(int argc, const char* argv[]) {
     grange = std::atoi(argv[3]);
     ignore = std::atoi(argv[4]);
   }
+  assert(0 <= grange);
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
   P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(grange));
   std::string s;
