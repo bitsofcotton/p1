@@ -44,35 +44,25 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int eslen(2);
   int vrange(8);
-  int grange(4);
-  int srange(1);
-  int ignore(2);
-  int origin(0);
-  if(argc < 6) {
-    std::cerr << "p1 <extra status> <variable> <guard> <ignore> <origin>" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << ignore << " " << origin << std::endl;
+  int grange(20);
+  int ignore(- 2);
+  if(argc < 5) {
+    std::cerr << "p1 <extra status> <variable> <guard> <ignore>" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << grange << " " << ignore << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     grange = std::atoi(argv[3]);
     ignore = std::atoi(argv[4]);
-    origin = std::atoi(argv[5]);
   }
-  const auto ee(eslen  < 0 || (1 < argc && argv[1][0] == '-'));
-  const auto gg(grange < 0 || (3 < argc && argv[3][0] == '-'));
-  const auto ii(ignore < 0 || (4 < argc && argv[4][0] == '-'));
-  const auto oo(origin < 0 || (5 < argc && argv[5][0] == '-'));
-  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(srange), abs(grange));
+  const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
+  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange), abs(grange));
   std::string s;
   num_t d(0);
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
-  auto  s2(d);
-  auto  s3(d);
   auto  M(d);
-  auto  MM(d);
-  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
@@ -81,32 +71,16 @@ int main(int argc, const char* argv[]) {
       if(d0 == num_t(0)) d0 = d;
       d = atan(d - d0);
     }
-    const auto delta00(vrange < 0 ? atan(d - bd) : d - bd);
-    const auto delta0(oo ? delta00 : delta00);
-    const auto delta(oo ? pow(delta00 + num_t(origin), num_t(abs(vrange) + abs(srange) + 1)) : delta00);
+    const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd && bd != num_t(0)) {
-      if(M == num_t(0)) {
-        s0 += delta0;
-        s2 += delta0;
-      } else {
-        s0 += delta0 * M;
-        s1 = delta0 - M;
-        if(MM == num_t(0))
-          s2 += delta0;
-        else {
-          s2 += delta0 * MM;
-          s3 = delta0 - MM;
-        }
-        t  ++;
-      }
+      s0 += delta * M;
+      s1  = M == num_t(0) ? num_t(0) : delta - M;
     }
     if(d != bd) {
-      M = p.next(delta, ii ? abs(ignore) : - abs(ignore));
-      M = oo ? pow(M, num_t(1) / num_t(abs(vrange) + abs(srange) + 1)) / num_t(2) - num_t(origin) : M;
+      M = p.next(delta, - ignore);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
-      MM = t ? M + s1 / num_t(t) : num_t(0);
     }
-    std::cout << M << ", " << (gg ? s2 : s0) << ", " << (gg ? s3 : s1) <<  ", " << delta0 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 <<  ", " << delta << std::endl << std::flush;
   }
   return 0;
 }

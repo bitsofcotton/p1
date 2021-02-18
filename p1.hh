@@ -127,7 +127,7 @@ public:
   typedef SimpleVector<T> Vec;
   typedef SimpleMatrix<T> Mat;
   inline P1I();
-  inline P1I(const int& stat, const int& var, const int& instat, const int& guard);
+  inline P1I(const int& stat, const int& var, const int& guard);
   inline ~P1I();
   inline T next(const T& in, const int& skip = 0);
   Vec invariant_abs;
@@ -149,7 +149,7 @@ template <typename T> inline P1I<T>::P1I() {
   rabs = rsgn = T(varlen = guard = t = 0);
 }
 
-template <typename T> inline P1I<T>::P1I(const int& stat, const int& var, const int& instat, const int& guard) {
+template <typename T> inline P1I<T>::P1I(const int& stat, const int& var, const int& guard) {
   buf.resize(stat + (varlen = var) * 2 - 1+ (this->guard = guard));
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
