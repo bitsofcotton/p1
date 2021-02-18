@@ -130,31 +130,25 @@ public:
   inline P1I(const int& stat, const int& var, const int& guard);
   inline ~P1I();
   inline T next(const T& in, const int& skip = 0);
-  Vec invariant_abs;
-  Vec invariant_sgn;
-  T   rabs;
-  T   rsgn;
-  std::vector<Vec> hist_abs;
-  std::vector<Vec> hist_sgn;
+  Vec invariant;
+  std::vector<Vec> hist;
 private:
   inline const T& sgn(const T& x) const;
   Vec buf;
-  Vec sbuf;
   int varlen;
   int guard;
   int t;
 };
 
 template <typename T> inline P1I<T>::P1I() {
-  rabs = rsgn = T(varlen = guard = t = 0);
+  varlen = guard = t = 0;
 }
 
 template <typename T> inline P1I<T>::P1I(const int& stat, const int& var, const int& guard) {
   buf.resize(stat + (varlen = var) * 2 - 1+ (this->guard = guard));
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
-  sbuf = buf;
-  rabs = rsgn = T(t = 0);
+  t = 0;
 }
 
 template <typename T> inline P1I<T>::~P1I() {
@@ -169,49 +163,29 @@ template <typename T> inline const T& P1I<T>::sgn(const T& x) const {
 }
 
 template <typename T> T P1I<T>::next(const T& in, const int& skip) {
-  assert(buf.size() == sbuf.size());
-  assert(hist_abs.size() == hist_sgn.size());
-  for(int i = 0; i < buf.size() - 1; i ++) {
+  for(int i = 0; i < buf.size() - 1; i ++)
     buf[i]  = buf[i + 1];
-    sbuf[i] = sbuf[i + 1];
-  }
-  buf[ buf.size()  - 1] = abs(in);
-  sbuf[sbuf.size() - 1] = sgn(in) + T(2);
+  buf[buf.size() - 1] = in;
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with cheating, we calculate long term same invariant each.
-  invariant_abs = invariantP1<T>(buf , varlen, abs(skip), guard);
-  invariant_sgn = invariantP1<T>(sbuf, varlen, abs(skip), guard);
-  assert(invariant_abs.size() == invariant_sgn.size());
-  if(hist_abs.size() < skip) {
-    hist_abs.emplace_back(invariant_abs);
-    hist_sgn.emplace_back(invariant_sgn);
+  invariant = invariantP1<T>(buf, varlen, abs(skip), guard);
+  if(hist.size() < skip) {
+    hist.emplace_back(invariant);
     return T(0);
-  } else if(skip <= 0) {
-    hist_abs.resize(1, invariant_abs);
-    hist_sgn.resize(1, invariant_sgn);
-  } else {
-    for(int i = 0; i < hist_abs.size() - 1; i ++) {
-      hist_abs[i] = hist_abs[i + 1];
-      hist_sgn[i] = hist_sgn[i + 1];
-    }
-    hist_abs[hist_abs.size() - 1] = invariant_abs;
-    hist_sgn[hist_sgn.size() - 1] = invariant_sgn;
+  } else if(skip <= 0)
+    hist.resize(1, invariant);
+  else {
+    for(int i = 0; i < hist.size() - 1; i ++)
+      std::swap(hist[i], hist[i + 1]);
+    hist[hist.size() - 1] = invariant;
   }
-  auto avg_abs(hist_abs[0]);
-  auto avg_sgn(hist_sgn[0]);
-  for(int i = 1; i < hist_abs.size(); i ++) {
-    avg_abs += hist_abs[i];
-    avg_sgn += hist_sgn[i];
-  }
-  const auto ratio(T(1) / sqrt(T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1)));
-  rabs = avg_abs[varlen] * ratio;
-  rsgn = avg_sgn[varlen] * ratio;
-  for(int i = 0; i < varlen - 1; i ++) {
-    rabs +=  buf[i - varlen +  buf.size() - guard + 1] * avg_abs[i];
-    rsgn += sbuf[i - varlen + sbuf.size() - guard + 1] * avg_abs[i];
-  }
-  return (rabs = abs(rabs / avg_abs[varlen - 1])) *
-    (rsgn = sgn(abs(rsgn / avg_sgn[varlen - 1]) - T(2)));
+  auto avg(hist[0]);
+  for(int i = 1; i < hist.size(); i ++)
+    avg += hist[i];
+  auto res(avg[varlen] / sqrt(T((buf.size() - varlen - guard) * 2 + 1) * T(varlen + 1)));
+  for(int i = 0; i < varlen - 1; i ++)
+    res += buf[i - varlen + buf.size() - guard + 1] * avg[i];
+  return res / avg[varlen - 1];
 }
 
 #define _P1_
