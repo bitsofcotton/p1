@@ -31,7 +31,7 @@ lagrange multipliers.
       residue = p.next(/* value */, /* condition maximum skip number */);
     //     p have: p.invariant vector<vector>.
     // Or we can use:
-    const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */,
+    const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */),
       /* variable dimension */, /* condition maximum skip number */,
       /* middle guard condition skip number */));
 
