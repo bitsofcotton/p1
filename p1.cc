@@ -76,6 +76,16 @@ int main(int argc, const char* argv[]) {
     }
     if(d != bd) {
       M = p.next(delta, - ignore);
+/*
+      if(p.invariant.size()) {
+        auto avg(p.invariant[0]);
+        for(int i = 1; i < p.invariant.size(); i ++)
+          avg += p.invariant[i];
+        const auto pI(avg[abs(vrange) - 1]);
+        avg[abs(vrange) - 1] = num_t(0);
+        M /= sqrt(avg.dot(avg) / pI / pI);
+      }
+*/
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 <<  ", " << delta << std::endl << std::flush;

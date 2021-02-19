@@ -59,7 +59,6 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   for(int i = 0; i < in.size() - varlen; i ++) {
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j] / nin;
-    A(i, varlen - 1) = in[i + varlen - 1] / nin;
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
     A.row(i + A.rows() / 2) = - A.row(i);
   }
@@ -74,7 +73,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
 #endif
   for(int i = 0; i < fvec.size() - 1; i ++)
     A(A.rows() - 1, i) = fvec[i] = T(0);
-  A(A.rows() - 1, A.cols() - 1) = T(1);
+  A(A.rows() - 1, varlen - 1) = T(1);
   fvec[fvec.size() - 1] = T(0);
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
@@ -102,7 +101,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     auto fidx(- 1);
     for(int i = onM.size() - 1 - skip; i < onM.size(); i ++)
       if(threshold_inner < onM[i].first) {
-        fidx = onM[i].second;
+        fidx = onM[onM.size() - 1].second;
         break;
       }
     if(fidx < 0)
@@ -167,12 +166,11 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip) {
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with cheating, we calculate long term same invariant each.
   const auto invariant0(invariantP1<T>(buf, varlen, abs(skip)));
-  if(invariant.size() < skip) {
+  if(int(invariant.size()) < skip) {
     invariant.emplace_back(invariant0);
     return T(0);
-  } else if(skip <= 0)
-    invariant.resize(1, invariant0);
-  else {
+  } else {
+    if(! invariant.size()) invariant.emplace_back(invariant0);
     for(int i = 0; i < invariant.size() - 1; i ++)
       std::swap(invariant[i], invariant[i + 1]);
     invariant[invariant.size() - 1] = invariant0;
