@@ -71,10 +71,9 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
-  for(int i = 0; i < fvec.size() - 1; i ++)
+  for(int i = 0; i < fvec.size(); i ++)
     A(A.rows() - 1, i) = fvec[i] = T(0);
   A(A.rows() - 1, varlen - 1) = T(1);
-  fvec[fvec.size() - 1] = T(0);
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
     for(int j = 0; j < Pt.cols(); j ++)
