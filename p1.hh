@@ -61,15 +61,18 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       A(i, j) = in[i + j] / nin;
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
     if(computer) {
-      A.row(i) /= sqrt(A.row(i).dot(A.row(i)));
       auto mul(A(i, 0));
       for(int j = 1; j < A.cols(); j ++)
         mul *= A(i, j);
       assert(mul != T(0));
-      A.row(i) /= mul;
+      A.row(i) /= sqrt(abs(mul));
     }
     A.row(i + A.rows() / 2) = - A.row(i);
   }
+  auto denom(A.row(0).dot(A.row(0)));
+  for(int i = 1; i < A.rows() / 2; i ++)
+    denom = max(denom, A.row(i).dot(A.row(i)));
+  A /= sqrt(denom);
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
