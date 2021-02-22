@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // so with this, U [[B], [O]] [x y] == 0.
 // this returns one of u_k that concerns 0.
 // skip attemps maximum skip status number if original data has a noised ones.
-template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& skip = 0) {
+template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& skip = 0, const bool& computer = false) {
   assert(varlen < in.size());
 #if defined(_FLOAT_BITS_)
   static const auto epsilon(T(1) >> int64_t(mybits - 2));
@@ -60,6 +60,14 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j] / nin;
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
+    if(computer) {
+      A.row(i) /= sqrt(A.row(i).dot(A.row(i)));
+      auto mul(A(i, 0));
+      for(int j = 1; j < A.cols(); j ++)
+        mul *= A(i, j);
+      assert(mul != T(0));
+      A.row(i) /= mul;
+    }
     A.row(i + A.rows() / 2) = - A.row(i);
   }
 #if defined(_OPENMP)
@@ -127,7 +135,7 @@ public:
   inline P1I();
   inline P1I(const int& stat, const int& var);
   inline ~P1I();
-  inline T next(const T& in, const int& skip = 0);
+  inline T next(const T& in, const int& skip = 0, const bool& computer = false);
   std::vector<Vec> invariant;
 private:
   inline const T& sgn(const T& x) const;
@@ -158,13 +166,13 @@ template <typename T> inline const T& P1I<T>::sgn(const T& x) const {
   return x != zero ? (x < zero ? mone : one) : zero;
 }
 
-template <typename T> T P1I<T>::next(const T& in, const int& skip) {
+template <typename T> T P1I<T>::next(const T& in, const int& skip, const bool& computer) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i]  = buf[i + 1];
   buf[buf.size() - 1] = in;
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with cheating, we calculate long term same invariant each.
-  const auto invariant0(invariantP1<T>(buf, varlen, abs(skip)));
+  const auto invariant0(invariantP1<T>(buf, varlen, abs(skip), computer));
   if(int(invariant.size()) < skip) {
     invariant.emplace_back(invariant0);
     return T(0);
@@ -180,7 +188,7 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip) {
   auto res(avg[varlen] / sqrt(T((buf.size() - varlen) * 2 + 1) * T(varlen + 1)));
   for(int i = 0; i < varlen - 1; i ++)
     res += buf[i - varlen + buf.size() + 1] * avg[i];
-  return res / avg[varlen - 1];
+  return res /= avg[varlen - 1];
 }
 
 #define _P1_

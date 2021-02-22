@@ -45,13 +45,17 @@ int main(int argc, const char* argv[]) {
   int eslen(2);
   int vrange(8);
   int ignore(- 2);
+  int mul(1);
+  int origin(0);
   if(argc < 4) {
-    std::cerr << "p1 <extra status> <variable> <ignore>" << std::endl;
+    std::cerr << "p1 <extra status> <variable> <ignore> <mul>? <origin>?" << std::endl;
     std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     ignore = std::atoi(argv[3]);
+    if(4 < argc) mul    = std::atoi(argv[4]);
+    if(5 < argc) origin = std::atoi(argv[5]);
   }
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
   P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
@@ -65,6 +69,7 @@ int main(int argc, const char* argv[]) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
+    d *= num_t(mul);
     if(ee) {
       if(d0 == num_t(0)) d0 = d;
       d = atan(d - d0);
@@ -75,17 +80,7 @@ int main(int argc, const char* argv[]) {
       s1 += M == num_t(0) ? num_t(0) : delta - M;
     }
     if(d != bd) {
-      M = p.next(delta, - ignore);
-/*
-      if(p.invariant.size()) {
-        auto avg(p.invariant[0]);
-        for(int i = 1; i < p.invariant.size(); i ++)
-          avg += p.invariant[i];
-        const auto pI(avg[abs(vrange) - 1]);
-        avg[abs(vrange) - 1] = num_t(0);
-        M /= sqrt(avg.dot(avg) / pI / pI);
-      }
-*/
+      M = p.next(delta + num_t(origin), - ignore, 4 < argc) - num_t(origin);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 <<  ", " << delta << std::endl << std::flush;
