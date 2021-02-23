@@ -65,7 +65,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       for(int j = 1; j < A.cols(); j ++)
         mul *= A(i, j);
       assert(mul != T(0));
-      A.row(i) /= sqrt(abs(mul));
+      A.row(i) /= pow(abs(mul), T(1) / T(A.cols()));
     }
     A.row(i + A.rows() / 2) = - A.row(i);
   }

@@ -65,6 +65,7 @@ int main(int argc, const char* argv[]) {
   auto  s0(d);
   auto  s1(d);
   auto  M(d);
+  auto  MM(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
@@ -76,12 +77,14 @@ int main(int argc, const char* argv[]) {
     }
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd && bd != num_t(0)) {
-      s0 += delta * M;
+      if(MM != num_t(0))
+        s0 += delta * M / MM;
       s1 += M == num_t(0) ? num_t(0) : delta - M;
     }
     if(d != bd) {
       M = p.next(delta + num_t(origin), - ignore, 4 < argc) - num_t(origin);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
+      MM = max(MM, abs(M));
     }
     std::cout << M << ", " << s0 << ", " << s1 <<  ", " << delta << std::endl << std::flush;
   }
