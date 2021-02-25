@@ -45,27 +45,31 @@ int main(int argc, const char* argv[]) {
   int eslen(2);
   int vrange(8);
   int ignore(- 2);
+  int skip(1);
   int mul(1);
   int origin(0);
-  if(argc < 4) {
-    std::cerr << "p1 <extra status> <variable> <ignore> <mul>? <origin>?" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << std::endl;
+  if(argc < 5) {
+    std::cerr << "p1 <extra status> <variable> <ignore> <skip> <mul>? <origin>?" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << " " << skip << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     ignore = std::atoi(argv[3]);
-    if(4 < argc) mul    = std::atoi(argv[4]);
-    if(5 < argc) origin = std::atoi(argv[5]);
+    skip   = std::atoi(argv[4]);
+    if(5 < argc) mul    = std::atoi(argv[5]);
+    if(6 < argc) origin = std::atoi(argv[6]);
   }
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
-  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
+  std::vector<P1I<num_t> > p;
+  p.resize(skip, P1I<num_t>(abs(eslen) + abs(ignore), abs(vrange)));
   std::string s;
   num_t d(0);
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
-  auto  M(d);
-  auto  MM(d);
+  std::vector<num_t> M;
+  M.resize(p.size(), num_t(0));
+  int   t(0);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
@@ -76,17 +80,19 @@ int main(int argc, const char* argv[]) {
       d = atan(d - d0);
     }
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
-    if(d != bd && bd != num_t(0)) {
-      if(MM != num_t(0))
-        s0 += delta * M / MM;
-      s1 += M == num_t(0) ? num_t(0) : delta - M;
-    }
     if(d != bd) {
-      M = p.next(delta + num_t(origin), - ignore, 4 < argc) - num_t(origin);
-      if(! isfinite(M) || isnan(M)) M = num_t(0);
-      MM = max(MM, abs(M));
+      if(bd != num_t(0)) {
+        s0 += delta * M[0];
+        s1 += M[0] == num_t(0) ? num_t(0) : delta - M[0];
+      }
+      for(int i = 0; i < M.size() - 1; i ++)
+        M[i] = M[i + 1];
+      auto& MM(M[M.size() - 1]);
+      MM = p[(t ++) % p.size()].next(delta + num_t(origin), - ignore, 4 < argc) - num_t(origin);
+      MM = MM == num_t(0) ? num_t(0) : (MM < num_t(0) ? - pow(- MM, num_t(1) / num_t(p.size())) : pow(MM, num_t(1) / num_t(p.size())));
+      if(! isfinite(MM) || isnan(MM)) MM = num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 <<  ", " << delta << std::endl << std::flush;
+    std::cout << M[M.size() - 1] << ", " << s0 << ", " << s1 <<  std::endl << std::flush;
   }
   return 0;
 }
