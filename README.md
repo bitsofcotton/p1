@@ -19,6 +19,12 @@ Xa=B\*y\_0, this is equivalent to with large enough X',
 X'a'=\[B\*y O\], y=some X''\*a.
 So this is calculate with larger variable dimension.
 
+If we predict one of these by not enough status length, then, re-predict with
+some skipped input of them, some recursion makes it better result.
+This is because x+:=\[A_0,...,A_n\]x, with first predict, x+\_p=Bx,
+then, next skipped prediction, we predict x+\_skip:=(\[A_0,...,A_n\]-\[B,O,...,O\])x
+if we are lucky, x+\_skip=(\[O,A_1,...,A_n\]x, so we predict: x+\_skip\_p=Bx, the data
+remains is the data another status bits, so recursive of them, cut some invariant.
 
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */,
