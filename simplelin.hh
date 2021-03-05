@@ -310,7 +310,7 @@ template <typename T> inline SimpleMatrix<T>::SimpleMatrix() {
   erows  = 0;
   ecols  = 0;
   entity = NULL;
-  epsilon = pow(T(1), - T(8));
+  epsilon = pow(T(2), - T(6));
   return;
 }
 
@@ -324,7 +324,7 @@ template <typename T> inline SimpleMatrix<T>::SimpleMatrix(const int& rows, cons
     entity[i].resize(cols);
   erows = rows;
   ecols = cols;
-  epsilon = pow(T(1), - T(8));
+  epsilon = pow(T(2), - T(6));
   return; 
 }
 
@@ -719,8 +719,10 @@ template <typename T> inline SimpleMatrix<T> SimpleMatrix<T>::LSVD() const {
         }
       }
     }
-    for(int i = 0; i < idx.size(); i ++)
+    for(int i = 0; i < idx.size(); i ++) {
       std::swap(work.row(idx[idx.size() - 1 - i]), work.row(idx.size() - 1 - i));
+      std::swap(d[idx[idx.size() - 1 - i]], d[idx.size() - 1 - i]);
+    }
     auto eMidx(0);
     for(int i = 1; i < d.size(); i ++)
       if(abs(d[eMidx]) < abs(d[i]))
