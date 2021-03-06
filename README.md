@@ -25,6 +25,7 @@ This is because x+:=\[A_0,...,A_n\]x, with first predict, x+\_p=Bx,
 then, next skipped prediction, we predict x+\_skip:=(\[A_0,...,A_n\]-\[B,O,...,O\])x
 if we are lucky, x+\_skip=(\[O,A_1,...,A_n\]x, so we predict: x+\_skip\_p=Bx, the data
 remains is the data another status bits, so recursive of them, cut some invariant.
+But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */,
@@ -37,14 +38,11 @@ remains is the data another status bits, so recursive of them, cut some invarian
       /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
-    ./p1 <extra> <variable> <ignore> <recur>? <mul>? <origin>? < data.txt
+    ./p1 <extra> <variable> <ignore> <mul>? <origin>? < data.txt
     # subtract invariant structure from input number series, then output.
     # extra    < 0 for atan(input) prediction subtraction.
     # variable < 0 for atan(delta) prediction subtraction.
     # ignore   < 0 for average prediction subtraction with average invariant.
-    # recur    < 0 for error correcting.
-    # recur for recursive prediction number.
-    # mul, origin for d to mul * d + origin, origin != 0 for any computer.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

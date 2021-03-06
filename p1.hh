@@ -57,10 +57,6 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
 #endif
   for(int i = 0; i < fvec.size(); i ++)
     A(A.rows() - 1, i) = fvec[i] = T(0);
-#if defined(_OPENMP)
-#pragma omp parallel
-#pragma omp for schedule(static, 1)
-#endif
   for(int i = 0; i < in.size() - varlen; i ++) {
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j] / nin;
