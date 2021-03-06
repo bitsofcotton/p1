@@ -37,11 +37,14 @@ remains is the data another status bits, so recursive of them, cut some invarian
       /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
-    ./p1 <extra> <variable> <ignore> < data.txt
+    ./p1 <extra> <variable> <ignore> <recur>? <mul>? <origin>? < data.txt
     # subtract invariant structure from input number series, then output.
     # extra    < 0 for atan(input) prediction subtraction.
     # variable < 0 for atan(delta) prediction subtraction.
     # ignore   < 0 for average prediction subtraction with average invariant.
+    # recur    < 0 for error correcting.
+    # recur for recursive prediction number.
+    # mul, origin for d to mul * d + origin, origin != 0 for any computer.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

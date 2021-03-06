@@ -45,37 +45,35 @@ int main(int argc, const char* argv[]) {
   int eslen(2);
   int vrange(8);
   int ignore(- 2);
-  int skip(1);
+  int recur(1);
   int mul(1);
   int origin(0);
-  int recur(1);
-  if(argc < 5) {
-    std::cerr << "p1 <extra status> <variable> <ignore> <skip> <mul>? <origin>?" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << " " << skip << std::endl;
+  if(argc < 4) {
+    std::cerr << "p1 <extra status> <variable> <ignore> <recur>? <mul>? <origin>?" << std::endl;
+    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << " " << recur << " " << mul << " " << origin << std::endl;
   } else {
     eslen  = std::atoi(argv[1]);
     vrange = std::atoi(argv[2]);
     ignore = std::atoi(argv[3]);
-    skip   = std::atoi(argv[4]);
+    if(4 < argc) recur  = std::atoi(argv[4]);
     if(5 < argc) mul    = std::atoi(argv[5]);
     if(6 < argc) origin = std::atoi(argv[6]);
-    if(7 < argc) recur  = std::atoi(argv[7]);
   }
   const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
   std::vector<P1I<num_t> > p;
-  p.resize(skip * recur, P1I<num_t>(abs(eslen) + abs(ignore), abs(vrange)));
+  p.resize(abs(recur), P1I<num_t>(abs(eslen) + abs(ignore), abs(vrange)));
   std::string s;
   num_t d(0);
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
-  std::vector<std::vector<num_t> > M;
-  {
-    std::vector<num_t> M0;
-    M0.resize(skip, num_t(0));
-    M.resize(recur, M0);
-  }
-  int   t(0);
+  auto  s2(d);
+  auto  s3(d);
+  auto  s4(d);
+  int   tp(0);
+  auto  tm(tp);
+  std::vector<num_t> M;
+  M.resize(p.size(), num_t(0));
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
@@ -86,30 +84,31 @@ int main(int argc, const char* argv[]) {
       d = atan(d - d0);
     }
     const auto  delta(vrange < 0 ? atan(d - bd) : d - bd);
-          auto& MM(M[M.size() - 1][M[M.size() - 1].size() - 1]);
+          auto& MM(M[M.size() - 1]);
     if(d != bd) {
-      if(bd != num_t(0)) {
-        const auto& M0(M[M.size() - 1][0]);
-        s0 += delta * M0;
-        s1 += M0 == num_t(0) ? num_t(0) : delta - M0;
+      if(bd != num_t(0) && MM != num_t(0)) {
+        tp ++;
+        tm ++;
+        s0 += delta * MM * num_t(recur < 0 ? tp - tm : 1);
+        s1 += delta - MM;
+        s2 += (d - bd) * MM * num_t(recur < 0 ? tp - tm : 1);
+        s3 += delta * MM * num_t(tp);
+        s4 -= delta * MM * num_t(tm);
       }
       std::vector<num_t> rdelta;
-      rdelta.resize(M.size(), delta);
-      for(int i = 1; i < rdelta.size(); i ++)
-        rdelta[i] -= M[i][0];
-      for(int i = 0; i < M.size(); i ++)
-        for(int j = 0; j < M[i].size() - 1; j ++)
-          M[i][j] = M[i][j + 1];
-      for(int i = 0; i < recur; i ++) {
-        if(rdelta[i] == num_t(0)) continue;
-        MM += p[(t % skip) + i * skip].next(rdelta[i] + num_t(origin), - ignore, 4 < argc) - num_t(origin);
-        M[i][M[i].size() - 1] = MM = (MM == num_t(0) ? num_t(0) : (MM < num_t(0) ? - pow(- MM, num_t(1) / num_t(recur)) : pow(MM, num_t(1) / num_t(recur))));
+      rdelta.resize(p.size(), delta);
+      for(int i = 0; i < rdelta.size(); i ++)
+        rdelta[i] -= M[i];
+      M[0] = (p[0].next(delta, - ignore, num_t(origin)) - num_t(origin)) / num_t(origin ? origin : 1);
+      for(int i = 1; i < p.size(); i ++) {
+        if(rdelta[i - 1] + num_t(origin) == p[i].last()) break;
+        M[i] = M[i - 1] + (p[i].next(rdelta[i - 1], - ignore, num_t(origin)) - num_t(origin)) / num_t(origin ? origin : 1);
       }
-      t ++;
-      MM = MM == num_t(0) ? num_t(0) : (MM < num_t(0) ? - pow(- MM, num_t(1) / num_t(skip)) : pow(MM, num_t(1) / num_t(skip)));
       if(! isfinite(MM) || isnan(MM)) MM = num_t(0);
+      if(0 < s3) s3 = num_t(tp = 0);
+      if(0 < s4) s4 = num_t(tm = 0);
     }
-    std::cout << MM << ", " << s0 << ", " << s1 <<  std::endl << std::flush;
+    std::cout << MM << ", " << s0 << ", " << s1 << ", " << s2 << ", " << tp << ", " << tm << std::endl << std::flush;
   }
   return 0;
 }
