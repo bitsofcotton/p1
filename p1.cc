@@ -64,7 +64,14 @@ int main(int argc, const char* argv[]) {
   auto  d0(d);
   auto  s0(d);
   auto  s1(d);
+  auto  s2(d);
+  auto  s3(d);
+  auto  s4(d);
+  auto  s5(d);
+  auto  s6(d);
   auto  M(d);
+  int   tp(0);
+  auto  tm(tp);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
@@ -77,13 +84,21 @@ int main(int argc, const char* argv[]) {
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
-        s0 += delta * M;
-        s1 += delta - M;
+        tp ++; tm ++;
+        s0 += delta - M;
+        s1 += delta * M;
+        s2 += delta * M * num_t(tp - tm);
+        s3 += (d - bd) * M;
+        s4 += (d - bd) * M * num_t(tp - tm);
+        s5 += delta * M * tp;
+        s6 -= delta * M * tm;
       }
       M = (p.next(delta, - ignore, num_t(origin)) - num_t(origin)) / num_t(origin ? abs(origin) : 1);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
+      if(num_t(0) < s5) s5 = num_t(tp = 0);
+      if(num_t(0) < s6) s6 = num_t(tm = 0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M << ", " << (tp - tm) << ", " << s0 << ", " << s1 << ", " << s2 << ", " << s3 << ", " << s4 << std::endl << std::flush;
   }
   return 0;
 }
