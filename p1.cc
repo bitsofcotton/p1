@@ -42,26 +42,22 @@
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  int eslen(0);
-  int vrange(12);
+  int vrange(- 12);
   int ignore(- 4);
-  int mul(1);
-  int origin(0);
-  if(argc < 4) {
-    std::cerr << "p1 <extra status> <variable> <ignore> <mul>? <origin>?" << std::endl;
-    std::cerr << "continue with p1 " << eslen << " " << vrange << " " << ignore << " " << mul << " " << origin << std::endl;
+  int eslen(0);
+  if(argc < 3) {
+    std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
+    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
   } else {
-    eslen  = std::atoi(argv[1]);
-    vrange = std::atoi(argv[2]);
-    ignore = std::atoi(argv[3]);
-    if(4 < argc) mul    = std::atoi(argv[4]);
-    if(5 < argc) origin = std::atoi(argv[5]);
+    vrange = std::atoi(argv[1]);
+    ignore = std::atoi(argv[2]);
+    if(3 < argc) eslen  = std::atoi(argv[3]);
   }
-  const auto ee(eslen < 0 || (1 < argc && argv[1][0] == '-'));
-  P1I<num_t> p(abs(eslen) + abs(ignore), abs(vrange));
+  const auto origin(vrange < 0 ? atan2(num_t(1), num_t(1)) * num_t(4) + num_t(1) : num_t(0));
+  assert(0 <= eslen);
+  P1I<num_t> p(eslen + abs(ignore), abs(vrange));
   std::string s;
   num_t d(0);
-  auto  d0(d);
   auto  s0(d);
   auto  s1(d);
   auto  s2(d);
@@ -76,11 +72,6 @@ int main(int argc, const char* argv[]) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    d *= num_t(mul);
-    if(ee) {
-      if(d0 == num_t(0)) d0 = d;
-      d = atan(d - d0);
-    }
     const auto delta(vrange < 0 ? atan(d - bd) : d - bd);
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
@@ -93,7 +84,7 @@ int main(int argc, const char* argv[]) {
         s5 += delta * M * tp;
         s6 -= delta * M * tm;
       }
-      M = (p.next(delta, - ignore, num_t(origin)) - num_t(origin)) / num_t(origin ? abs(origin) : 1);
+      M = p.next(delta, - ignore, origin) - origin;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
       if(num_t(0) < s5) s5 = num_t(tp = 0);
       if(num_t(0) < s6) s6 = num_t(tm = 0);
