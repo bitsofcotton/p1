@@ -38,10 +38,8 @@ But in fact, the result we have is unstable if original status bits is too small
       /* variable dimension */, /* condition maximum skip number */));
 
 # How to use (command line):
-    ./p1 <variable> <ignore> <extra> < data.txt
-    # subtract invariant structure from input number series, then output.
-    # variable < 0 for atan(delta) prediction subtraction, this is better accurate.
-    # ignore   < 0 for average prediction subtraction with average invariant.
+    ./p1 <variable> <ignore> <extra>? < data.txt
+    # ignore < 0 for average prediction subtraction with average invariant.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

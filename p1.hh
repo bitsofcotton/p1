@@ -139,7 +139,6 @@ public:
   inline P1I(const int& stat, const int& var);
   inline ~P1I();
   inline T next(const T& in, const int& skip = 0, const T& computer = T(0));
-  inline const T& last() const;
   std::vector<Vec> invariant;
 private:
   inline const T& sgn(const T& x) const;
@@ -194,10 +193,6 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
   for(int i = 0; i < varlen - 1; i ++)
     res += buf[i - varlen + buf.size() + 1] * avg[i];
   return res /= avg[varlen - 1];
-}
-
-template <typename T> inline const T& P1I<T>::last() const {
-  return buf[buf.size() - 1];
 }
 
 #define _P1_
