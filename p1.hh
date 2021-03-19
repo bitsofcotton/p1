@@ -68,6 +68,8 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       if(mul == T(0)) return fvec;
       assert(mul != T(0));
       A.row(i) /= pow(abs(mul), T(1) / T(A.cols()));
+      for(int j = 0; j < A.cols(); j ++)
+        A(i, j) = T(1) / A(i, j);
     }
     A.row(i + A.rows() / 2) = - A.row(i);
   }
@@ -189,10 +191,10 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
   auto avg(invariant[0]);
   for(int i = 1; i < invariant.size(); i ++)
     avg += invariant[i];
-  auto res(avg[varlen] / sqrt(T((buf.size() - varlen) * 2 + 1) * T(varlen + 1)));
+  auto res(avg[varlen] * sqrt(T((buf.size() - varlen) * 2 + 1) * T(varlen + 1)));
   for(int i = 0; i < varlen - 1; i ++)
-    res += buf[i - varlen + buf.size() + 1] * avg[i];
-  return res /= avg[varlen - 1];
+    res += avg[i] / buf[i - varlen + buf.size() + 1];
+  return res = avg[varlen - 1] / res;
 }
 
 #define _P1_

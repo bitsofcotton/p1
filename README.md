@@ -27,15 +27,19 @@ if we are lucky, x+\_skip=(\[O,A_1,...,A_n\]x, so we predict: x+\_skip\_p=Bx, th
 remains is the data another status bits, so recursive of them, cut some invariant.
 But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
+# Tips:
+There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, x&gt;\*(x_0\*...\*x_n)^m (some m) for the program. But with computer flag, it is normalized, so Ax==1\*some x' for some x, but in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+
 # How to use:
-    P1I<double> p(/* status length */, /* variable dimension */,
-      /* inner status length */);
+    P1I<double> p(/* status length */, /* variable dimension */);,
     ...
-      residue = p.next(/* value */, /* condition maximum skip number */);
+      residue = p.next(/* value */, /* condition maximum skip number */,
+        /* computer origin */);
     //     p have: p.invariant vector<vector>.
     // Or we can use:
     const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */),
-      /* variable dimension */, /* condition maximum skip number */));
+      /* variable dimension */, /* condition maximum skip number */,
+      /* is computer */));
 
 # How to use (command line):
     ./p1 <variable> <ignore> <extra>? < data.txt
