@@ -48,7 +48,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   static const auto epsilon(std::numeric_limits<T>::epsilon());
 #endif
   static const auto threshold_inner(sqrt(epsilon));
-  SimpleMatrix<T> A((in.size() - varlen) * 2 + 1, varlen + 1);
+  SimpleMatrix<T> A((in.size() - varlen + 1) * 2, varlen + 2);
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
   const auto nin(sqrt(in.dot(in)));
@@ -56,11 +56,12 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
 #pragma omp for schedule(static, 1)
 #endif
   for(int i = 0; i < fvec.size(); i ++)
-    A(A.rows() - 1, i) = fvec[i] = T(0);
-  for(int i = 0; i < in.size() - varlen; i ++) {
+    fvec[i] = T(0);
+  for(int i = 0; i < in.size() - varlen + 1; i ++) {
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j] / nin;
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
+    A(i, varlen + 1) = T(i + 1) / T(in.size() - varlen + 1) / sqrt(T(A.rows() * A.cols()));
     if(computer) {
       T pd(0);
       for(int j = 0; j < A.cols(); j ++)
@@ -82,7 +83,6 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   for(int i = 0; i < A.rows(); i ++)
     one[i] = T(1);
   one /= sqrt(one.dot(one));
-  A(A.rows() - 1, varlen - 1) = T(1);
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
     for(int j = 0; j < Pt.cols(); j ++)
@@ -126,9 +126,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       Pt.setCol(j, Pt.col(j) - orth * Pt.col(j).dot(orth) / norm2orth);
   }
   fvec = R.solve(mone - Pt * on);
-  const auto nfv(fvec.dot(fvec));
-  return (isfinite(nfv) ? (nfv == T(0) ? fvec : fvec / sqrt(nfv))
-    : fvec * T(0));
+  return isfinite(fvec.dot(fvec)) ? fvec : fvec * T(0);
 }
 
 
@@ -192,19 +190,21 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
     avg += invariant[i];
   const auto nin(sqrt(buf.dot(buf)));
   auto work(avg);
-  for(int i = 2; i < work.size(); i ++)
-    work[i - 2] = buf[i - work.size() + buf.size()] / nin;
-  work[work.size() - 2] = work[work.size() - 3];
-  work[work.size() - 1] = T(1) / sqrt(T((buf.size() - varlen) * 2 + 1) * T(varlen + 1));
-  // <avg, 1 / work> * alpha == 0, alpha != 0.
-  // <=> work[k] = 1 / (<avg, 1 / work> - avg[k] / work[k]).
+  for(int i = 1; i < varlen; i ++)
+    work[i - 1] = buf[i - varlen + buf.size()] / nin;
+  work[varlen - 1] = work[varlen - 2];
+  work[varlen + 1] = work[varlen] =
+    T(1) / sqrt(T((buf.size() - varlen) * 2) * T(varlen + 2));
+  T pd(0);
+  for(int i = 0; i < work.size(); i ++)
+    pd += log(abs(work[i]));
+  pd = exp(pd / T(work.size()));
+  for(int i = 0; i < work.size(); i ++)
+    work[i] = pd / work[i];
+  // <avg, pd * nin / work> * alpha == 0, alpha != 0.
+  // <=> work[k] = avg[k] / (<avg, 1 / work> - avg[k] / work[k]).
   // in the condition that work is scaled some.
-  T res(0);
-  for(int i = 0; i < varlen - 1; i ++)
-    res += avg[i] / work[i];
-  for(int i = varlen; i < avg.size(); i ++)
-    res += avg[i] / work[i];
-  return res = nin * avg[varlen - 1] / res;
+  return avg[varlen - 1] / (avg.dot(work) - avg[varlen - 1] * work[varlen - 1]);
 }
 
 #define _P1_
