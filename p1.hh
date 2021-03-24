@@ -193,13 +193,9 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
     T(1) / sqrt(T((buf.size() - varlen) * 2) * T(varlen + 2));
-  T pd(0);
   for(int i = 0; i < work.size(); i ++)
-    pd += log(abs(work[i]));
-  pd = exp(pd / T(work.size()));
-  for(int i = 0; i < work.size(); i ++)
-    work[i] = pd / work[i];
-  // <avg, pd / work> * alpha == 0, alpha != 0.
+    work[i] = T(1) / work[i];
+  // <avg, 1 / work> * pd * alpha == 0, alpha != 0.
   // <=> work[k] = avg[k] / (<avg, 1 / work> - avg[k] / work[k]).
   // in the condition that work is scaled some.
   return avg[varlen - 1] / (avg.dot(work) - avg[varlen - 1] * work[varlen - 1]);
