@@ -51,7 +51,6 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   SimpleMatrix<T> A((in.size() - varlen + 1) * 2, varlen + 2);
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
-  const auto nin(sqrt(in.dot(in)));
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
@@ -59,7 +58,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     fvec[i] = T(0);
   for(int i = 0; i < in.size() - varlen + 1; i ++) {
     for(int j = 0; j < varlen; j ++)
-      A(i, j) = in[i + j] / nin;
+      A(i, j) = in[i + j];
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
     A(i, varlen + 1) = T(i + 1) / T(in.size() - varlen + 2) / sqrt(T(A.rows() * A.cols()));
     if(computer) {
@@ -188,10 +187,9 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
   auto avg(invariant[0]);
   for(int i = 1; i < invariant.size(); i ++)
     avg += invariant[i];
-  const auto nin(sqrt(buf.dot(buf)));
   auto work(avg);
   for(int i = 1; i < varlen; i ++)
-    work[i - 1] = buf[i - varlen + buf.size()] / nin;
+    work[i - 1] = buf[i - varlen + buf.size()];
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
     T(1) / sqrt(T((buf.size() - varlen) * 2) * T(varlen + 2));
@@ -201,7 +199,7 @@ template <typename T> T P1I<T>::next(const T& in, const int& skip, const T& comp
   pd = exp(pd / T(work.size()));
   for(int i = 0; i < work.size(); i ++)
     work[i] = pd / work[i];
-  // <avg, pd * nin / work> * alpha == 0, alpha != 0.
+  // <avg, pd / work> * alpha == 0, alpha != 0.
   // <=> work[k] = avg[k] / (<avg, 1 / work> - avg[k] / work[k]).
   // in the condition that work is scaled some.
   return avg[varlen - 1] / (avg.dot(work) - avg[varlen - 1] * work[varlen - 1]);
