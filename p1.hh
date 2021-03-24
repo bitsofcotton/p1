@@ -61,7 +61,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j] / nin;
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
-    A(i, varlen + 1) = T(i + 1) / T(in.size() - varlen + 1) / sqrt(T(A.rows() * A.cols()));
+    A(i, varlen + 1) = T(i + 1) / T(in.size() - varlen + 2) / sqrt(T(A.rows() * A.cols()));
     if(computer) {
       T pd(0);
       for(int j = 0; j < A.cols(); j ++)
