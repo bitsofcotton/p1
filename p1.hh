@@ -52,6 +52,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
                auto MM(abs(in[0]));
+  assert(A.rows() >= A.cols());
   for(int i = 1; i < in.size(); i ++)
     MM = max(MM, abs(in[i]));
   MM *= T(2);

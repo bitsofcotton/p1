@@ -45,7 +45,7 @@ int main(int argc, const char* argv[]) {
   int vrange(12);
   int ignore(- 4);
   int eslen(0);
-  if(argc < 3) {
+  if(argc < 4) {
     std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
     std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
   } else {
@@ -54,25 +54,37 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) eslen  = std::atoi(argv[3]);
   }
   assert(0 <= eslen);
-  P1I<num_t> p(eslen + abs(ignore), vrange);
+  std::vector<P1I<num_t> > p;
+  p.resize(std::atoi(argv[4]), P1I<num_t>(eslen + abs(ignore), vrange));
   std::string s;
   num_t d(0);
   auto  s0(d);
   auto  s1(d);
-  auto  M(d);
+  auto  M0(d);
+  std::vector<num_t> dd(p.size(), num_t(0));
+  auto  rr(dd);
+  auto  M(dd);
   while(std::getline(std::cin, s, '\n')) {
-    const auto bd(d);
+    const auto bd0(d);
     std::stringstream ins(s);
     ins >> d;
-    if(d != bd) {
-      if(bd != num_t(0) && M != num_t(0)) {
-        s0 += (d - bd) - M;
-        s1 += (d - bd) * M;
+    if(d != bd0) {
+      if(bd0 != num_t(0) && M0 != num_t(0)) {
+        s0 += (d - bd0) - M0;
+        s1 += (d - bd0) * M0;
       }
-      M = num_t(1) / p.next(d - bd, - ignore);
-      if(! isfinite(M) || isnan(M)) M = num_t(0);
+      const auto bd(dd);
+      for(int i = 0; i < p.size(); i ++) {
+        dd[i] += (d - bd0) * rr[i];
+        const auto bf(M[i] * (dd[i] - bd[i]));
+        rr[i] += num_t(arc4random_uniform(0x10000) + arc4random_uniform(0x10000) - 0x8000 * 2) / num_t(0x8000);
+        if(dd[i] != num_t(0))
+          M0 += (M[i] = num_t(1) / p[i].next(dd[i] - bd[i], - ignore)) * bf * rr[i];
+      }
+      M0 /= num_t(p.size());
+      if(! isfinite(M0) || isnan(M0)) M0 = num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M0 << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
