@@ -69,7 +69,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = num_t(1) / p.next(d - bd, - ignore);
+      M = p.next(d - bd, - ignore);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
