@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // suppose input stream is in [-1,1]^k.
 // skip0 attemps maximum skip status number if original data has a noised ones.
 // with noised ones, we can use catgp instead of this.
-template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& skip0 = 0) {
+template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& skip0 = 0, const int& ratio = 0) {
   const auto skip(skip0 + varlen - 2);
   assert(varlen < in.size() && skip < in.size() - varlen);
 #if defined(_FLOAT_BITS_)
@@ -72,7 +72,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     T pd(0);
     for(int j = 0; j < A.cols(); j ++)
       pd += log(A(i, j) + MM);
-    pd = exp(- pd / T(A.cols()));
+    pd = exp(ratio ? T(ratio) * pd / T(A.cols()) : - pd / T(A.cols()));
     assert(isfinite(pd) && pd != T(0));
     A.row(i) *= pd;
     A.row(i + A.rows() / 2) = - A.row(i);
@@ -143,7 +143,7 @@ public:
   inline P1I();
   inline P1I(const int& stat, const int& var);
   inline ~P1I();
-  inline T next(const T& in, const int& skip = 0);
+  inline T next(const T& in, const int& skip = 0, const int& ratio = 0);
   std::vector<Vec> invariant;
 private:
   inline const T& sgn(const T& x) const;
@@ -174,13 +174,13 @@ template <typename T> inline const T& P1I<T>::sgn(const T& x) const {
   return x != zero ? (x < zero ? mone : one) : zero;
 }
 
-template <typename T> T P1I<T>::next(const T& in, const int& skip) {
+template <typename T> T P1I<T>::next(const T& in, const int& skip, const int& ratio) {
   for(int i = 0; i < buf.size() - 1; i ++)
     buf[i]  = buf[i + 1];
   buf[buf.size() - 1] = in;
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with cheating, we calculate long term same invariant each.
-  const auto invariant0(invariantP1<T>(buf, varlen, abs(skip)));
+  const auto invariant0(invariantP1<T>(buf, varlen, abs(skip), ratio));
   if(invariant0.dot(invariant0) == T(0)) return T(0);
   if(int(invariant.size()) < skip) {
     invariant.emplace_back(invariant0);

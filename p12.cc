@@ -45,17 +45,21 @@ int main(int argc, const char* argv[]) {
   int vrange(12);
   int ignore(- 4);
   int eslen(0);
+  int ratio(0);
+  int loop(1);
   if(argc < 4) {
-    std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
-    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
+    std::cerr << "p1 <variable> <ignore> <extra> <ratio>? <loop>?" << std::endl;
+    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << " " << ratio << " " << loop << std::endl;
   } else {
     vrange = std::atoi(argv[1]);
     ignore = std::atoi(argv[2]);
-    if(3 < argc) eslen  = std::atoi(argv[3]);
+    if(3 < argc) eslen = std::atoi(argv[3]);
+    if(4 < argc) ratio = std::atoi(argv[4]);
+    if(5 < argc) loop  = std::atoi(argv[5]);
   }
   assert(0 <= eslen);
   std::vector<P1I<num_t> > p;
-  p.resize(std::atoi(argv[4]), P1I<num_t>(eslen + abs(ignore), vrange));
+  p.resize(loop, P1I<num_t>(eslen + abs(ignore), vrange));
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -79,7 +83,7 @@ int main(int argc, const char* argv[]) {
         const auto bf(M[i] * (dd[i] - bd[i]));
         rr[i] += num_t(arc4random_uniform(0x10000) + arc4random_uniform(0x10000) - 0x8000 * 2) / num_t(0x8000);
         if(dd[i] != num_t(0))
-          M0 += (M[i] = num_t(1) / p[i].next(dd[i] - bd[i], - ignore)) * bf * rr[i];
+          M0 += (M[i] = p[i].next(dd[i] - bd[i], - ignore, ratio)) * bf * rr[i];
       }
       M0 /= num_t(p.size());
       if(! isfinite(M0) || isnan(M0)) M0 = num_t(0);

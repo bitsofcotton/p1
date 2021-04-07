@@ -45,13 +45,15 @@ int main(int argc, const char* argv[]) {
   int vrange(12);
   int ignore(- 4);
   int eslen(0);
+  int ratio(0);
   if(argc < 3) {
-    std::cerr << "p1 <variable> <ignore> <extra>?" << std::endl;
-    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << std::endl;
+    std::cerr << "p1 <variable> <ignore> <extra>? <ratio>?" << std::endl;
+    std::cerr << "continue with p1 " << vrange << " " << ignore << " " << eslen << " " << ratio << std::endl;
   } else {
     vrange = std::atoi(argv[1]);
     ignore = std::atoi(argv[2]);
-    if(3 < argc) eslen  = std::atoi(argv[3]);
+    if(3 < argc) eslen = std::atoi(argv[3]);
+    if(4 < argc) ratio = std::atoi(argv[4]);
   }
   assert(0 <= eslen);
   P1I<num_t> p(eslen + abs(ignore), vrange);
@@ -69,7 +71,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = p.next(d - bd, - ignore);
+      M = p.next(d - bd, - ignore, ratio);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
