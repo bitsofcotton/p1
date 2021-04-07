@@ -42,8 +42,10 @@ There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; p
       /* is computer */));
 
 # How to use (command line):
-    ./p1 <variable> <ignore> <extra>? < data.txt
+    ./p1 <variable> <extra>? <ratio>? < data.txt
     # ignore < 0 for average prediction subtraction with average invariant.
+    # ratio  < 0 for plain linear, ratio == 0 for linear,
+    # 0 < ratio  for nonlinear, ratio depends program complexity itself.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
