@@ -42,48 +42,34 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // suppose input stream is in [-1,1]^k.
 // with noised ones, we can use catgp instead of this.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& ratio = 0) {
-  assert(varlen < in.size());
-#if defined(_FLOAT_BITS_)
-  static const auto epsilon(T(1) >> int64_t(mybits - 2));
-#else
-  static const auto epsilon(std::numeric_limits<T>::epsilon());
-#endif
-  static const auto threshold_inner(sqrt(epsilon));
-               auto MM(abs(in[0]));
   SimpleMatrix<T> A((in.size() - varlen + 1) * 2, varlen + 2);
+  assert(A.cols() <= A.rows());
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
-  assert(A.rows() >= A.cols());
-  for(int i = 1; i < in.size(); i ++)
-    MM = max(MM, abs(in[i]));
-  MM *= T(2);
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
   for(int i = 0; i < fvec.size(); i ++)
     fvec[i] = T(0);
-  for(int i = 0; i < A.rows() / 2; i ++) {
-    for(int j = 0; j < varlen; j ++)
-      A(i, j) = in[i + j];
-    A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
-    A(i, varlen + 1) = T(i + 1) / T(A.rows() / 2 + 1) / sqrt(T(A.rows() * A.cols()));
-    T pd(0);
-    for(int j = 0; j < A.cols(); j ++)
-      pd += log(A(i, j) + MM);
-    A.row(i) *= exp(ratio ? T(ratio) * pd / T(A.cols()) : - pd / T(A.cols()));
-    assert(isfinite(A.row(i).dot(A.row(i))));
-    A.row(i + A.rows() / 2) = - A.row(i);
-  }
-  auto denom(A.row(0).dot(A.row(0)));
-  for(int i = 1; i < A.rows() / 2; i ++)
-    denom = max(denom, A.row(i).dot(A.row(i)));
-  A /= sqrt(denom);
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
   for(int i = 0; i < A.rows(); i ++)
     one[i] = T(1);
   one /= sqrt(one.dot(one));
+  const auto nin(sqrt(in.dot(in)));
+  for(int i = 0; i < A.rows() / 2; i ++) {
+    for(int j = 0; j < varlen; j ++)
+      A(i, j) = in[i + j] / nin;
+    A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
+    A(i, varlen + 1) = T(i + 1) / T(A.rows() / 2 + 1) / sqrt(T(A.rows() * A.cols()));
+    T pd(0);
+    for(int j = 0; j < A.cols(); j ++)
+      pd += log(A(i, j) + T(2));
+    A.row(i) *= exp((ratio ? T(ratio) * pd : - pd) / T(A.cols()));
+    assert(isfinite(A.row(i).dot(A.row(i))));
+    A.row(i + A.rows() / 2) = - A.row(i);
+  }
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
     for(int j = 0; j < Pt.cols(); j ++)
@@ -99,18 +85,13 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   const auto R(Pt * A);
   const auto mone(- Pt * one);
   SimpleVector<T> on;
-  SimpleVector<T> orth;
   for(int n_fixed = 0 ; n_fixed < Pt.rows() - 1; n_fixed ++) {
     on = Pt.projectionPt(- one);
-    std::vector<pair<T, int> > onM;
     auto fidx(0);
     for(int i = 1; i < on.size(); i ++)
-      if(on[fidx] < on[i]) fidx = i;
-    if(on[fidx] < threshold_inner) {
-      fvec = R.solve(Pt * on);
-      return isfinite(fvec.dot(fvec)) ? fvec : fvec * T(0);
-    }
-    orth = Pt.col(fidx);
+      if(on[fidx] <= on[i]) fidx = i;
+    assert(T(0) <= on[fidx]);
+    const auto orth(Pt.col(fidx));
     const auto norm2orth(orth.dot(orth));
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
@@ -143,6 +124,7 @@ template <typename T> inline P1I<T>::P1I() {
 }
 
 template <typename T> inline P1I<T>::P1I(const int& stat, const int& var) {
+  assert(0 <= stat && 1 <= var);
   buf.resize(stat + (varlen = var) * 2 - 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);

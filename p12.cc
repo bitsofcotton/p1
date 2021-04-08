@@ -55,7 +55,6 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) ratio = std::atoi(argv[3]);
     if(4 < argc) loop  = std::atoi(argv[4]);
   }
-  assert(0 <= eslen);
   std::vector<P1I<num_t> > p;
   p.resize(loop, P1I<num_t>(eslen, vrange));
   std::string s;
@@ -81,7 +80,7 @@ int main(int argc, const char* argv[]) {
         const auto bf(M[i] * (dd[i] - bd[i]));
         rr[i] += num_t(arc4random_uniform(0x10000) + arc4random_uniform(0x10000) - 0x8000 * 2) / num_t(0x8000);
         if(dd[i] != num_t(0))
-          M0 += (M[i] = p[i].next(dd[i] - bd[i], ratio)) * bf * rr[i];
+          M0 += (M[i] = num_t(1) / p[i].next(dd[i] - bd[i], ratio)) * bf * rr[i];
       }
       M0 /= num_t(p.size());
       if(! isfinite(M0) || isnan(M0)) M0 = num_t(0);
