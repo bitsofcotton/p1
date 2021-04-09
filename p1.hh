@@ -42,8 +42,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // suppose input stream is in [-1,1]^k.
 // with noised ones, we can use catgp instead of this.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& ratio = 0) {
-  SimpleMatrix<T> A((in.size() - varlen + 1) * 2 + 1, varlen + 2);
-  assert(A.cols() <= A.rows() / 2);
+  SimpleMatrix<T> A((in.size() - varlen + 1) * 2 - 1, varlen + 2);
+  assert(A.cols() <= (A.rows() + 1) / 2);
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
 #if defined(_OPENMP)
@@ -57,20 +57,19 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   for(int i = 0; i < A.rows(); i ++)
     one[i] = T(1);
   one /= sqrt(one.dot(one));
-  for(int i = 0; i < A.rows() / 2; i ++) {
+  for(int i = 0; i < (A.rows() + 1) / 2; i ++) {
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j];
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
-    A(i, varlen + 1) = T(i + 1) / T(A.rows() / 2 + 1) / sqrt(T(A.rows() * A.cols()));
+    A(i, varlen + 1) = T(i + 1) / T((A.rows() + 1) / 2 + 1) / sqrt(T(A.rows() * A.cols()));
     T pd(0);
     for(int j = 0; j < A.cols(); j ++)
       pd += log(A(i, j) + T(2));
     A.row(i) *= exp((ratio ? T(ratio) * pd : - pd) / T(A.cols()));
     assert(isfinite(A.row(i).dot(A.row(i))));
-    A.row(i + A.rows() / 2) = - A.row(i);
+    if(i + (A.rows() + 1) / 2 < A.rows())
+      A.row(i + (A.rows() + 1) / 2) = - A.row(i);
   }
-  for(int i = 0; i < A.cols(); i ++)
-    A(A.rows() - 1, i) = i == varlen - 1 ? T(1) : T(0);
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
     for(int j = 0; j < Pt.cols(); j ++)
@@ -91,7 +90,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       if(T(0) < on[fidx]) break;
     for(int i = 1; i < on.size(); i ++)
       if(T(0) < on[i] && on[i] <= on[fidx]) fidx = i;
-    assert(T(0) <= on[fidx]);
+    if(on[fidx] <= T(0)) break;
     const auto orth(Pt.col(fidx));
     const auto norm2orth(orth.dot(orth));
 #if defined(_OPENMP)
