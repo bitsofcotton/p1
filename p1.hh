@@ -43,7 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // with noised ones, we can use catgp instead of this.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& ratio = 0) {
   SimpleMatrix<T> A((in.size() - varlen + 1) * 2, varlen + 2);
-  assert(A.cols() <= A.rows());
+  assert(A.cols() <= A.rows() / 2);
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
 #if defined(_OPENMP)
@@ -83,13 +83,14 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       return fvec;
   }
   const auto R(Pt * A);
-  const auto mone(- Pt * one);
   SimpleVector<T> on;
-  for(int n_fixed = 0 ; n_fixed < Pt.rows() - 1; n_fixed ++) {
+  for(int n_fixed = 0; n_fixed < Pt.rows() - 1; n_fixed ++) {
     on = Pt.projectionPt(- one);
     auto fidx(0);
+    for( ; fidx < on.size(); fidx ++)
+      if(T(0) < on[fidx]) break;
     for(int i = 1; i < on.size(); i ++)
-      if(on[fidx] <= on[i]) fidx = i;
+      if(T(0) < on[i] && on[i] <= on[fidx]) fidx = i;
     assert(T(0) <= on[fidx]);
     const auto orth(Pt.col(fidx));
     const auto norm2orth(orth.dot(orth));
@@ -99,7 +100,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     for(int j = 0; j < Pt.cols(); j ++)
       Pt.setCol(j, Pt.col(j) - orth * Pt.col(j).dot(orth) / norm2orth);
   }
-  fvec = R.solve(mone - Pt * on);
+  fvec = R.solve(Pt * on);
   return isfinite(fvec.dot(fvec)) ? fvec : fvec * T(0);
 }
 
@@ -112,7 +113,6 @@ public:
   inline P1I(const int& stat, const int& var);
   inline ~P1I();
   inline T next(const T& in, const int& ratio = 0);
-  Vec invariant;
 private:
   Vec buf;
   int varlen;
@@ -125,7 +125,7 @@ template <typename T> inline P1I<T>::P1I() {
 
 template <typename T> inline P1I<T>::P1I(const int& stat, const int& var) {
   assert(0 <= stat && 1 <= var);
-  buf.resize(stat + (varlen = var) * 2 - 1);
+  buf.resize(stat + (varlen = var) * 2 + 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
   t = 0;
@@ -140,16 +140,15 @@ template <typename T> T P1I<T>::next(const T& in, const int& ratio) {
     buf[i]  = buf[i + 1];
   buf[buf.size() - 1] = in;
   if(t ++ < buf.size()) return T(0);
-  // N.B. to compete with noise, we calculate long term same invariant each.
+  // N.B. to compete with noise, we calculate each.
   //      we can use catgp on worse noised ones.
-  invariant = invariantP1<T>(buf, varlen, ratio);
-  auto work(invariant);
+  const auto invariant(invariantP1<T>(buf, varlen, ratio));
+        auto work(invariant);
   for(int i = 1; i < varlen; i ++)
     work[i - 1] = buf[i - varlen + buf.size()];
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
-    T(1) / sqrt(T((buf.size() - varlen) * 2) * T(varlen + 2));
-  // <invariant, work> * alpha == 0, alpha != 0.
+    T(1) / sqrt(T((buf.size() - varlen + 1) * 2) * T(varlen + 2));
   return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1];
 }
 

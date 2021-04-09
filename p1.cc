@@ -54,6 +54,7 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) ratio = std::atoi(argv[3]);
   }
   P1I<num_t> p(eslen, vrange);
+  auto  q(p);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -68,7 +69,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = num_t(1) / p.next(d - bd, ratio);
+      M = (p.next(d - bd, ratio) + num_t(1) / q.next(num_t(1) / (d - bd), ratio)) / num_t(2);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
