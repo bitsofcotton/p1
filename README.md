@@ -37,7 +37,8 @@ There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; p
         /* computer origin */);
     //     p have: p.invariant vector<vector>.
     // Or we can use:
-    const auto invariant(invariantP1<T>(SimpleVector<T>(/* some initialized */),
+    const auto invariant(invariantP1<T>(
+      SimpleVector<T>(/* some initialized with normalized*/),
       /* variable dimension */, /* condition maximum skip number */,
       /* is computer */));
 
