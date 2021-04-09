@@ -57,10 +57,9 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   for(int i = 0; i < A.rows(); i ++)
     one[i] = T(1);
   one /= sqrt(one.dot(one));
-  const auto nin(sqrt(in.dot(in)));
   for(int i = 0; i < A.rows() / 2; i ++) {
     for(int j = 0; j < varlen; j ++)
-      A(i, j) = in[i + j] / nin;
+      A(i, j) = in[i + j];
     A(i, varlen) = T(1) / sqrt(T(A.rows() * A.cols()));
     A(i, varlen + 1) = T(i + 1) / T(A.rows() / 2 + 1) / sqrt(T(A.rows() * A.cols()));
     T pd(0);
@@ -142,14 +141,15 @@ template <typename T> T P1I<T>::next(const T& in, const int& ratio) {
   if(t ++ < buf.size()) return T(0);
   // N.B. to compete with noise, we calculate each.
   //      we can use catgp on worse noised ones.
-  const auto invariant(invariantP1<T>(buf, varlen, ratio));
+  const auto nin(sqrt(buf.dot(buf)));
+  const auto invariant(invariantP1<T>(buf / nin, varlen, ratio));
         auto work(invariant);
   for(int i = 1; i < varlen; i ++)
-    work[i - 1] = buf[i - varlen + buf.size()];
+    work[i - 1] = buf[i - varlen + buf.size()] / nin;
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
     T(1) / sqrt(T((buf.size() - varlen + 1) * 2) * T(varlen + 2));
-  return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1];
+  return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1] * nin;
 }
 
 #define _P1_
