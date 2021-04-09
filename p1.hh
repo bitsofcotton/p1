@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // suppose input stream is in [-1,1]^k.
 // with noised ones, we can use catgp instead of this.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& ratio = 0) {
-  SimpleMatrix<T> A((in.size() - varlen + 1) * 2, varlen + 2);
+  SimpleMatrix<T> A((in.size() - varlen + 1) * 2 + 1, varlen + 2);
   assert(A.cols() <= A.rows() / 2);
   SimpleVector<T> fvec(A.cols());
   SimpleVector<T> one(A.rows());
@@ -69,22 +69,23 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     assert(isfinite(A.row(i).dot(A.row(i))));
     A.row(i + A.rows() / 2) = - A.row(i);
   }
+  for(int i = 0; i < A.cols(); i ++)
+    A(A.rows() - 1, i) = i == varlen - 1 ? T(1) : T(0);
   SimpleMatrix<T> Pt(A.cols(), A.rows());
   for(int i = 0; i < Pt.rows(); i ++)
     for(int j = 0; j < Pt.cols(); j ++)
       Pt(i, j) = T(0);
   for(int i = 0; i < A.cols(); i ++) {
-    const auto  Atrowi(A.col(i));
-    const auto  work(Atrowi - Pt.projectionPt(Atrowi));
+    const auto Atrowi(A.col(i));
+    const auto work(Atrowi - Pt.projectionPt(Atrowi));
     Pt.row(i) = work / sqrt(work.dot(work));
-    const auto& npt(Pt(i, 0));
+    const auto npt(Pt.row(i).dot(Pt.row(i)));
     if(! (isfinite(npt) && ! isnan(npt)))
       return fvec;
   }
   const auto R(Pt * A);
-  SimpleVector<T> on;
   for(int n_fixed = 0; n_fixed < Pt.rows() - 1; n_fixed ++) {
-    on = Pt.projectionPt(- one);
+    const auto on(Pt.projectionPt(- one));
     auto fidx(0);
     for( ; fidx < on.size(); fidx ++)
       if(T(0) < on[fidx]) break;
@@ -99,7 +100,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
     for(int j = 0; j < Pt.cols(); j ++)
       Pt.setCol(j, Pt.col(j) - orth * Pt.col(j).dot(orth) / norm2orth);
   }
-  fvec = R.solve(Pt * on);
+  fvec = R.solve(- Pt * one);
   return isfinite(fvec.dot(fvec)) ? fvec : fvec * T(0);
 }
 
