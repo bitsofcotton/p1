@@ -33,20 +33,17 @@ There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; p
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */);,
     ...
-      residue = p.next(/* value */, /* condition maximum skip number */,
-        /* computer origin */);
+      residue = p.next(/* value */, /* is computer */);
     //     p have: p.invariant vector<vector>.
     // Or we can use:
     const auto invariant(invariantP1<T>(
       SimpleVector<T>(/* some initialized with normalized*/),
-      /* variable dimension */, /* condition maximum skip number */,
-      /* is computer */));
+      /* variable dimension */, /* is computer */);
 
 # How to use (command line):
     ./p1 <variable> <extra>? <ratio>? < data.txt
-    # ignore < 0 for average prediction subtraction with average invariant.
-    # ratio  < 0 for plain linear, ratio == 0 for linear,
-    # 0 < ratio  for nonlinear, ratio depends program complexity itself.
+    # ratio < 0 for plain linear, ratio == 0 for linear,
+    # 0 < ratio for nonlinear, ratio depends program complexity itself.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
