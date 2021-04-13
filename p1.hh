@@ -42,6 +42,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // suppose input stream is in [-1,1]^k.
 // with noised ones, we can use catgp instead of this.
 template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, const int& varlen, const int& ratio = 0) {
+#if defined(_FLOAT_BITS_)
+  static const auto epsilon(T(1) >> int64_t(mybits - 1));
+#else
+  static const auto epsilon(std::numeric_limits<T>::epsilon());
+#endif
   SimpleMatrix<T> A((in.size() - varlen + 1) * 2 - 1, varlen + 2);
   assert(A.cols() <= (A.rows() + 1) / 2);
   SimpleVector<T> fvec(A.cols());
@@ -83,23 +88,26 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
       return fvec;
   }
   const auto R(Pt * A);
-  for(int n_fixed = 0; n_fixed < Pt.rows() - 1; n_fixed ++) {
-    const auto on(Pt.projectionPt(- one));
-    auto fidx(0);
-    for( ; fidx < on.size(); fidx ++)
-      if(T(0) < on[fidx]) break;
-    for(int i = 1; i < on.size(); i ++)
-      if(T(0) < on[i] && on[i] <= on[fidx]) fidx = i;
-    if(on[fidx] <= T(0)) break;
-    const auto orth(Pt.col(fidx));
-    const auto norm2orth(orth.dot(orth));
+  const auto on(Pt.projectionPt(one));
+  std::vector<std::pair<T, int> > fidx;
+  for(int i = 0; i < on.size(); i ++)
+    fidx.emplace_back(std::make_pair(abs(on[i]), i));
+  std::sort(fidx.begin(), fidx.end());
+  for(int n_fixed = 0, idx = 0; n_fixed < Pt.rows() - 1 && idx < fidx.size(); n_fixed ++, idx ++) {
+    const auto& iidx(fidx[idx].second);
+    const auto  orth(Pt.col(idx));
+    const auto  norm2orth(orth.dot(orth));
+    if(norm2orth <= epsilon) {
+      n_fixed --;
+      continue;
+    }
 #if defined(_OPENMP)
 #pragma omp for schedule(static, 1)
 #endif
     for(int j = 0; j < Pt.cols(); j ++)
       Pt.setCol(j, Pt.col(j) - orth * Pt.col(j).dot(orth) / norm2orth);
   }
-  fvec = R.solve(- Pt * one);
+  fvec = R.solve(Pt * one);
   return isfinite(fvec.dot(fvec)) ? fvec : fvec * T(0);
 }
 
