@@ -61,7 +61,6 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
 #endif
   for(int i = 0; i < A.rows(); i ++)
     one[i] = T(1);
-  one /= sqrt(one.dot(one));
   for(int i = 0; i < (A.rows() + 1) / 2; i ++) {
     for(int j = 0; j < varlen; j ++)
       A(i, j) = in[i + j];
@@ -90,6 +89,7 @@ template <typename T> SimpleVector<T> invariantP1(const SimpleVector<T>& in, con
   const auto R(Pt * A);
   const auto on(Pt.projectionPt(one));
   std::vector<std::pair<T, int> > fidx;
+  fidx.reserve(on.size());
   for(int i = 0; i < on.size(); i ++)
     fidx.emplace_back(std::make_pair(abs(on[i]), i));
   std::sort(fidx.begin(), fidx.end());
@@ -156,7 +156,7 @@ template <typename T> T P1I<T>::next(const T& in, const int& ratio) {
     work[i - 1] = buf[i - varlen + buf.size()] / nin;
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
-    T(1) / sqrt(T((buf.size() - varlen + 1) * 2) * T(varlen + 2));
+    T(1) / sqrt(T((buf.size() - varlen + 1) * 2 - 1) * T(varlen + 2));
   return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1] * nin;
 }
 
