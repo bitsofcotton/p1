@@ -150,14 +150,17 @@ template <typename T> T P1I<T>::next(const T& in, const int& ratio) {
   // N.B. to compete with noise, we calculate each.
   //      we can use catgp on worse noised ones.
   const auto nin(sqrt(buf.dot(buf)));
-  const auto invariant(invariantP1<T>(buf / nin, varlen, ratio));
+        auto val(buf / nin * atan2(T(1), T(1)));
+  for(int i = 0; i < val.size(); i ++)
+    val[i] = tan(val[i]);
+  const auto invariant(invariantP1<T>(val, varlen, ratio));
         auto work(invariant);
   for(int i = 1; i < varlen; i ++)
-    work[i - 1] = buf[i - varlen + buf.size()] / nin;
+    work[i - 1] = val[i - varlen + buf.size()];
   work[varlen - 1] = work[varlen - 2];
   work[varlen + 1] = work[varlen] =
     T(1) / sqrt(T((buf.size() - varlen + 1) * 2 - 1) * T(varlen + 2));
-  return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1] * nin;
+  return atan((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1]) * nin / atan2(T(1), T(1));
 }
 
 #define _P1_
