@@ -8,7 +8,7 @@ so this is extension to them.
 
 For another meaning of this in randtools generic tips 6 ~ 9 that
 excludes complexity into accuracy on inner product,
-invariantP1 function returns invariant structure that \[- &alpha;, &alpha;\[
+P1I class returns invariant structure that \[- &alpha;, &alpha;\[
 register computer with whole input and whole deterministic computed output
 has on the enough variable dimension whether if status dimension is or isn't.
 
@@ -18,6 +18,9 @@ which x is shown variable, y is inner status bits, we can collect
 Xa=B\*y\_0, this is equivalent to with large enough X',
 X'a'=\[B\*y O\], y=some X''\*a.
 So this is calculate with larger variable dimension.
+
+And if we need enough accuracy on full rank, with converting dimension into accuracy on
+the computer reigister, status should be vanished.
 
 If we predict one of these by not enough status length, then, re-predict with
 some skipped input of them, some recursion makes it better result.
