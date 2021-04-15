@@ -28,17 +28,15 @@ remains is the data another status bits, so recursive of them, cut some invarian
 But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
 # Tips:
-There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, x&gt;\*(x_0\*...\*x_n)^m (some m) for the program. But with computer flag, it is normalized, so Ax==1\*some x' for some x, but in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, tan(x)x&gt;\*(tan(x_0)\*...\*tan(x_n))^m (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
 
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */);,
     ...
-      residue = p.next(/* value */, /* is computer */);
-    //     p have: p.invariant vector<vector>.
+      residue = p.next(/* value */, /* complexity */);
     // Or we can use:
-    const auto invariant(invariantP1<T>(
-      SimpleVector<T>(/* some initialized with normalized*/),
-      /* variable dimension */, /* is computer */);
+    const auto invariant(linearInvariant<T>(
+      std::vector<SimpleVector<T> >(/* some initialized with normalized*/));
 
 # How to use (command line):
     ./p1 <variable> <extra>? <ratio>? < data.txt
