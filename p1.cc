@@ -4,39 +4,11 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <assert.h>
 
-#if !defined(_FLOAT_BITS_)
-  #include <complex>
-  #include <cmath>
-  using namespace std;
-  typedef long double num_t;
-  #include <limits>
-#else
-  #include "ifloat.hh"
-  template <typename T> using complex = Complex<T>;
-# if _FLOAT_BITS_ == 32
-    typedef uint32_t myuint;
-    typedef int32_t  myint;
-    typedef SimpleFloat<myuint, uint64_t, 32, int64_t> num_t;
-    #define mybits 32
-# elif _FLOAT_BITS_ == 64
-    typedef uint64_t myuint;
-    typedef int64_t  myint;
-    typedef SimpleFloat<myuint, DUInt<myuint, 64>, 64, int64_t> num_t;
-    #define mybits 64
-# elif _FLOAT_BITS_ == 128
-    typedef DUInt<uint64_t, 64> uint128_t;
-    typedef Signed<uint128_t, 128> int128_t;
-    typedef uint128_t myuint;
-    typedef int128_t  myint;
-    typedef SimpleFloat<myuint, DUInt<myuint, 128>, 128, int64_t> num_t;
-    #define mybits 128
-# else
-#   error cannot handle float
-# endif
-#endif
-
+#include "ifloat.hh"
+typedef myfloat num_t;
 #include "simplelin.hh"
 #include "p1.hh"
 
@@ -54,7 +26,6 @@ int main(int argc, const char* argv[]) {
     if(3 < argc) ratio = std::atoi(argv[3]);
   }
   P1I<num_t> p(eslen, vrange);
-  auto  q(p);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -69,7 +40,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = (p.next(d - bd, ratio) + num_t(1) / q.next(num_t(1) / (d - bd), ratio)) / num_t(2);
+      M = p.next(d - bd, ratio);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
