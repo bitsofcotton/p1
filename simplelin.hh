@@ -1280,7 +1280,7 @@ template <typename T> SimpleVector<T> makeProgramInvariant(const SimpleVector<T>
   SimpleVector<T> res(in.size() + (T(0) <= index ? 2 : 1));
   for(int i = 0; i < in.size(); i ++) {
     assert(- T(1) <= in[i] && in[i] <= T(1) && isfinite(in[i]));
-    res[i] = tan((in[i] + T(1)) / T(2) * atan2(T(1), T(1)));
+    res[i] = tan((in[i] + T(1)) / T(4) * atan2(T(1), T(1)));
   }
   res[in.size()] = T(1);
   if(T(0) <= index)
