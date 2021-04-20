@@ -1286,10 +1286,10 @@ template <typename T> SimpleVector<T> makeProgramInvariant(const SimpleVector<T>
   if(T(0) <= index)
     res[in.size() + 1] = index;
   T pd(0);
-  for(int i = 0; i < res.size(); i ++)
-    pd += log(abs(res[i]));
+  for(int i = 0; i < in.size(); i ++)
+    pd += log(abs(in[i]));
   if(0 <= complexity)
-    res *= exp((complexity ? T(complexity) * pd : - pd) / T(res.size()));
+    res *= exp((complexity ? T(complexity) * pd : - pd) / T(in.size()));
   return res;
 }
 
