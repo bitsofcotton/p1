@@ -14,17 +14,16 @@ typedef myfloat num_t;
 
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
-  const int vrange(2);
-        int eslen(80);
-        int ratio(- 8);
+  int eslen(80);
+  int ratio(- 8);
   if(argc < 2)
-    std::cerr << "p1 <extra>? <ratio>?" << std::endl;
+    std::cerr << "p1 <condition>? <ratio>?" << std::endl;
   else {
     if(1 < argc) eslen = std::atoi(argv[1]);
     if(2 < argc) ratio = std::atoi(argv[2]);
   }
   std::cerr << "continue with p1 " << eslen << " " << ratio << std::endl;
-  P1I<num_t> p(eslen, vrange);
+  P1I<num_t> p(eslen, 2);
   std::string s;
   num_t d(0);
   auto  s0(d);
