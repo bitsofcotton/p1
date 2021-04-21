@@ -1284,7 +1284,7 @@ template <typename T> SimpleVector<T> makeProgramInvariant(const SimpleVector<T>
   }
   res[in.size()] = T(1);
   if(T(0) <= index)
-    res[in.size() + 1] = index;
+    res[in.size() + 1] = tan(index * atan2(T(1), T(1)));
   T pd(0);
   for(int i = 0; i < in.size(); i ++)
     pd += log(abs(in[i]));

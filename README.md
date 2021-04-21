@@ -42,7 +42,7 @@ There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; p
       std::vector<SimpleVector<T> >(/* some initialized with normalized*/));
 
 # How to use (command line):
-    ./p1 <variable> <extra>? <ratio>? < data.txt
+    ./p1 <condition>? <ratio>? < data.txt
     # ratio < 0 for plain linear, ratio == 0 for linear,
     # 0 < ratio for nonlinear, ratio depends program complexity itself.
 
