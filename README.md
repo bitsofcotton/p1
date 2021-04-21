@@ -33,6 +33,9 @@ But in fact, the result we have is unstable if original status bits is too small
 # Tips:
 There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, tan(x)&gt;\*(x_0\*...\*x_n)^m (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
 
+# General Tips:
+We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
+
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */);,
     ...
