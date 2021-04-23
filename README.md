@@ -39,15 +39,13 @@ We also get the result to make periods, this is because periodical data input ca
 # How to use:
     P1I<double> p(/* status length */, /* variable dimension */);,
     ...
-      residue = p.next(/* value */, /* complexity */);
+      residue = p.next(/* value */);
     // Or we can use:
     const auto invariant(linearInvariant<T>(
       std::vector<SimpleVector<T> >(/* some initialized with normalized*/));
 
 # How to use (command line):
-    ./p1 <condition>? <ratio>? < data.txt
-    # ratio < 0 for plain linear, ratio == 0 for linear,
-    # 0 < ratio for nonlinear, ratio depends program complexity itself.
+    ./p1 <condition len>? < data.txt
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
