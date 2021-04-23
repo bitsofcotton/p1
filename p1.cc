@@ -15,14 +15,11 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int eslen(80);
-  int ratio(- 8);
   if(argc < 2)
-    std::cerr << "p1 <condition>? <ratio>?" << std::endl;
-  else {
+    std::cerr << "p1 <condition>?" << std::endl;
+  else
     if(1 < argc) eslen = std::atoi(argv[1]);
-    if(2 < argc) ratio = std::atoi(argv[2]);
-  }
-  std::cerr << "continue with p1 " << eslen << " " << ratio << std::endl;
+  std::cerr << "continue with p1 " << eslen << std::endl;
   P1I<num_t> p(eslen, 2);
   std::string s;
   num_t d(0);
@@ -38,7 +35,7 @@ int main(int argc, const char* argv[]) {
         s0 += (d - bd) - M;
         s1 += (d - bd) * M;
       }
-      M = p.next(d - bd, ratio);
+      M = p.next(d - bd);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
     std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
