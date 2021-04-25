@@ -26,19 +26,22 @@ int main(int argc, const char* argv[]) {
   auto  s0(d);
   auto  s1(d);
   auto  M(d);
+  auto  bdelta(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
+    const auto nM(M + bdelta);
     std::stringstream ins(s);
     ins >> d;
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
-        s0 += (d - bd) - M;
-        s1 += (d - bd) * M;
+        s0 += (d - bd) - nM;
+        s1 += (d - bd) * nM;
+        bdelta = d - bd - M;
       }
       M = p.next(d - bd);
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << nM << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
