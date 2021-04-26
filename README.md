@@ -45,7 +45,7 @@ We also get the result to make periods, this is because periodical data input ca
       std::vector<SimpleVector<T> >(/* some initialized with normalized*/));
 
 # How to use (command line):
-    ./p1 <condition len>? < data.txt
+    ./p1 <condition len>? <context len>? < data.txt
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
