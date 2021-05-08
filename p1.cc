@@ -7,9 +7,8 @@
 #include <map>
 #include <assert.h>
 
-#include "ifloat.hh"
+#include "lieonn.hh"
 typedef myfloat num_t;
-#include "simplelin.hh"
 #include "p1.hh"
 
 int main(int argc, const char* argv[]) {
