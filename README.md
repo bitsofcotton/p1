@@ -37,15 +37,15 @@ There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; p
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
 
 # How to use:
-    P1I<double> p(/* status length */, /* variable dimension */);,
+    P1I<double, /* tan space */> p(
+     /* status length */,
+     /* variable dimension */,
+     /* complement length */);,
     ...
       residue = p.next(/* value */);
-    // Or we can use:
-    const auto invariant(linearInvariant<T>(
-      std::vector<SimpleVector<T> >(/* some initialized with normalized*/));
 
 # How to use (command line):
-    ./p1 <condition len>? <context len>? < data.txt
+    ./p1 <condition len>? <context len>? <complement len>? < data.txt
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
