@@ -61,8 +61,12 @@ template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
   pp = Mat(comp, var);
-  for(int i = 0; i < pp.rows() - 1; i ++)
-    pp.row(i) = taylor(pp.cols(), T(i) * T(pp.rows() - 2) / T(pp.cols() - 1));
+  for(int i = 0; i < pp.rows() - 1; i ++) {
+    const auto work(taylor(pp.cols() - 1, T(1) / T(pp.rows() - 2) * T(pp.cols() - 2)));
+    for(int j = 0; j < work.size(); j ++)
+      pp(i, j) = work[j];
+    pp(i, work.size()) = T(0);
+  }
   for(int i = 0; i < pp.cols(); i ++)
     pp(pp.rows() - 1, i) = T(i == pp.cols() - 1 ? 1 :0);
   T M(0);
@@ -101,11 +105,12 @@ template <typename T, bool tanspace> T P1I<T,tanspace>::next(const T& in) {
     work[i - 1] = buf[i - varlen + buf.size()] / nin;
   work[work.size() - 1] = work[work.size() - 2];
   work = pp * work;
-  if(tanspace) {
+  if(invariant[varlen - 1] == T(0)) return T(0);
+  if(tanspace)
     work = makeProgramInvariant<T>(work, T(1));
-    return (atan((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1]) * T(4) / atan2(T(1), T(1)) - T(1)) * nin;
-  }
-  return (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1];
+  const auto p0((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1]);
+  return tanspace ? (atan(p0) * T(4) / atan(T(1)) - T(1)) * nin
+                  : p0 * nin;
 }
 
 #define _P1_

@@ -609,6 +609,7 @@ private:
 
 template <typename T, typename W, int bits, typename U> inline SimpleFloat<T,W,bits,U>::SimpleFloat() {
   assert(0 < bits && ! (bits & 1));
+  s |= (1 << INF) | (1 << NaN);
 }
 
 template <typename T, typename W, int bits, typename U> template <typename V> inline SimpleFloat<T,W,bits,U>::SimpleFloat(const V& src) {

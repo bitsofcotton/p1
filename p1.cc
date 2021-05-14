@@ -21,7 +21,7 @@ int main(int argc, const char* argv[]) {
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
     if(2 < argc) var  = std::atoi(argv[2]);
-    comp = int(sqrt(num_t(stat)));
+    comp = int(sqrt(num_t(abs(stat))));
     if(3 < argc) comp = std::atoi(argv[3]);
   }
   std::cerr << "continue with p1 " << stat << " " << var << " " << comp << std::endl;
