@@ -68,7 +68,7 @@ template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat
     pp(i, work.size()) = T(0);
   }
   for(int i = 0; i < pp.cols(); i ++)
-    pp(pp.rows() - 1, i) = T(i == pp.cols() - 1 ? 1 :0);
+    pp(pp.rows() - 1, i) = T(i == pp.cols() - 1 ? 1 : 0);
   T M(0);
   for(int i = 0; i < pp.rows(); i ++)
     for(int j = 0; j < pp.cols(); j ++)

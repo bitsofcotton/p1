@@ -46,6 +46,8 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <condition len>? <context len>? <complement len>? < data.txt
+    # condition < 0 for linear invariant.
+    # 0 < condition for program invariant.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing

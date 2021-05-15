@@ -20,8 +20,7 @@ int main(int argc, const char* argv[]) {
     std::cerr << "p1 <condition>? <context>? <complement>?" << std::endl;
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
-    if(2 < argc) var  = std::atoi(argv[2]);
-    comp = int(sqrt(num_t(abs(stat))));
+    if(2 < argc) var  = comp = std::atoi(argv[2]);
     if(3 < argc) comp = std::atoi(argv[3]);
   }
   std::cerr << "continue with p1 " << stat << " " << var << " " << comp << std::endl;
@@ -32,22 +31,19 @@ int main(int argc, const char* argv[]) {
   auto  s0(d);
   auto  s1(d);
   auto  M(d);
-  auto  bdelta(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
-    const auto nM(M + bdelta);
     std::stringstream ins(s);
     ins >> d;
     if(d != bd) {
       if(bd != num_t(0) && M != num_t(0)) {
-        s0 += (d - bd) - nM;
-        s1 += (d - bd) * nM;
-        bdelta = d - bd - M;
+        s0 += (d - bd) - M;
+        s1 += (d - bd) * M;
       }
       M = (stat < 0 ? p.next(d) : q.next(d)) - d;
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
-    std::cout << nM << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
   }
   return 0;
 }
