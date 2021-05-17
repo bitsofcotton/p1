@@ -14,18 +14,16 @@ typedef myfloat num_t;
 int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int stat(80);
-  int var(2);
-  int comp(2);
+  int var(4);
   if(argc < 2)
-    std::cerr << "p1 <condition>? <context>? <complement>?" << std::endl;
+    std::cerr << "p1 <condition>? <context>?" << std::endl;
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
-    if(2 < argc) var  = comp = std::atoi(argv[2]);
-    if(3 < argc) comp = std::atoi(argv[3]);
+    if(2 < argc) var  = std::atoi(argv[2]);
   }
-  std::cerr << "continue with p1 " << stat << " " << var << " " << comp << std::endl;
-  P1I<num_t, false> p(abs(stat), var, comp);
-  P1I<num_t, true>  q(abs(stat), var, comp);
+  std::cerr << "continue with p1 " << stat << " " << var << std::endl;
+  P1I<num_t, false> p(abs(stat), var);
+  P1I<num_t, true>  q(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  s0(d);

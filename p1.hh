@@ -40,24 +40,35 @@ public:
   typedef SimpleVector<T> Vec;
   typedef SimpleMatrix<T> Mat;
   inline P1I();
-  inline P1I(const int& stat, const int& var, const int& comp);
+  inline P1I(const int& stat, const int& var, const int& comp = 0);
   inline ~P1I();
   inline T next(const T& in);
 private:
   Vec buf;
   Mat pp;
   int statlen;
-  int varlen;
   int t;
 };
 
 template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I() {
-  varlen = t = 0;
+  statlen = t = 0;
 }
 
-template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat, const int& var, const int& comp) {
+template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat, const int& var, const int& comp0) {
+  assert(0 <= comp0);
+  auto comp(comp0);
+  if(! comp) {
+    T work(var + 2);
+    while(true) {
+      work /= T(2);
+      if(work < T(1)) break;
+      work  = ceil(work);
+      comp += int(work);
+    }
+  }
+  assert(var <= comp);
   assert(0 <= stat && 1 <= var);
-  buf.resize((statlen = stat + var + 2) + (varlen = var) - 1);
+  buf.resize((statlen = stat + comp + 2) + comp - 1);
   for(int i = 0; i < buf.size(); i ++)
     buf[i] = T(0);
   pp = Mat(comp, var);
@@ -92,23 +103,23 @@ template <typename T, bool tanspace> T P1I<T,tanspace>::next(const T& in) {
   vector<SimpleVector<T>> toeplitz;
   toeplitz.reserve(statlen);
   for(int i = 0; i < statlen; i ++) {
-    SimpleVector<T> work(varlen);
-    for(int j = 0; j < varlen; j ++)
+    SimpleVector<T> work(pp.cols());
+    for(int j = 0; j < work.size(); j ++)
       work[j] = buf[i + j] / nin;
     toeplitz.emplace_back(tanspace
       ? makeProgramInvariant<T>(pp * work, T(i + 1) / T(statlen + 1))
       : pp * work);
   }
   const auto invariant(linearInvariant<T>(toeplitz));
-  SimpleVector<T> work(varlen);
-  for(int i = 1; i < varlen; i ++)
-    work[i - 1] = buf[i - varlen + buf.size()] / nin;
+  SimpleVector<T> work(pp.cols());
+  for(int i = 1; i < work.size(); i ++)
+    work[i - 1] = buf[i - work.size() + buf.size()] / nin;
   work[work.size() - 1] = work[work.size() - 2];
   work = pp * work;
-  if(invariant[varlen - 1] == T(0)) return T(0);
+  if(invariant[pp.rows() - 1] == T(0)) return T(0);
   if(tanspace)
     work = makeProgramInvariant<T>(work, T(1));
-  const auto p0((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1]);
+  const auto p0((invariant.dot(work) - invariant[pp.rows() - 1] * work[pp.rows() - 1]) / invariant[pp.rows() - 1]);
   return tanspace ? (atan(p0) * T(4) / atan(T(1)) - T(1)) * nin
                   : p0 * nin;
 }
