@@ -45,7 +45,7 @@ We also get the result to make periods, this is because periodical data input ca
       residue = p.next(/* value */);
 
 # How to use (command line):
-    ./p1 <condition len>? <context len>? <complement len>? < data.txt
+    ./p1 <condition len>? <context len>? < data.txt
     # condition < 0 for linear invariant.
     # 0 < condition for program invariant.
 
