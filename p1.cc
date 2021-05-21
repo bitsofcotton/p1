@@ -26,27 +26,28 @@ int main(int argc, const char* argv[]) {
   std::cerr << "continue with p1 " << stat << " " << var << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
   P1I<num_t, linearFeeder<num_t>, false> pp(abs(stat), var);
   P1I<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var);
-  P1I<num_t, arctanFeeder<num_t>, false> pw(abs(stat), var);
-  P1I<num_t, arctanFeeder<num_t>, true>  qw(abs(stat), var);
+  P1I<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), var);
+  P1I<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  s0(d);
   auto  s1(d);
+  auto  s2(d);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
-    if(d != bd) {
+    if(d != num_t(0)) {
       if(bd != num_t(0) && M != num_t(0)) {
-        s0 += (d - bd) - M;
-        s1 += (d - bd) * M;
+        s0 += d - M;
+        s1 += (s2 = d * M);
       }
-      M = (stat < 0 ? (whole ? pw.next(d - bd) : pp.next(d - bd))
-                    : (whole ? qw.next(d - bd) : qp.next(d - bd)));
+      M = stat < 0 ? (whole ? pw.next(d) : pp.next(d))
+                   : (whole ? qw.next(d) : qp.next(d));
       if(! isfinite(M) || isnan(M)) M = num_t(0);
     }
-    std::cout << M << ", " << s0 << ", " << s1 << std::endl << std::flush;
+    std::cout << M << ", " << s0 << ", " << s1 << ", " << s2 << std::endl << std::flush;
   }
   return 0;
 }
