@@ -35,7 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // \[- &alpha, &alpha;\[ register computer with deterministic calculation
 // Please refer bitsofcotton/randtools .
 // with noised ones, we can use catgp instead of this.
-template <typename T, bool tanspace = true> class P1I {
+template <typename T, typename feeder, bool tanspace = true> class P1I {
 public:
   typedef SimpleVector<T> Vec;
   typedef SimpleMatrix<T> Mat;
@@ -44,17 +44,16 @@ public:
   inline ~P1I();
   inline T next(const T& in);
 private:
-  Vec buf;
+  feeder f;
   Mat pp;
   int statlen;
-  int t;
 };
 
-template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I() {
-  statlen = t = 0;
+template <typename T, typename feeder, bool tanspace> inline P1I<T,feeder,tanspace>::P1I() {
+  statlen = 0;
 }
 
-template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat, const int& var, const int& comp0) {
+template <typename T, typename feeder, bool tanspace> inline P1I<T,feeder,tanspace>::P1I(const int& stat, const int& var, const int& comp0) {
   assert(0 <= comp0);
   auto comp(comp0);
   if(! comp) {
@@ -68,9 +67,7 @@ template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat
   }
   assert(var <= comp);
   assert(0 <= stat && 1 <= var);
-  buf.resize((statlen = stat + comp + 2) + comp - 1);
-  for(int i = 0; i < buf.size(); i ++)
-    buf[i] = T(0);
+  f = feeder((statlen = stat + comp + 2) + comp - 1);
   pp = Mat(comp, var);
   for(int i = 0; i < pp.rows() - 1; i ++) {
     const auto work(taylor(pp.cols() - 1, T(1) / T(pp.rows() - 2) * T(pp.cols() - 2)));
@@ -85,18 +82,15 @@ template <typename T, bool tanspace> inline P1I<T,tanspace>::P1I(const int& stat
     for(int j = 0; j < pp.cols(); j ++)
       M = max(M, abs(pp(i, j)));
   pp /= M * T(4);
-  t   = 0;
 }
 
-template <typename T, bool tanspace> inline P1I<T,tanspace>::~P1I() {
+template <typename T, typename feeder, bool tanspace> inline P1I<T,feeder,tanspace>::~P1I() {
   ;
 }
 
-template <typename T, bool tanspace> T P1I<T,tanspace>::next(const T& in) {
-  for(int i = 0; i < buf.size() - 1; i ++)
-    buf[i]  = buf[i + 1];
-  buf[buf.size() - 1] = in;
-  if(t ++ < buf.size()) return T(0);
+template <typename T, typename feeder, bool tanspace> T P1I<T,feeder,tanspace>::next(const T& in) {
+  const auto& buf(f.next(in));
+  if(! f.full) return T(0);
   // N.B. to compete with noise, we calculate each.
   //      we can use catgp on worse noised ones.
   const auto nin(sqrt(buf.dot(buf)));
@@ -120,8 +114,7 @@ template <typename T, bool tanspace> T P1I<T,tanspace>::next(const T& in) {
   if(tanspace)
     work = makeProgramInvariant<T>(work, T(1));
   const auto p0((invariant.dot(work) - invariant[pp.rows() - 1] * work[pp.rows() - 1]) / invariant[pp.rows() - 1]);
-  return tanspace ? (atan(p0) * T(4) / atan(T(1)) - T(1)) * nin
-                  : p0 * nin;
+  return (tanspace ? revertProgramInvariant<T>(p0) : p0) * nin;
 }
 
 #define _P1_
