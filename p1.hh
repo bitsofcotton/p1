@@ -56,14 +56,12 @@ template <typename T, typename feeder, bool tanspace> inline P1I<T,feeder,tanspa
 template <typename T, typename feeder, bool tanspace> inline P1I<T,feeder,tanspace>::P1I(const int& stat, const int& var, const int& comp0) {
   assert(0 <= comp0);
   auto comp(comp0);
-  if(! comp) {
-    T work(var + 2);
-    while(true) {
-      work /= T(2);
-      if(work < T(1)) break;
-      work  = ceil(work);
-      comp += int(work);
-    }
+  T    work(var + 2);
+  while(true) {
+    work /= T(2);
+    if(work < T(1)) break;
+    work  = ceil(work);
+    comp += int(work);
   }
   assert(var <= comp);
   assert(0 <= stat && 1 <= var);

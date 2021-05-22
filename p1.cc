@@ -15,19 +15,21 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int  stat(80);
   int  var(4);
+  int  ext(8);
   bool whole(false);
   if(argc < 2)
-    std::cerr << "p1 <condition>? <context>? <whole|partial>?" << std::endl;
+    std::cerr << "p1 <condition>? <context>? <extcomp>? <whole|partial>?" << std::endl;
   else {
     if(1 < argc) stat  = std::atoi(argv[1]);
     if(2 < argc) var   = std::atoi(argv[2]);
-    if(3 < argc) whole = argv[3][0] == 'w';
+    if(3 < argc) ext   = std::atoi(argv[3]);
+    if(4 < argc) whole = argv[4][0] == 'w';
   }
-  std::cerr << "continue with p1 " << stat << " " << var << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
-  P1I<num_t, linearFeeder<num_t>, false> pp(abs(stat), var);
-  P1I<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var);
-  P1I<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), var);
-  P1I<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), var);
+  std::cerr << "continue with p1 " << stat << " " << var << " " << ext << " " << (const char*)(whole ? "whole" : "partial") << std::endl;
+  P1I<num_t, linearFeeder<num_t>, false> pp(abs(stat), var, ext);
+  P1I<num_t, linearFeeder<num_t>, true>  qp(abs(stat), var, ext);
+  P1I<num_t, arctanFeeder<num_t, true>, false> pw(abs(stat), var, ext);
+  P1I<num_t, arctanFeeder<num_t, true>, true>  qw(abs(stat), var, ext);
   std::string s;
   num_t d(0);
   auto  s0(d);
