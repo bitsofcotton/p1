@@ -37,13 +37,12 @@ int main(int argc, const char* argv[]) {
   auto  s2(d);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
-    const auto bd(d);
     std::stringstream ins(s);
     ins >> d;
     if(d != num_t(0)) {
-      if(bd != num_t(0) && M != num_t(0)) {
+      if(M != num_t(0)) {
         s0 += d - M;
-        s1 += (s2 = d * M);
+        s1 += (s2 = M / d);
       }
       M = tan(stat < 0 ? (whole ? pw.next(atan(d)) : pp.next(atan(d)))
                        : (whole ? qw.next(atan(d)) : qp.next(atan(d))) );
