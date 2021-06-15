@@ -7,11 +7,20 @@
 #include <map>
 #include <assert.h>
 
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
 #include "lieonn.hh"
 typedef myfloat num_t;
 #include "p1.hh"
 
+#if defined(_FLOAT_BITS_)
+#undef int
+#endif
 int main(int argc, const char* argv[]) {
+#if defined(_FLOAT_BITS_)
+#define int int64_t
+#endif
   std::cout << std::setprecision(30);
   int  stat(80);
   int  var(4);
