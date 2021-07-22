@@ -6,7 +6,7 @@ input series is deterministic with or without inner status.
 There exists toeplitz matrix and their solver faster algorithms,
 so this is extension to them.  
 
-For another meaning of this in randtools generic tips 6 ~ 9 that
+For another meaning of this in randtools generic tips 6 ~ 9, D that
 excludes complexity into accuracy on inner product,
 P1I class returns invariant structure that \[- &alpha;, &alpha;\[
 register computer with whole input and whole deterministic computed output
@@ -31,7 +31,7 @@ remains is the data another status bits, so recursive of them, cut some invarian
 But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
 # Tips:
-There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, tan(x)&gt;\*(x_0\*...\*x_n)^m (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, x&gt; \* (x_0 ... x_n)^m (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
 
 # General Tips:
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
