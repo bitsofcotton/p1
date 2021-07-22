@@ -24,7 +24,7 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int  stat(80);
-  int  var(4);
+  int  var(3);
   bool whole(false);
   if(argc < 2)
     std::cerr << "p1 <condition>? <var>? <whole|partial>?" << std::endl;
