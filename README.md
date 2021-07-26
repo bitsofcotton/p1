@@ -45,9 +45,8 @@ We also get the result to make periods, this is because periodical data input ca
       residue = p.next(/* value */);
 
 # How to use (command line):
-    ./p1 <condition len>? <context len>? <whole|partial>? < data.txt
-    # condition < 0 for linear invariant.
-    # 0 < condition for program invariant.
+    ./p1 <condition len>? <context len>? < data.txt
+    # condition < 0 for x-axis arctan scale, otherwise, linear scale.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
