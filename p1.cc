@@ -48,7 +48,7 @@ int main(int argc, const char* argv[]) {
     if(d != bd) {
       if(M != num_t(0)) {
         s0 += (s3 = (d - bd) - (M - bd));
-        s1 += (s2 = (M - bd) / (d - bd));
+        s1 += (s2 = (d - bd) * (M - bd));
       }
       M = tan(stat < 0 ? q.next(atan(d)) : p.next(atan(d)) );
       if(! isfinite(M) || isnan(M)) M = num_t(0);
