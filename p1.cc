@@ -32,8 +32,8 @@ int main(int argc, const char* argv[]) {
     if(2 < argc) var  = std::atoi(argv[2]);
   }
   std::cerr << "continue with p1 " << stat << " " << var << std::endl;
-  P1I<num_t, linearFeeder<num_t> > p(abs(stat), var);
-  P1I<num_t, arctanFeeder<num_t> > q(abs(stat), var);
+  P1I<num_t, continuousFeeder<num_t, continuousFeeder<num_t, linearFeeder<num_t> > > > p(abs(stat), var);
+  P1I<num_t, continuousFeeder<num_t, continuousFeeder<num_t, arctanFeeder<num_t> > > > q(abs(stat), var);
   std::string s;
   num_t d(0);
   auto  s0(d);
@@ -47,8 +47,8 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     if(d != bd) {
       if(M != num_t(0)) {
-        s0 += (s3 = (d - bd) - (M - bd));
-        s1 += (s2 = (d - bd) * (M - bd));
+        s0 += (s3 = (d - bd) - (M - d));
+        s1 += (s2 = (d - bd) * (M - d));
       }
       M = tan(stat < 0 ? q.next(atan(d)) : p.next(atan(d)) );
       if(! isfinite(M) || isnan(M)) M = num_t(0);

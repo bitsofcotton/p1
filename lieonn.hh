@@ -3250,12 +3250,13 @@ template <typename T> inline T revertProgramInvariant(const pair<T, T>& in) {
 
 template <typename T> class linearFeeder {
 public:
-  inline linearFeeder() { t = 0; full = false; }
+  inline linearFeeder() { t = 0; r = T(1); full = false; }
   inline linearFeeder(const int& size) {
     res.resize(size);
     for(int i = 0; i < res.size(); i ++)
       res[i] = T(0);
     t = 0;
+    r = T(1);
     full = false;
   }
   inline ~linearFeeder() { ; }
@@ -3268,13 +3269,14 @@ public:
   }
   SimpleVector<T> res;
   bool full;
+  T    r;
 private:
   int t;
 };
 
 template <typename T> class arctanFeeder {
 public:
-  inline arctanFeeder() { t = 0; full = false; }
+  inline arctanFeeder() { t = 0; r = T(1); full = false; }
   inline arctanFeeder(const int& size) {
     res.resize(size);
     buf.resize(1 + int(ceil(T(1) / tan(T(1) * atan(T(1)) / T(res.size() - 1)))));
@@ -3283,6 +3285,7 @@ public:
     for(int i = 0; i < res.size(); i ++)
       res[i] = T(0);
     t = 0;
+    r = T(1);
     full = false;
   }
   inline ~arctanFeeder() { ; }
@@ -3297,9 +3300,38 @@ public:
   }
   SimpleVector<T> res;
   bool full;
+  T    r;
 private:
   SimpleVector<T> buf;
   int t;
+};
+
+template <typename T, typename feeder> class continuousFeeder {
+public:
+  inline continuousFeeder() { full = false; r = T(1);}
+  inline continuousFeeder(const int& size) { full = false; f = feeder(size + 2); res = SimpleVector<T>(size); r = T(1); }
+  inline const SimpleVector<T>& next(const T& in) {
+    const auto work(f.next(in));
+    full = f.full;
+    res.O();
+    SimpleVector<T> y(work.size());
+    auto z(y.I());
+    for(int i = 2; i < work.size(); i ++) {
+      if(work[i] == T(0)) return res;
+      y[i] = (z[i] = (work[i] - work[i - 1] + work[i - 2]) / work[i]) / z[i - 1];
+      if(z[i] == T(0)) return res;
+    }
+    y /= z[z.size() - 2];
+    for(int i = 2; i < work.size(); i ++)
+      res[i - 2] = work[i] * y[i];
+    r = y[y.size() - 2];
+    return res;
+  }
+  SimpleVector<T> res;
+  bool full;
+  T    r;
+private:
+  feeder f;
 };
 
 template <typename T> class SimpleSparseVector {

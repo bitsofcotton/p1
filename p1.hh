@@ -82,7 +82,7 @@ template <typename T, typename feeder> T P1I<T,feeder>::next(const T& in) {
   work[work.size() - 1] = work[work.size() - 2];
   auto work2(makeProgramInvariant<T>(work, T(1)));
   work = move(work2.first);
-  return revertProgramInvariant<T>(make_pair((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1], work2.second)) * nin;
+  return revertProgramInvariant<T>(make_pair((invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) / invariant[varlen - 1], work2.second)) * nin * f.r;
 }
 
 #define _P1_
