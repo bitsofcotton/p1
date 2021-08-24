@@ -44,7 +44,6 @@ We also get the result to make periods, this is because periodical data input ca
 # How to use (command line):
     ./p1 <condition len>? <context len>? < data.txt
     # condition < 0 for x-axis arctan scale, otherwise, linear scale.
-    # context   < 0 for only sign correction, otherwise, cdot correction.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
