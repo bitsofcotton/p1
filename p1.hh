@@ -65,7 +65,7 @@ public:
     work = move(work2.first);
     return revertProgramInvariant<T>(make_pair(
       (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) /
-        invariant[varlen - 1], work2.second)) * nin - in;
+        invariant[varlen - 1], work2.second)) * nin - buf[buf.size() - 1];
   }
   feeder f;
 private:
