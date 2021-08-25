@@ -46,17 +46,17 @@ public:
   inline ~P1I() { ; }
   inline T next(const T& in) {
     const auto& buf(f.next(in));
-    if(! f.full) return in;
+    if(! f.full) return T(0);
     // N.B. please use catgp to compete with over learning.
     const auto nin(sqrt(buf.dot(buf)));
-    if(nin == T(0)) return in;
+    if(nin == T(0)) return T(0);
     SimpleMatrix<T> toeplitz(buf.size() - varlen + 1, varlen + 3);
     for(int i = 0; i < toeplitz.rows(); i ++)
       toeplitz.row(i) =
         makeProgramInvariant<T>(buf.subVector(i, varlen) / nin,
           T(i + 1) / T(toeplitz.rows() + 1)).first;
     const auto invariant(linearInvariant<T>(toeplitz));
-    if(invariant[varlen - 1] == T(0)) return in;
+    if(invariant[varlen - 1] == T(0)) return T(0);
     SimpleVector<T> work(varlen);
     for(int i = 1; i < work.size(); i ++)
       work[i - 1] = buf[i - work.size() + buf.size()] / nin;
@@ -65,7 +65,7 @@ public:
     work = move(work2.first);
     return revertProgramInvariant<T>(make_pair(
       (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) /
-        invariant[varlen - 1], work2.second)) * nin;
+        invariant[varlen - 1], work2.second)) * nin - in;
   }
   feeder f;
 private:
