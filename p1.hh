@@ -64,8 +64,8 @@ public:
     auto work2(makeProgramInvariant<T>(work, T(1)));
     work = move(work2.first);
     return revertProgramInvariant<T>(make_pair(
-      (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) /
-        invariant[varlen - 1], work2.second)) * nin - buf[buf.size() - 1];
+      - (invariant.dot(work) - invariant[varlen - 1] * work[varlen - 1]) /
+          invariant[varlen - 1], work2.second)) * nin - buf[buf.size() - 1];
   }
   feeder f;
 private:
