@@ -25,13 +25,15 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int  stat(80);
   int  var(2);
+  int  pw(1);
   if(argc < 2)
     std::cerr << "p1 <condition>? <var>? <pow>?" << std::endl;
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
     if(2 < argc) var  = std::atoi(argv[2]);
+    if(3 < argc) pw   = std::atoi(argv[3]);
   }
-  std::cerr << "continue with p1 " << stat << " " << var << std::endl;
+  std::cerr << "continue with p1 " << stat << " " << var << " " << pw << std::endl;
   P1I<num_t, linearFeeder<num_t, sumFeeder<num_t> > > p(abs(stat), var);
   P1I<num_t, arctanFeeder<num_t, sumFeeder<num_t> > > q(abs(stat), var);
   std::string s;
@@ -43,6 +45,7 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     D = d * M;
     M = stat < 0 ? q.next(d) : p.next(d);
+    M = pw == 0 ? sgn<num_t>(M) : sgn<num_t>(M) * pow(abs(M), pw < 0 ? num_t(1) / num_t(abs(pw)) : num_t(pw));
     std::cout << D << ", " << M << ", " << d << std::endl << std::flush;
   }
   return 0;
