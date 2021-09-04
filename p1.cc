@@ -24,13 +24,14 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int  stat(80);
-  int  var(2);
+  int  var(sqrt(num_t(int(stat))));
   int  step(1);
   if(argc < 2)
     std::cerr << "p1 <condition>? <var>? <step>?" << std::endl;
   else {
     if(1 < argc) stat = std::atoi(argv[1]);
     if(2 < argc) var  = std::atoi(argv[2]);
+    else var = max(2, int(sqrt(num_t(abs(int(stat))))));
     if(3 < argc) step = std::atoi(argv[3]);
   }
   std::cerr << "continue with p1 " << stat << " " << var << " " << step << std::endl;
