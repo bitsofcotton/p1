@@ -42,7 +42,7 @@ We also get the result to make periods, this is because periodical data input ca
       residue = p.next(/* value */);
 
 # How to use (command line):
-    ./p1 <condition len>? <step>? < data.txt
+    ./p1 <condition len>? < data.txt
     # condition < 0 for x-axis arctan scale, otherwise, linear scale.
 
 # Another Download Sites
