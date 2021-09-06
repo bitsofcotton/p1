@@ -27,6 +27,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2)
     std::cerr << "p1 <condition>?" << std::endl;
   if(1 < argc) stat = std::atoi(argv[1]);
+  stat = max(min(stat, int(64)), - int(64));
   const auto var(min(8, max(2, int(sqrt(num_t(abs(int(stat))))))));
   std::cerr << "continue with p1 " << stat << std::endl;
   P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat), var);
