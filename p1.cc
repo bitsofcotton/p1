@@ -24,8 +24,9 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   // N.B. R^8 with index, we use const. twice, R^7 is at last.
-  const auto stat(49);
-  const auto var(5);
+  // N.B. we use invariant, so we need R^9 .
+  const auto stat(121);
+  const auto var(9);
         int  step(1);
   if(argc < 2)
     std::cerr << "p1 <step>?" << std::endl;
