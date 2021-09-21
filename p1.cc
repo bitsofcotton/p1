@@ -23,23 +23,23 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  // N.B. R^8 with index, we use const. twice, R^7 is at last.
-  // N.B. we use invariant, so we need R^9 .
-  const auto stat(121);
-  const auto var(9);
+  const auto stat(144);
+  const auto var(10);
         int  step(1);
   if(argc < 2)
     std::cerr << "p1 <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with p1 " << step << std::endl;
-  P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > p(abs(stat) + abs(step), var, abs(step));
-  P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > > q(abs(stat) + abs(step), var, abs(step));
+  shrinkMatrix<num_t, P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > > p(P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
+  shrinkMatrix<num_t, P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q(P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
+  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-    std::cout << (step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
+    const auto D(d * M);
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
