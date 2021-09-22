@@ -67,7 +67,9 @@ public:
     work[work.size() - 1] = zero;
     const auto work2(makeProgramInvariant<T>(work, T(1)));
     return revertProgramInvariant<T>(make_pair(
-        - invariant.dot(work2.first) / invariant[varlen - 1], work2.second)) *
+        - (invariant.dot(work2.first) -
+             invariant[varlen - 1] * work2.first[varlen - 1]) /
+          invariant[varlen - 1], work2.second)) *
       nin;
   }
   feeder f;
