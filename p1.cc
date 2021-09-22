@@ -30,8 +30,8 @@ int main(int argc, const char* argv[]) {
     std::cerr << "p1 <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with p1 " << step << std::endl;
-  shrinkMatrix<num_t, P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > > p(P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
-  shrinkMatrix<num_t, P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q(P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(abs(stat) + abs(step), var, abs(step)), abs(step));
+  shrinkMatrix<num_t, P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > > p(P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > >(stat, var, abs(step)), abs(step));
+  shrinkMatrix<num_t, P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > > > q(P1I<num_t, arctanFeeder<num_t, idFeeder<num_t> > >(stat, var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
   auto  M(d);
