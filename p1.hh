@@ -50,7 +50,7 @@ public:
     if(! f.full) return T(0);
     // N.B. please use catgp to compete with over learning.
     const auto nin(sqrt(buf.dot(buf)));
-    if(nin == zero) return zero;
+    if(! isfinite(nin) || nin == zero) return zero;
     SimpleMatrix<T> toeplitz(buf.size() - varlen - step + 2, varlen + 3);
     for(int i = 0; i < toeplitz.rows(); i ++) {
       auto work(buf.subVector(i, varlen) / nin);
