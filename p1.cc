@@ -30,16 +30,20 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
+/*
   const auto stat(7 * 7);
   const auto var(7);
+*/
+  const auto stat(3 * 3);
+  const auto var(3);
         int  step(1);
   if(argc < 2)
     std::cerr << "p1 <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with p1 " << step << std::endl;
   // N.B. we need original and pair-wise to denoise.
-  plin_t  p(plin_pt( stat, var, abs(step)), abs(step));
-  patan_t q(patan_pt(stat, var, abs(step)), abs(step));
+  plin_t  p(plin_pt( stat * abs(step), var, abs(step)), abs(step));
+  patan_t q(patan_pt(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
   auto  M(d);
