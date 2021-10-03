@@ -3286,12 +3286,11 @@ template <typename T> static inline SimpleVector<T> linearInvariant(const Simple
 
 // N.B. please refer bitsofcotton/randtools.
 template <typename T> static inline pair<SimpleVector<T>, T> makeProgramInvariant(const SimpleVector<T>& in, const T& index = - T(int(1))) {
-  SimpleVector<T> res(in.size() + (T(int(0)) <= index ? 3 : 2));
+  SimpleVector<T> res(in.size() + (T(int(0)) <= index ? 2 : 1));
   res.setVector(0, in);
   res[in.size()] = T(int(1));
   if(T(int(0)) <= index)
     res[in.size() + 1] = T(index);
-  res[res.size() - 1] = T(int(0));
   T   lsum(0);
   for(int i = 0; i < res.size() - 1; i ++) {
     assert(- T(int(1)) <= res[i] && res[i] <= T(int(1)));
@@ -3302,7 +3301,6 @@ template <typename T> static inline pair<SimpleVector<T>, T> makeProgramInvarian
   // N.B. x_1 ... x_n == 1.
   // <=> x_1 / (x_1 ... x_n)^(1/n) ... == 1.
   if(lsum != T(int(0))) res /= ratio = exp(lsum / T(res.size() - 1));
-  res[res.size() - 1] = T(int(1));
   return make_pair(res, ratio);
 }
 
