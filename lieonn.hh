@@ -3429,8 +3429,8 @@ public:
     for(int i = 1; i < d.size(); i ++) d[i - 1] = move(d[i]);
     d[d.size() - 1] = in;
     if(t ++ < d.size()) return res;
-    auto D(d[0]);
-    for(int i = 1; i < d.size(); i ++) D += d[i] * T(i + 1);
+    auto D(d[0] * T(d.size()));
+    for(int i = 1; i < d.size(); i ++) D += d[i] * T(d.size() - i);
     for(int i = 1; i < m.size(); i ++) m[i - 1] = move(m[i]);
     m[m.size() - 1] = p.next(D /= T(d.size()));
     if(t <= d.size() + m.size()) return res;
