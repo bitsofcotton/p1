@@ -3200,7 +3200,7 @@ template <typename T> SimpleMatrix<T> diff(const int& size0) {
   return size0 < 0 ? ii : dd;
 }
 
-template <typename T> SimpleMatrix<T> diffRecur(const int& size0) {
+template <typename T> SimpleMatrix<T> diffRecur0(const int& size0) {
   const auto size(abs(size0));
   if(! size) {
     static const SimpleMatrix<T> m0;
@@ -3222,8 +3222,8 @@ template <typename T> SimpleMatrix<T> diffRecur(const int& size0) {
     cache.close();
   } else {
     if(2 < size) {
-      const auto d0(diffRecur<T>(   size - 1 ) * T(size - 1));
-      const auto i0(diffRecur<T>(- (size - 1)) * T(size - 1));
+      const auto d0(diffRecur0<T>(   size - 1 ) * T(size - 1));
+      const auto i0(diffRecur0<T>(- (size - 1)) * T(size - 1));
       dd = SimpleMatrix<T>(size, size).O().setMatrix(0, 0, d0);
       ii = SimpleMatrix<T>(size, size).O().setMatrix(0, 0, i0);
       dd.setMatrix(1, 1, dd.subMatrix(1, 1, size - 1, size - 1) + d0);
@@ -3250,6 +3250,20 @@ template <typename T> SimpleMatrix<T> diffRecur(const int& size0) {
     ocache.close();
     cerr << "." << flush;
   }
+  return size0 < 0 ? ii : dd;
+}
+
+template <typename T> SimpleMatrix<T> diffRecur(const int& size0) {
+  const auto size(abs(size0));
+  auto dd(diffRecur0<T>(  size));
+  auto ii(diffRecur0<T>(- size));
+  const auto dd0(dd);
+  const auto ii0(ii);
+  for(int i = 0; i < dd.rows(); i ++)
+    for(int j = 0; j < dd.cols(); j ++) {
+      dd(i, j) += dd0(dd0.rows() - i - 1, dd0.cols() - j - 1);
+      ii(i, j) += ii0(ii0.rows() - i - 1, ii0.cols() - j - 1);
+    }
   return size0 < 0 ? ii : dd;
 }
 
@@ -3432,11 +3446,11 @@ public:
     auto D(d[0] * T(d.size()));
     for(int i = 1; i < d.size(); i ++) D += d[i] * T(d.size() - i);
     for(int i = 1; i < m.size(); i ++) m[i - 1] = move(m[i]);
-    m[m.size() - 1] = p.next(D /= T(d.size()));
+    m[m.size() - 1] = p.next(D /= T(d.size() * (d.size() + 1) / 2));
     if(t <= d.size() + m.size()) return res;
     for(int i = 0; i < m.size(); i ++)
       res += m[i] * T(i + 1);
-    return res /= (T(m.size()) * T(m.size()) * T(m.size() + 1) * T(m.size() + 1) / T(4));
+    return res /= T(m.size() * (m.size() + 1) / 2);
   }
 private:
   int t;
