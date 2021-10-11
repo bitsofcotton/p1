@@ -30,10 +30,6 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-/*
-  const auto stat(7 * 7);
-  const auto var(7);
-*/
   const auto stat(3 * 3);
   const auto var(3);
         int  step(1);
@@ -42,21 +38,8 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with p1 " << step << std::endl;
   // please refer bitsofcotton/p2/catgp.cc
-  vector<plin_t>  p;
-  vector<patan_t> q;
-  if(step < 0) {
-    q.reserve(abs(step));
-    for(int i = 0; i < abs(step); i ++) {
-      const int ss(pow(num_t(int(2)), num_t(int(i))));
-      q.emplace_back(patan_t(patan_pt(stat * ss, var, ss), ss));
-    }
-  } else {
-    p.reserve(abs(step));
-    for(int i = 0; i < abs(step); i ++) {
-      const int ss(pow(num_t(int(2)), num_t(int(i))));
-      p.emplace_back(plin_t(plin_pt(stat * ss, var, ss), ss));
-    }
-  }
+  plin_t  p(plin_pt( stat * abs(step), var, abs(step)), abs(step));
+  patan_t q(patan_pt(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
   auto  M(d);
@@ -64,10 +47,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    M = num_t(int(0));
-    for(int i = 0; i < (step < 0 ? q.size() : p.size()); i ++)
-      M += step < 0 ? q[i].next(d) : p[i].next(d);
-    std::cout << D << ", " << M << std::endl << std::flush;
+    std::cout << D << ", " << (M = step < 0 ? q.next(d) : p.next(d)) << std::endl << std::flush;
   }
   return 0;
 }
