@@ -43,7 +43,7 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <step>? < data.txt
-    # step < 0 for x-axis arctan scale, otherwise, linear scale.
+    # step < 0 for prediction seems fail, otherwise, prediction seems win.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
