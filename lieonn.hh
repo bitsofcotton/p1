@@ -3435,8 +3435,6 @@ public:
   inline shrinkMatrix(pred&& p, const int& len) {
     d.resize(abs(len));
     m.resize(abs(len));
-    w.resize(abs(len));
-    step = len;
     this->p = p;
   }
   inline ~shrinkMatrix() { ; }
@@ -3451,19 +3449,13 @@ public:
     m[m.size() - 1] = p.next(D /= T(d.size() * (d.size() + 1) / 2));
     if(t <= d.size() + m.size()) return res;
     for(int i = 0; i < m.size(); i ++)
-      if(step < 0 ? (            (w[i] += in * m[i]) < T(int(0)))
-                  : (T(int(0)) < (w[i] += in * m[i])))
-        w[i] = m[i] = T(int(0));
-      else
-        res += m[i];
-    return res /= T(m.size());
+      res += m[i] * T(i + 1);
+    return res /= T(m.size() * (m.size() + 1) / 2);
   }
 private:
   int t;
-  int step;
   vector<T> d;
   vector<T> m;
-  vector<T> w;
   pred p;
 };
 
