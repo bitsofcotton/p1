@@ -19,7 +19,6 @@
 typedef myfloat num_t;
 #include "p1.hh"
 typedef P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_t;
-typedef P1I<num_t, deltaFeeder<num_t, arctanFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > ptan_t;
 
 #if defined(_FLOAT_BITS_)
 #undef int
@@ -36,8 +35,10 @@ int main(int argc, const char* argv[]) {
     std::cerr << argv[0] << " <step>?" << std::endl;
   if(1 < argc) step = std::atoi(argv[1]);
   std::cerr << "continue with " << argv[0] << " " << step << std::endl;
-  shrinkMatrix<num_t, plin_t> p(plin_t(stat * abs(step), var, abs(step)), abs(step));
-  shrinkMatrix<num_t, ptan_t> q(ptan_t(stat * abs(step), var, abs(step)), abs(step));
+  shrinkMatrix<num_t, plin_t> p;
+  plin_t q;
+  if(step < 0) q = plin_t(step * step, abs(step));
+  else p = shrinkMatrix<num_t, plin_t>(plin_t(stat * abs(step), var, abs(step)), abs(step));
   std::string s;
   num_t d(0);
   auto  M(d);
