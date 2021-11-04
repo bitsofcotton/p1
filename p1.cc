@@ -18,7 +18,7 @@
 #include "lieonn.hh"
 typedef myfloat num_t;
 #include "p1.hh"
-typedef P1I<num_t, linearFeeder<num_t, idFeeder<num_t> > > plin_t;
+typedef P1I<num_t, idFeeder<num_t> > plin_t;
 
 #if defined(_FLOAT_BITS_)
 #undef int
