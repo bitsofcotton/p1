@@ -37,8 +37,8 @@ int main(int argc, const char* argv[]) {
   std::cerr << "continue with " << argv[0] << " " << step << std::endl;
   shrinkMatrix<num_t, plin_t> p;
   plin_t q;
-  if(step < 0) q = plin_t(step * step, abs(step));
-  else p = shrinkMatrix<num_t, plin_t>(plin_t(stat * abs(step), var, abs(step)), abs(step));
+  if(step < 0) q = plin_t(max(abs(step) + int(3), (step - 1) * (step - 1)), abs(step));
+  else p = shrinkMatrix<num_t, plin_t>(plin_t(stat * (step + 1), var, step), step);
   std::string s;
   num_t d(0);
   auto  M(d);
