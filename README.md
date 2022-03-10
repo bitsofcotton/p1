@@ -45,6 +45,10 @@ We also get the result to make periods, this is because periodical data input ca
     ./p1 <step>? < data.txt
     # step < 0 for raw step dimension, otherwise, 3 term per step average.
 
+# Possibly bug contained:
+On each lienar invariant loop, we calculate only once P^t1.
+This is obscure to be correct or not, but if we calculate each loop, it's correct.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
