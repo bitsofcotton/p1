@@ -28,8 +28,8 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  const auto stat(3 * 3);
-  const auto var(3);
+  const auto stat(5 * 5);
+  const auto var(5);
         int  step(1);
   if(argc < 2)
     std::cerr << argv[0] << " <step>?" << std::endl;
