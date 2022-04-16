@@ -28,28 +28,34 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  const auto stat(3 * 3);
-  const auto var(3);
-        int  step(1);
-  if(argc < 2) std::cerr << argv[0] << " <step>? : continue with ";
-  if(1 < argc) step = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << step << std::endl;
+  int var(- 3);
+  if(argc < 2) std::cerr << argv[0] << " <var>? : continue with ";
+  if(1 < argc) var = std::atoi(argv[1]);
+  std::cerr << argv[0] << " " << var << std::endl;
   shrinkMatrix<num_t, plin_t> p;
   plin_t q;
-  if(step < 0)
-    q = plin_t(max(abs(step) + int(3), (step - 1) * (step - 1)), abs(step));
+  if(var < 0)
+    q = plin_t(max((- var) + int(3), (var - 1) * (var - 1)), - var);
   else
-    p = shrinkMatrix<num_t, plin_t>(plin_t(stat * (step + 1), var, step), step);
+    p = shrinkMatrix<num_t, plin_t>(plin_t(var * var * var, var, var), var);
   std::string s;
-  num_t d(0);
+  int   t;
+  num_t d(t ^= t);
+  auto  dd(d);
   auto  Mx(d);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     const auto D(d * M);
-    if(Mx < abs(d)) Mx = abs(d) * num_t(int(2));
-    std::cout << D << ", " << (M = max(- Mx, min(Mx, step < 0 ? q.next(d) : p.next(d) )) ) << std::endl << std::flush;
+    dd += d;
+    if(++ t < abs(var)) {
+      std::cout << D << ", " << M << std::endl << std::flush;
+      continue;
+    }
+    Mx = max(Mx, abs(dd) * num_t(int(2)));
+    std::cout << D << ", " << (M = max(- Mx, min(Mx, var < 0 ? q.next(dd) : p.next(dd) )) ) << std::endl << std::flush;
+    dd = num_t(t ^= t);
   }
   return 0;
 }
