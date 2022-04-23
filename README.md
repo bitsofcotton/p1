@@ -42,15 +42,12 @@ We also get the result to make periods, this is because periodical data input ca
       residue = p.next(/* value */);
 
 # How to use (command line):
-    ./p1 <step>? <look>? < data.txt
-    # step < 0 for raw step dimension, otherwise, 3 term per step average.
-    # abs(step) also specifies average range to be summed.
+    ./p1 <step>? < data.txt
+    # step < 0 for raw step dimension, otherwise, step average.
+    # abs(step) also affects average range to be summed.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
-
-# Refresh Archived
-This repository is close state without external library.
 
