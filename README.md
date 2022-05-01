@@ -42,8 +42,9 @@ We also get the result to make periods, this is because periodical data input ca
       residue = p.next(/* value */);
 
 # How to use (command line):
-    ./p1 <step>? < data.txt
-    # step < 0 for raw step dimension, otherwise, step average.
+    ./p1 <status>? < data.txt
+    # status < 0 for raw, otherwise, status-average.
+    # abs(status) specifies number of status sample point to be used.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
