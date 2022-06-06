@@ -16,4 +16,6 @@ p1:
 	${CXX} ${CXXFLAGS} -static -o p1 p1.cc
 p1-32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p1-32 p1.cc
+p1-64:
+	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o p1-64 p1.cc
 
