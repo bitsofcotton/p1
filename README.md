@@ -1,6 +1,5 @@
 # bitsofcotton/p1
-Eliminate invariant structure from given series if argument is proper and
-input series is deterministic with or without inner status.
+Generic predictor on expectation value strongly depends on data itself.
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
@@ -43,8 +42,6 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <status>? < data.txt
-    # status < 0 for raw, otherwise, status-average.
-    # abs(status) specifies number of status sample point to be used.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
