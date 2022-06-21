@@ -32,9 +32,18 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  assert(0 < status);
   const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
-  shrinkMatrix<num_t, plin_t> p(plin_t(status, var, var), var);
+  shrinkMatrix<num_t, plin_t> p;
+  idFeeder<num_t> q;
+  SimpleVector<num_t> q0;
+  if(status <= 0) {
+    q = idFeeder<num_t>(max(int(1), int(- status)));
+    q0.resize(max(int(1), int(- status)) + 1);
+    q0.O();
+  } else {
+    const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
+    p = shrinkMatrix<num_t, plin_t>(plin_t(status, var, var), var);
+  }
   std::string s;
   num_t d(int(0));
   auto  Mx(d);
@@ -45,7 +54,20 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     Mx = max(Mx, abs(d) * num_t(int(2)));
-    std::cout << D << ", " << (M = max(- Mx, min(Mx, p.next(d) )) ) << ", " << (S += D) << std::endl << std::flush;
+    if(! status) M += d;
+    else if(status == - 1) M = d;
+    else if(status < 0) {
+      auto qm(makeProgramInvariant<num_t>(q.next(d)));
+      q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
+      auto qq(q);
+      auto qqm(makeProgramInvariant<num_t>(qq.next(d)));
+      M = revertProgramInvariant<num_t>(make_pair(
+        - (q0.dot(qqm.first) - q0[q0.size() - 2] *
+             qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
+        qqm.second)) /
+        pow(qqm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
+    } else M = max(- Mx, min(Mx, p.next(d) ));
+    std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
   }
   return 0;
 }

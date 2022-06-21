@@ -42,6 +42,10 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <status>? < data.txt
+    #  0 <  status for plain fixed size prediction on expectation value.
+    #  0 == status for return to average.
+    # -1 == status for copycat one step before.
+    #  status < 0  for average structure on fixed generation vector.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
