@@ -54,8 +54,8 @@ int main(int argc, const char* argv[]) {
     ins >> d;
     const auto D(d * M);
     Mx = max(Mx, abs(d) * num_t(int(2)));
-    if(! status) M += d;
-    else if(status == - 1) M = d;
+    if(! status) M -= d;
+    else if(status == - 1) M = - d;
     else if(status < 0) {
       auto qm(makeProgramInvariant<num_t>(q.next(d)));
       q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
