@@ -57,14 +57,15 @@ int main(int argc, const char* argv[]) {
     if(! status) M -= d;
     else if(status == - 1) M = - d;
     else if(status < 0) {
-      auto qm(makeProgramInvariant<num_t>(q.next(d / Mx)));
+      auto qm(makeProgramInvariant<num_t>(q.next(d)));
       q0 += std::move(qm.first) * pow(qm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
       auto qq(q);
-      auto qqm(makeProgramInvariant<num_t>(qq.next(d / Mx)));
+      auto qqm(makeProgramInvariant<num_t>(qq.next(d)));
       M = revertProgramInvariant<num_t>(make_pair(
         - (q0.dot(qqm.first) - q0[q0.size() - 2] *
              qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
-        qqm.second));
+           qqm.second)) /
+          pow(qqm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
     } else M = max(- Mx, min(Mx, p.next(d) ));
     std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
   }
