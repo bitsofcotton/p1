@@ -2034,7 +2034,7 @@ template <typename T> inline T SimpleMatrix<T>::determinant(const bool& nonzero)
 }
 
 template <typename T> inline SimpleVector<T> SimpleMatrix<T>::solve(SimpleVector<T> other) const {
-  assert(0 <= entity.size() && 0 <= ecols && entity.size() == ecols && entity.size() == other.size());
+  if(! (0 <= entity.size() && 0 <= ecols && entity.size() == ecols && entity.size() == other.size()) ) throw "SimpleMatrix<T>::Solve error";
   auto work(*this);
   for(int i = 0; i < entity.size(); i ++) {
     int xchg = i;
@@ -2133,32 +2133,28 @@ template <typename T> inline SimpleMatrix<T> SimpleMatrix<T>::SVD() const {
   //        <=> R^t Q^t U Lambda' = R^-1 Q^t U Lambda'^(- 1)
   //      A := R^t, B := Q^t U, C := Lambda'
   //          (A + A^-t)*B*(C + C^-1) - A^-t B C - A B C^-1 = 2 A B C
-  //        <=> (A + A^-t) * B * (C + C^-1) = (2I + A^-tA^-1 + A^(1+t)) * ABC
-  //        <=> B = A^-1 (2I + A^-(t+1) + A^(1+t))^-1 (A + A^-t) * B *
+  //        <=> (A + A^-t) * B * (C + C^-1) = (2I + 2A^-tA^-1) * ABC
+  //        <=> B = A^-1 (2I + 2A^-(t+1))^-1 (A + A^-t) * B *
   //                (C + C^-1) * C^-1
   // N.B. since S is symmetric, singular value on SS^t = QRR^tQ^t is
   //      same square root as singular value on R.
   const auto S(*this * transpose());
-  const auto SS(S * S);
-  const auto R(SS.QR() * SS);
   const auto Qt(S.QR());
   const auto A((Qt * S).transpose());
   const auto A1t(A * A.transpose());
-        auto Left(A.inverse() * (SimpleMatrix<T>(A.rows(), A.cols()).I(T(int(2))) + A1t.inverse() + A1t).inverse() * (A + A.transpose().inverse()));
+        auto Left(A.inverse() * (SimpleMatrix<T>(A.rows(), A.cols()).I(T(int(2))) + A1t.inverse() * T(int(2))).inverse() * (A + A.transpose().inverse()));
         auto Right(SimpleMatrix<T>(Left.rows(), Left.cols()).O());
   for(int i = 0; i < Right.rows(); i ++)
-    Right(i, i) = abs(R(i, i)) + T(int(1));
+    Right(i, i) = A(i, i) * A(i, i) + T(int(1));
+  Left  /= sqrt(norm2M(Left));
+  Right /= sqrt(norm2M(Right));
   // N.B. now we have B = Left * B * Right.
-  static const T p(int(exp(sqrt(- log(epsilon())) / T(int(2)))));
-  try {
-    return (pow(Left /= sqrt(norm2M(Left)), p) * pow(Right /= sqrt(norm2M(Right)), p)).QR() * Qt;
-  } catch(const char* e) {
-    /* might be Left or Right are sparse. */
-    /* in this case, we should separate them by LDLt S matrix. */
-    /* no code in here. */
-    ;
+  static const int p(ceil(sqrt(- log(epsilon()))));
+  for(int i = 0; i < p; i ++) {
+    Left  *= Left;
+    Right *= Right;
   }
-  return Left.O();
+  return (Left * Right).QR() * Qt;
 }
 
 template <typename T> inline pair<pair<SimpleMatrix<T>, SimpleMatrix<T> >, SimpleMatrix<T> > SimpleMatrix<T>::SVD(const SimpleMatrix<T>& src) const {
@@ -2245,16 +2241,17 @@ template <typename T> inline SimpleVector<T> SimpleMatrix<T>::zeroFix(const Simp
   // sort by: |<Q^t(1), q_k>|, we subject to minimize each, to do this,
   //   maximize minimum q_k orthogonality.
   for(int i = 0, idx = 0; i < this->rows() - 1 && idx < fidx.size(); idx ++) {
-    if(T(int(0)) < fidx[idx].first &&
-       fidx[idx].first < sqrt(one.dot(one)) * epsilon()) {
-      *this = Pb;
-      break;
-    }
     const auto& iidx(fidx[idx].second);
     const auto  orth(this->col(iidx));
     const auto  n2(orth.dot(orth));
     if(n2 <= epsilon())
       continue;
+    if(T(int(0)) < fidx[idx].first &&
+       fidx[idx].first < sqrt(one.dot(one)) * epsilon()) {
+      *this = Pb;
+      break;
+    }
+    Pb = *this;
     // N.B. O(mn) can be writed into O(lg m + lg n) in many core cond.
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(static, 1)
@@ -2461,7 +2458,7 @@ template <typename T> static inline SimpleMatrix<T> log(const SimpleMatrix<T>& m
   const auto c(sqrt(norm2M(m)) * T(2));
   const auto residue(SimpleMatrix<T>(m.rows(), m.cols()).I() - m / c);
         auto buf(residue);
-  res.I(c);
+  res.I(log(c));
   for(int i = 1; 0 < i && i < cut; i ++) {
     res -= buf / T(i);
     buf *= residue;

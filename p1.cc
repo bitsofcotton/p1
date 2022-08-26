@@ -64,8 +64,7 @@ int main(int argc, const char* argv[]) {
       M = revertProgramInvariant<num_t>(make_pair(
         - (q0.dot(qqm.first) - q0[q0.size() - 2] *
              qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
-           qqm.second)) /
-          pow(qqm.second, ceil(- log(SimpleMatrix<num_t>().epsilon())));
+           qqm.second));
     } else M = max(- Mx, min(Mx, p.next(d) ));
     std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
   }
