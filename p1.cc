@@ -63,8 +63,8 @@ int main(int argc, const char* argv[]) {
       auto qqm(makeProgramInvariant<num_t>(qq.next(d)));
       M = revertProgramInvariant<num_t>(make_pair(
         - (q0.dot(qqm.first) - q0[q0.size() - 2] *
-             qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2],
-           qqm.second));
+             qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2] /
+             num_t(int(q0.size())), qqm.second));
     } else M = max(- Mx, min(Mx, p.next(d) ));
     std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
   }
