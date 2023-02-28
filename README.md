@@ -52,3 +52,6 @@ We also get the result to make periods, this is because periodical data input ca
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
 
+# Real close
+2023/02/28
+

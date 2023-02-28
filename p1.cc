@@ -48,7 +48,6 @@ int main(int argc, const char* argv[]) {
   num_t d(int(0));
   auto  Mx(d);
   auto  M(d);
-  auto  S(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
@@ -66,7 +65,7 @@ int main(int argc, const char* argv[]) {
              qqm.first[qqm.first.size() - 2]) / q0[q0.size() - 2] /
              num_t(int(q0.size())), qqm.second));
     } else M = max(- Mx, min(Mx, p.next(d) ));
-    std::cout << D << ", " << M << ", " << (S += D) << std::endl << std::flush;
+    std::cout << D << ", " << M << std::endl << std::flush;
   }
   return 0;
 }
