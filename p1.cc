@@ -17,7 +17,6 @@
 #endif
 #include "lieonn.hh"
 typedef myfloat num_t;
-#include "p1.hh"
 typedef P1I<num_t, idFeeder<num_t> > plin_t;
 
 #if defined(_FLOAT_BITS_)
@@ -32,8 +31,8 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
-  shrinkMatrix<num_t, plin_t> p;
+  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(2)))));
+  plin_t p;
   idFeeder<num_t> q;
   SimpleVector<num_t> q0;
   if(status <= 0) {
@@ -42,7 +41,7 @@ int main(int argc, const char* argv[]) {
     q0.O();
   } else {
     const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
-    p = shrinkMatrix<num_t, plin_t>(plin_t(status, var, var), var);
+    p = plin_t(status, var);
   }
   std::string s;
   num_t d(int(0));
