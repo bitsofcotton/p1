@@ -17,7 +17,6 @@
 #endif
 #include "lieonn.hh"
 typedef myfloat num_t;
-typedef P1I<num_t, idFeeder<num_t> > plin_t;
 
 #if defined(_FLOAT_BITS_)
 #undef int
@@ -32,17 +31,14 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(2)))));
-  plin_t p;
-  idFeeder<num_t> q;
+  PBond<num_t, P1I<num_t>, idFeeder<num_t>, deltaFeeder<num_t, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > p;
   SimpleVector<num_t> q0;
+  idFeeder<num_t> q(max(int(1), int(abs(status))));
   if(status <= 0) {
-    q = idFeeder<num_t>(max(int(1), int(- status)));
     q0.resize(max(int(1), int(- status)) + 1);
     q0.O();
-  } else {
-    const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)))));
-    p = plin_t(status, var);
-  }
+  } else
+    p = PBond<num_t, P1I<num_t>, idFeeder<num_t>, deltaFeeder<num_t, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > >(P1I<num_t>(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(3)) ))), status);
   std::string s;
   num_t d(int(0));
   auto  Mx(d);
