@@ -30,7 +30,6 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
-  const int var(max(num_t(int(2)), pow(num_t(status), num_t(int(1)) / num_t(int(2)))));
   PBond<num_t, P1I<num_t>, idFeeder<num_t>, deltaFeeder<num_t, invFeeder<num_t, sumFeeder<num_t, idFeeder<num_t> > > > > p;
   SimpleVector<num_t> q0;
   idFeeder<num_t> q(max(int(1), int(abs(status))));
