@@ -59,4 +59,5 @@ We also get the result to make periods, this is because periodical data input ca
 2023/03/31 merge prand.
 2023/04/02 merge catg fix.
 2023/04/03 merge.
+2023/04/05 fix makeProgramInvariant scale accuracy stability.
 
