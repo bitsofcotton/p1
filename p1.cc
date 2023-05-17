@@ -31,7 +31,8 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 <= status);
-  PBond<num_t, P1I<num_t> > p(P1I<num_t>(int(sqrt(num_t(int(status))))), status);
+  // XXX: 2^2^5 : 2^6^2 : upper bound invariant reasonable causes 11 dimension.
+  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::min(int(11), int(sqrt(num_t(int(status)))))), status);
   std::string s;
   num_t d(int(0));
   auto  M(d);
