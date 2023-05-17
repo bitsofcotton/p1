@@ -32,7 +32,8 @@ int main(int argc, const char* argv[]) {
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 <= status);
   // XXX: 2^2^5 : 2^6^2 : upper bound invariant reasonable causes 11 dimension.
-  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::min(int(11), int(sqrt(num_t(int(status)))))), status);
+  //                      concat them, it's up to 6.
+  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::min(int(6), int(sqrt(num_t(int(status)))))), status);
   std::string s;
   num_t d(int(0));
   auto  M(d);
