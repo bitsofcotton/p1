@@ -31,10 +31,9 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
   assert(0 <= status);
-  // XXX: 2^2^5 : 2^6^2 : upper bound invariant reasonable causes 11 dimension.
-  //                      concat them, it's up to 6.
-  // XXX: randtools meaning, it's up to 3 if we avoid internal
-  //      variable-to-variable observation matter.
+  // N.B. randtools meaning, there exists v2v tanglement.
+  //      so to avoid them, we only use 3 dimension for original points.
+  //      P1I treats input as non commutative ones, so up to 7 is no chance.
   PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::max(int(1), std::min(int(3), int(sqrt(num_t(int(status))))))), std::max(int(3), status));
   std::string s;
   num_t d(int(0));
