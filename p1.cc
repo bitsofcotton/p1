@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int status(15);
+  int status(24);
   if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << status << std::endl;
@@ -34,7 +34,7 @@ int main(int argc, const char* argv[]) {
   // N.B. randtools meaning, there exists v2v tanglement.
   //      so to avoid them, we only use 3 dimension for original points.
   //      P1I treats input as non commutative ones, so up to 7 is no chance.
-  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::max(int(1), std::min(int(3), int(sqrt(num_t(int(status))))))), std::max(int(3), status));
+  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3), status));
   std::string s;
   num_t d(int(0));
   auto  M(d);
