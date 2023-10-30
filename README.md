@@ -1,5 +1,5 @@
 # bitsofcotton/p1
-Generic predictor on expectation value strongly depends on data itself.
+Generic predictor on \[- alpha, alpha\[-register consisted one function computed streams (up to aleph_0).
 
 # Contexts
 There exists toeplitz matrix and their solver faster algorithms,
@@ -30,21 +30,23 @@ remains is the data another status bits, so recursive of them, cut some invarian
 But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
 # Tips:
-There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes &lt;a, x&gt; \* (x_0 ... x_n)^m (some m) + b for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes tan(&lt;a, \[1, x\]&gt; \* (1 x_0 ... x_n)^m) (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+
+However, the worst case of right side minimum is max rank case. So we might always get some of the one function by giving some input streams.
 
 # General Tips:
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
 
 # How to use:
-    P1I<double, /* feeder */> p(/* status */, /* variable */);
+    PBond<double, P1I<double> > p(P1I<double>(/* variable */), /* status */);
     ...
       residue = p.next(/* value */);
 
 # How to use (command line):
     ./p1 <status>? < data.txt
-    # 0 <  status for plain fixed size prediction on expectation value.
     # 0 == status for return to average.
     # 1 == status for copycat one step before.
+    # 1 <  status for P1I prediction.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
@@ -64,4 +66,5 @@ We also get the result to make periods, this is because periodical data input ca
 2023/06/24 fix to avoid observation matters.
 2023/07/07 update the .cc comment.
 2023/07/08 invariant cause +1, ok.
+2023/10/30 update readme.
 
