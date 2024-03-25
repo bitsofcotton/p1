@@ -34,7 +34,7 @@ int main(int argc, const char* argv[]) {
   // N.B. randtools meaning, there exists v2v tanglement.
   //      so to avoid them, we only use 3 dimension for original points.
   //      P1I treats input as non commutative ones, so up to 7 is no chance.
-  PBond<num_t, P1I<num_t> > p(P1I<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3), status));
+  PBond<num_t, P01<num_t> > p(P01<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3), status) + 2);
   std::string s;
   num_t d(int(0));
   auto  M(d);

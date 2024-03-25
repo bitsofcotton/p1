@@ -38,9 +38,9 @@ However, the worst case of right side minimum is max rank case. So we might alwa
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
 
 # How to use:
-    PBond<double, P1I<double> > p(P1I<double>(/* variable */), /* status */);
+    PBond<double, P01<double> > q(P01<double>(/* variable */), /* status */);
     ...
-      residue = p.next(/* value */);
+      residue = q.next(/* value */);
 
 # How to use (command line):
     ./p1 <status>? < data.txt
@@ -67,4 +67,5 @@ We also get the result to make periods, this is because periodical data input ca
 2023/07/07 update the .cc comment.
 2023/07/08 invariant cause +1, ok.
 2023/10/30 update readme. copy structure reliably with randtools meaning.
+2024/03/25 P1I to P01 change.
 
