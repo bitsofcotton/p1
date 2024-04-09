@@ -48,6 +48,21 @@ We also get the result to make periods, this is because periodical data input ca
     # 1 == status for copycat one step before.
     # 1 <  status for P1I prediction.
 
+# Tips
+If we heavy tune original input with P1 alternative, we get the form:
+
+tan(A\[x, y, z, 1\])==x, tan(A^k\[x, y, z, 1\])==x^(+k \* A.rows)
+
+So if we can find some better step to step in or only we average input:
+
+tan\<a, \[x, y, z, 1\]\> == x, tan\<a^2, \[x, y, z, 1\]\> == x+.
+
+So this concludes: x0 == tan\<a, \[x_-4, x_-3, x_-2, x_-1\]\> structures on some of the step or some average on input.
+
+So in fact, we must get average of input to predict with, but this isn't.
+
+Either, we get with this: a in R^n, a^k definition on tan\<a,x\> meaning.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -68,4 +83,5 @@ We also get the result to make periods, this is because periodical data input ca
 2023/07/08 invariant cause +1, ok.
 2023/10/30 update readme. copy structure reliably with randtools meaning.
 2024/03/25 P1I to P01 change.
+2024/04/09 add some of the tips.
 
