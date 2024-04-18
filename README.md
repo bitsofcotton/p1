@@ -67,7 +67,7 @@ Either, we get with this: a in R^n, a^k definition on tan\<a,x\> meaning.
 We want to take plain makeProgramInvariant revert invariant.
 However, we use invariant on R^n instead of them.
 
-The difference between the randtools description and p1 implementation is:
+The difference between the randtools description and this p1 implementation is:
 
 -1 &leq; Ax &leq; 1 vs. -1 &leq; Ax + \[..., m_k, ...\] &leq; 1 which m_k in Z.
 
@@ -75,7 +75,13 @@ This is to make x in \[0,1\]^n, Ax in Z^n', ||Ax + m|| -&gt; epsilon with finite
 In ideal, large ||x||, ||m|| causes ||Ax + m|| -&gt; epsilon because m=-Ax exists on such accuracy.
 In randtools, we can adjust \[0,1\] to \[0,alpha\] input range with having some period, so the condition satisfies in such case.
 
-To make such condition valid, our p1 implementation causes: ||Ax|| -&gt; |some alpha| on geometric average meaning, however, this isn't guarantees to satisfy the ||x|| : ||m|| condition.
+To make such condition valid, our p1 implementation causes: ||Ax|| -&gt; |some alpha| on geometric average meaning, however, this isn't directly guarantees to satisfy the ||x|| : ||m|| condition.
+
+In opposite side, ||Px'|| -&gt; |alpha|, |alpha| &leq;&leq; 1/sqrt(min(P.rows(), P.cols())) : const., this isn't optimal upper bound.
+So ||x|| := 1 optimization causes to have complexity depend upper bound they have constant upper bound on the taken invariant result.
+Also, the calculation itself has upper bound on complexity floating point accuracy, so if former one vs. latter one has a better result, we can take they're a hard tuned one.
+
+The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &leq; .5 x log_2 x, this region is somewhere 1 \< x and |y| \< 2/sqrt(log(2)) sqrt(x log(x)), where y is variable number in calculation with a single bit per each variable, x is P.rows, so when this condition satisfies, there exists hard tuned layer per each, (vector per each)?. Lower bound of |y| is 3 in this context.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
