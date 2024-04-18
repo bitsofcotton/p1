@@ -63,6 +63,20 @@ So in fact, we must get average of input to predict with, but this isn't.
 
 Either, we get with this: a in R^n, a^k definition on tan\<a,x\> meaning.
 
+# Bug
+We want to take plain makeProgramInvariant revert invariant.
+However, we use invariant on R^n instead of them.
+
+The difference between the randtools description and p1 implementation is:
+
+-1 &leq; Ax &leq; 1 vs. -1 &leq; Ax + \[..., m_k, ...\] &leq; 1 which m_k in Z.
+
+This is to make x in \[0,1\]^n, Ax in Z^n', ||Ax + m|| -&gt; epsilon with finite accuracy A.
+In ideal, large ||x||, ||m|| causes ||Ax + m|| -&gt; epsilon because m=-Ax exists on such accuracy.
+In randtools, we can adjust \[0,1\] to \[0,alpha\] input range with having some period, so the condition satisfies in such case.
+
+To make such condition valid, our p1 implementation causes: ||Ax|| -&gt; |some alpha| on geometric average meaning, however, this isn't guarantees to satisfy the ||x|| : ||m|| condition.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -84,4 +98,5 @@ Either, we get with this: a in R^n, a^k definition on tan\<a,x\> meaning.
 2023/10/30 update readme. copy structure reliably with randtools meaning.
 2024/03/25 P1I to P01 change.
 2024/04/09 add some of the tips.
+2024/04/18 update readme.
 
