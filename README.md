@@ -44,6 +44,7 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <status>? < data.txt
+    # 0 >  status for return to range average.
     # 0 == status for return to average.
     # 1 == status for copycat one step before.
     # 1 <  status for P1I prediction.
@@ -105,4 +106,5 @@ The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &le
 2024/03/25 P1I to P01 change.
 2024/04/09 add some of the tips.
 2024/04/18 update readme.
+2024/05/06 bitsofcotton/p0:p0.cc argv\[1\]\<0 case integrated into p1.cc.
 
