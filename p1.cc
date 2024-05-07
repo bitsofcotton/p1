@@ -36,13 +36,15 @@ int main(int argc, const char* argv[]) {
   //      P1I treats input as non commutative ones, so up to 7 is no chance.
   PBond<num_t, P01<num_t> > p(P01<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3), status) + 2);
   std::string s;
-  num_t d(int(0));
+  int   t(0);
+  num_t d(t);
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
     std::cout << d * M << ", ";
-    if(status < 0) {
+    if(status == - 1) M -= d * num_t(++ t);
+    else if(status < 0) {
       const auto& ff(f.next(d));
       if(f.full) {
         M = num_t(int(0));

@@ -44,7 +44,8 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <status>? < data.txt
-    # 0 >  status for return to range average.
+    # -1 > status for return to range average.
+    # -1 == status for return to average but weight heavy to heavy.
     # 0 == status for return to average.
     # 1 == status for copycat one step before.
     # 1 <  status for P1I prediction.
