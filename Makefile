@@ -10,12 +10,18 @@ CXXFLAGS+=	-Oz -mtune=native -gfull
 LDFLAGS+=	-lc++
 
 clean:
-	@rm -rf p1 p1-32
-all:	p1 p1-32
+	@rm -rf p1 p1-32 p1j p1j32
+all:	p1 p1-32 p1j p1j32
 p1:
 	${CXX} ${CXXFLAGS} -static -o p1 p1.cc
 p1-32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p1-32 p1.cc
 p1-64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o p1-64 p1.cc
+p1j:
+	${CXX} ${CXXFLAGS} -static -D_JAM_ -o p1j p1.cc
+p1j32:
+	${CXX} ${CXXFLAGS} -static -D_JAM_ -D_FLOAT_BITS_=32 -o p1j32 p1.cc
+p1j64:
+	${CXX} ${CXXFLAGS} -static -D_JAM_ -D_FLOAT_BITS_=64 -o p1j64 p1.cc
 
