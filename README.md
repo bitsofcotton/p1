@@ -109,4 +109,5 @@ The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &le
 2024/04/18 update readme.
 2024/05/06 bitsofcotton/p0:p0.cc argv\[1\]\<0 case integrated into p1.cc.
 2024/05/31 compile jammer.
+2024/06/01 fix JAM.
 
