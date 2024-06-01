@@ -43,7 +43,7 @@ int main(int argc, const char* argv[]) {
     std::stringstream ins(s);
     ins >> d;
 #if defined(_JAM_)
-    if(M != num_t(int(0))) d *= sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M);
+    std::cout << (d *= M) << ", ";
 #else
     std::cout << d * M << ", ";
 #endif
@@ -59,10 +59,10 @@ int main(int argc, const char* argv[]) {
     else if(status == 1) M = - d;
     else M = p.next(d);
 #if defined(_JAM_)
-    std::cout << d << std::endl << std::flush;
-#else
-    std::cout << M << std::endl << std::flush;
+    if((M = sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M)) == num_t(int(0)))
+      M = num_t(int(1));
 #endif
+    std::cout << M << std::endl << std::flush;
   }
   return 0;
 }
