@@ -42,11 +42,7 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     ins >> d;
-#if defined(_JAM_)
-    std::cout << (d *= M) << ", ";
-#else
     std::cout << d * M << ", ";
-#endif
     if(status == - 1) M -= d * num_t(++ t);
     else if(status < 0) {
       const auto& ff(f.next(d));
@@ -58,10 +54,6 @@ int main(int argc, const char* argv[]) {
     } else if(! status) M -= d;
     else if(status == 1) M = - d;
     else M = p.next(d);
-#if defined(_JAM_)
-    if((M = sgn<num_t>(arc4random_uniform(2) & 1 ? - M : M)) == num_t(int(0)))
-      M = num_t(int(1));
-#endif
     std::cout << M << std::endl << std::flush;
   }
   return 0;
