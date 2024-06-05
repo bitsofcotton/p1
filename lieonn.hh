@@ -3488,7 +3488,7 @@ public:
     SimpleMatrix<T> invariants(3, nonlinear ? varlen + 2 : varlen);
     invariants.O();
     for(int i0 = 0; i0 < invariants.rows(); i0 ++) {
-      SimpleMatrix<T> toeplitz((in.size() - varlen - step + 2) / skip
+      SimpleMatrix<T> toeplitz((in.size() - varlen - step + 2 - 1) / skip
                                - invariants.rows() + 1, invariants.cols());
       for(int i = i0; i < toeplitz.rows() + i0; i ++) {
         auto work(in.subVector(i * skip, varlen));
