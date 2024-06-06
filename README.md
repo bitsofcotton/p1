@@ -85,6 +85,17 @@ Also, the calculation itself has upper bound on complexity floating point accura
 
 The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &leq; .5 x log_2 x, this region is somewhere 1 \< x and |y| \< 2/sqrt(log(2)) sqrt(x log(x)), where y is variable number in calculation with a single bit per each variable, x is P.rows, so when this condition satisfies, there exists hard tuned layer per each, (vector per each)?. Lower bound of |y| is 3 in this context.
 
+# Tips on this predictor
+We take nonlinear invariant on input stream, then predict their coefficients in the hypothesis coefficient is continuous enough then predict with them.
+
+However, the structure original stream have is: tan(Ax)=tan(\[x,y,z,w,0...\]).
+
+So the p1 uses only the last of the invariant vector we firstly met.
+
+In fact, we should use codimension of all of the invariant and, tan(Ax+)==tan(\[x',y',z',w',0...?\]) with {x',y',z',w'} predictions, this avoid some of the regressions on predictor outputs.
+
+However, we only use the invariant firstly met because this also has some of the senses on the stream if original stream isn't controlled into invariant depend PRNGs.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -112,4 +123,5 @@ The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &le
 2024/06/01 fix JAM.
 2024/06/02 JAM into p2/cr.py.
 2024/06/05 merge latest lieonn.hh.
+2024/06/07 update readme.
 
