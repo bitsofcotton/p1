@@ -124,4 +124,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/02 JAM into p2/cr.py.
 2024/06/05 merge latest lieonn.hh.
 2024/06/07 update readme.
+2024/06/15 add progression.
 

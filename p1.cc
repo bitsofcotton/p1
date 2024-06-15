@@ -27,14 +27,17 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int status(28);
-  if(argc < 2) std::cerr << argv[0] << " <status>? : continue with ";
+  int progression(1);
+  if(argc < 2) std::cerr << argv[0] << " <status>? <progression num>?: continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << status << std::endl;
+  if(2 < argc) progression = std::atoi(argv[2]);
+  assert(0 < progression);
+  std::cerr << argv[0] << " " << status << " " << progression << std::endl;
   idFeeder<num_t> f(std::max(int(1), abs(status)));
   // N.B. randtools meaning, there exists v2v tanglement.
   //      so to avoid them, we only use 3 dimension for original points.
   //      P1I treats input as non commutative ones, so up to 7 is no chance.
-  PBond<num_t, P01<num_t> > p(P01<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3 + 2), status));
+  Pprogression<num_t, PBond<num_t, P01<num_t> > > p(PBond<num_t, P01<num_t> >(P01<num_t>(std::max(int(1), std::min(int(4), int(sqrt(num_t(int(status))))))), std::max(int(3 + 2), status)), progression);
   std::string s;
   int   t(0);
   num_t d(t);
