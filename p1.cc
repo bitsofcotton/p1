@@ -31,7 +31,7 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <status>? <progression num>?: continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
   if(2 < argc) progression = std::atoi(argv[2]);
-  assert(0 < progression);
+  assert(progression);
   std::cerr << argv[0] << " " << status << " " << progression << std::endl;
   idFeeder<num_t> f(std::max(int(1), abs(status)));
   // N.B. randtools meaning, there exists v2v tanglement.
