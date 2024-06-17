@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int status(28);
+  int status(5 * 5 - 4 + 2);
   int progression(1);
   if(argc < 2) std::cerr << argv[0] << " <status>? <progression num>?: continue with ";
   if(1 < argc) status = std::atoi(argv[1]);
