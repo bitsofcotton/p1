@@ -43,14 +43,10 @@ We also get the result to make periods, this is because periodical data input ca
       residue = q.next(/* value */);
 
 # How to use (command line):
-    ./p1 <status>? <progression>? < data.txt
-    # -1 > status for return to range average.
-    # -1 == status for return to average but weight heavy to heavy.
-    # 0 == status for return to average.
-    # 1 == status for copycat one step before.
-    # 1 <  status for P1I prediction.
-    #   0 >  progression for next 1 step prediction with some deltas.
-    #   0 <  progression for next |progression| step prediction.
+    ./p1 <progression>? < data.txt
+    # progression <  0 for next 1 step prediction with some deltas.
+    # progression == 0 for return to average prediction.
+    # 0 < progression  for next |progression| step prediction.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -130,5 +126,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/16 add progression \<0 argv.
 2024/06/17 fix progression.
 2024/06/19 merge latest lieonn.
-2024/06/21 merge latest lieonn.
+2024/06/21 merge latest lieonn. INCLUDES command line argument change.
 
