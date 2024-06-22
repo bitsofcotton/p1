@@ -44,9 +44,10 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <progression>? < data.txt
-    # progression <  0 for next 1 step prediction with some deltas.
-    # progression == 0 for return to average prediction.
-    # 0 < progression  for next |progression| step prediction.
+    # progression <  - 1 for next |progression| step prediction.
+    # progression == - 1 for flip one step backward.
+    # progression ==   0 for return to average prediction.
+    # 0    < progression  for next 1 step prediction with some deltas.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -127,4 +128,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/17 fix progression.
 2024/06/19 merge latest lieonn.
 2024/06/21 merge latest lieonn. INCLUDES command line argument change.
+2024/06/22 update readme, p01 fatal fix.
 
