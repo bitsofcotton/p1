@@ -128,5 +128,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/17 fix progression.
 2024/06/19 merge latest lieonn.
 2024/06/21 merge latest lieonn. INCLUDES command line argument change.
-2024/06/22 update readme, p01 fatal fix.
+2024/06/22 update readme, p01 fatal fix. make/revert program invariants change friendly to predictors.
 
