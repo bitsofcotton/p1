@@ -26,7 +26,6 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  const int status(5 * 5 - 4 + 2);
   int progression(1);
   if(argc < 2) std::cerr << argv[0] << " <progression num>? : continue with ";
   if(1 < argc) progression = std::atoi(argv[1]);
@@ -40,7 +39,7 @@ int main(int argc, const char* argv[]) {
   // N.B. randtools meaning, there exists v2v tanglement.
   //      so to avoid them, we only use 3 dimension for original points.
   //      P1I treats input as non commutative ones, so up to 7 is no chance.
-  Pprogression<num_t, PBond<num_t, P01<num_t> > > p(PBond<num_t, P01<num_t> >(P01<num_t>(4), status), progression ? progression : 1, status);
+  Pprogression<num_t, P01<num_t> > p(progression ? progression : 1, 5 * 5 - 4 + 2);
   std::string s;
   num_t d(int(0));
   auto  M(d);
