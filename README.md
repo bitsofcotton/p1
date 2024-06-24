@@ -131,4 +131,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/22 update readme, p01 fatal fix. make/revert program invariants change friendly to predictors.
 2024/06/23 large change around class instance initializer, also have progression short range fix.
 2024/06/23 fatal fix around last update.
+2024/06/24 fix addp == true progression case.
 
