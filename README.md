@@ -95,6 +95,17 @@ In fact, we should use codimension of all of the invariant and, tan(Ax+)==tan(\[
 
 However, we only use the invariant firstly met because this also has some of the senses on the stream if original stream isn't controlled into invariant depend PRNGs.
 
+# Tips on timing hack
+We make the hypothesis there's no timing-special streams.
+
+This is because we take invariants on each sliding window.
+
+If we recursively take invariant's invariant, either the timing special streams cannot be predicted because they are also invariant's invariant sliding window cannot avoid them in general.
+
+So we only make the hypothesis invariant is continuous enough.
+
+So to shoot timing hack attack, we should take some of the eigen vector conditions on each of long enough input sliding window, however, they're better handled with ongoing deep learnings with large enough internal states. So it's none of our business (is too complex one we take).
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -133,4 +144,5 @@ However, we only use the invariant firstly met because this also has some of the
 2024/06/23 fatal fix around last update.
 2024/06/24 fix addp == true progression case.
 2024/06/26 fix Ppersistent.
+2024/06/30 merge latest lieonn, update readme, leave with this.
 
