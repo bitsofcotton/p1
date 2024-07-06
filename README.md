@@ -30,7 +30,7 @@ remains is the data another status bits, so recursive of them, cut some invarian
 But in fact, the result we have is unstable if original status bits is too small because of splitted status causes no use what we calculate into status bits (rank shrink on everywhere).
 
 # Tips:
-There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes tan(&lt;a, \[1, x\]&gt; \* (1 x_0 ... x_n)^m) (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with ||Ax-1\*some x'|| -&gt; min.
+There exists trivial invariant that if((for all k, x_k==a_k) or ...) return 1; program. This is also described as det diag X x with large enough X, this concludes tan(&lt;a, \[1, x\]&gt; \* (1 x_0 ... x_n)^m) (some m) for the program. But in some case, this condition cannot be satisfised with rank A isn't full, but with this case, we can reduce them with \|\|Ax-1\*some x'\|\| -&gt; min.
 
 However, the worst case of right side minimum is max rank case. So we might always get some of the one function by giving some input streams.
 
@@ -44,7 +44,7 @@ We also get the result to make periods, this is because periodical data input ca
 
 # How to use (command line):
     ./p1 <progression>? < data.txt
-    # progression <  - 1 for next |progression| step prediction.
+    # progression <  - 1 for next \|progression\| step prediction.
     # progression == - 1 for flip one step backward.
     # progression ==   0 for return to average prediction.
     # 0    < progression  for next 1 step prediction with some deltas.
@@ -72,17 +72,17 @@ The difference between the randtools description and this p1 implementation is:
 
 -1 &leq; Ax &leq; 1 vs. -1 &leq; Ax + \[..., m_k, ...\] &leq; 1 which m_k in Z.
 
-This is to make x in \[0,1\]^n, Ax in Z^n', ||Ax + m|| -&gt; epsilon with finite accuracy A.
-In ideal, large ||x||, ||m|| causes ||Ax + m|| -&gt; epsilon because m=-Ax exists on such accuracy.
+This is to make x in \[0,1\]^n, Ax in Z^n', \|\|Ax + m\|\| -&gt; epsilon with finite accuracy A.
+In ideal, large \|\|x\|\|, \|\|m\|\| causes \|\|Ax + m\|\| -&gt; epsilon because m=-Ax exists on such accuracy.
 In randtools, we can adjust \[0,1\] to \[0,alpha\] input range with having some period, so the condition satisfies in such case.
 
-To make such condition valid, our p1 implementation causes: ||Ax|| -&gt; |some alpha| on geometric average meaning, however, this isn't directly guarantees to satisfy the ||x|| : ||m|| condition.
+To make such condition valid, our p1 implementation causes: \|\|Ax\|\| -&gt; \|some alpha\| on geometric average meaning, however, this isn't directly guarantees to satisfy the \|\|x\|\| : \|\|m\|\| condition.
 
-In opposite side, ||Px'|| -&gt; |alpha|, |alpha| &leq;&leq; 1/sqrt(min(P.rows(), P.cols())) : const., this isn't optimal upper bound.
-So ||x|| := 1 optimization causes to have complexity depend upper bound they have constant upper bound on the taken invariant result.
+In opposite side, \|\|Px'\|\| -&gt; \|alpha\|, \|alpha\| &leq;&leq; 1/sqrt(min(P.rows(), P.cols())) : const., this isn't optimal upper bound.
+So \|\|x\|\| := 1 optimization causes to have complexity depend upper bound they have constant upper bound on the taken invariant result.
 Also, the calculation itself has upper bound on complexity floating point accuracy, so if former one vs. latter one has a better result, we can take they're a hard tuned one.
 
-The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &leq; .5 x log_2 x, this region is somewhere 1 \< x and |y| \< 2/sqrt(log(2)) sqrt(x log(x)), where y is variable number in calculation with a single bit per each variable, x is P.rows, so when this condition satisfies, there exists hard tuned layer per each, (vector per each)?. Lower bound of |y| is 3 in this context.
+The dimension limit in this method saturate to take invariant is: .5 (.5y)^2 &leq; .5 x log_2 x, this region is somewhere 1 \< x and \|y\| \< 2/sqrt(log(2)) sqrt(x log(x)), where y is variable number in calculation with a single bit per each variable, x is P.rows, so when this condition satisfies, there exists hard tuned layer per each, (vector per each)?. Lower bound of \|y\| is 3 in this context.
 
 # Tips on this predictor
 We take nonlinear invariant on input stream, then predict their coefficients in the hypothesis coefficient is continuous enough then predict with them.
