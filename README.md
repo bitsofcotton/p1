@@ -106,6 +106,18 @@ So we only make the hypothesis invariant is continuous enough.
 
 So to shoot timing hack attack, we should take some of the eigen vector conditions on each of long enough input sliding window, however, they're better handled with ongoing deep learnings with large enough internal states. So it's none of our business (is too complex one we take).
 
+# Tips on Pperspective
+We use max rank of the input complexity with Pperspective predictor as a majority logic.
+
+This can copy the structure enough in surface (shallow) however not in deep.
+
+Instead of them, we can use recursively handled P01 predictor as a invariant copy structure as recursive invariant.
+Around 6~7 layers are insisted to copy structure enough them.
+We can estimate the reason of them as a mapping on the layer to layer can reduced to 6 layer if they're completely decompositable into binary mappings.
+Also, 4^7 is around 19683 this is around the tangled core f number.
+
+However, the invariant (or some types of the learning) makes some compressions someones says, also recursive of f is needed is the predicted stream is counter measured generated, there's no upper bound of the stream generation and prediction data amount chase.
+
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -145,4 +157,5 @@ So to shoot timing hack attack, we should take some of the eigen vector conditio
 2024/06/24 fix addp == true progression case.
 2024/06/26 fix Ppersistent.
 2024/06/30 merge latest lieonn, update readme, leave with this.
+2024/07/06 merge latest lieonn, update readme.
 
