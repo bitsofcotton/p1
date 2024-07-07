@@ -158,4 +158,5 @@ However, the invariant (or some types of the learning) makes some compressions s
 2024/06/26 fix Ppersistent.
 2024/06/30 merge latest lieonn, update readme, leave with this.
 2024/07/06 merge latest lieonn, update readme.
+2024/07/07 Pprogression uses shorter range but enough internal states.
 
