@@ -116,7 +116,7 @@ Around 6~7 layers are insisted to copy structure enough them.
 We can estimate the reason of them as a mapping on the layer to layer can reduced to 6 layer if they're completely decompositable into binary mappings.
 Also, 4^7 is around 19683 this is around the tangled core f number.
 
-However, the invariant (or some types of the learning) makes some compressions someones says, also recursive of f is needed is the predicted stream is counter measured generated, there's no upper bound of the stream generation and prediction data amount chase.
+However, the invariant (or some types of the learning) makes some compressions someones says, also recursive of f is needed if the predicted stream is counter measured generated, there's no upper bound of the stream generation and prediction data amount chase.
 
 # Another Download Sites
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
