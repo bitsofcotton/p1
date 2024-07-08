@@ -107,7 +107,7 @@ So we only make the hypothesis invariant is continuous enough.
 So to shoot timing hack attack, we should take some of the eigen vector conditions on each of long enough input sliding window, however, they're better handled with ongoing deep learnings with large enough internal states. So it's none of our business (is too complex one we take).
 
 # Tips on Pperspective
-We use max rank of the input complexity with Pperspective predictor as a majority logic.
+We use max rank of the input complexity with Pprogression predictor as a majority logic.
 
 This can copy the structure enough in surface (shallow) however not in deep.
 
@@ -159,4 +159,5 @@ However, the invariant (or some types of the learning) makes some compressions s
 2024/06/30 merge latest lieonn, update readme, leave with this.
 2024/07/06 merge latest lieonn, update readme.
 2024/07/07 Pprogression uses shorter range but enough internal states.
+2024/07/08 merge latest lieonn, fix readme typo.
 
