@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int stat(67);
+  int stat(68);
   if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;
