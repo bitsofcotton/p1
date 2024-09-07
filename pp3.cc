@@ -53,18 +53,19 @@ int main(int argc, const char* argv[]) {
       d.resize(n + 1);
       d.O();
     }
-    for(int i = 0; i < d.size(); i ++) {
+    for(int i = 0; i < d.size(); i ++)
       ins >> d[i];
-      d[i] += num_t(1);
-      d[i] /= num_t(2);
-      ins.ignore(s.size(), ',');
-    }
     if(M.size() - 1 == d.size())
       for(int i = 0; i < d.size(); i ++)
         std::cout << d[i] * M[i] << ", ";
     else
       for(int i = 0; i < d.size(); i ++)
         std::cout << "0, ";
+    for(int i = 0; i < d.size(); i ++) {
+      d[i] += num_t(1);
+      d[i] /= num_t(2);
+      ins.ignore(s.size(), ',');
+    }
     feed.next(d);
     if(feed.full) {
       M = predv<num_t>(feed.res.entity).second;
