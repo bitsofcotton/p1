@@ -48,6 +48,8 @@ We also get the result to make periods, this is because periodical data input ca
     # progression == - 1 for flip one step backward.
     # progression ==   0 for return to average prediction.
     # 0    < progression  for next 1 step prediction with some deltas.
+    ./pp3n? <line>? < data.txt
+    # 0 < line : number of back lines the predictor uses.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -160,4 +162,5 @@ However, the invariant (or some types of the learning) makes some compressions s
 2024/07/06 merge latest lieonn, update readme.
 2024/07/07 Pprogression uses shorter range but enough internal states.
 2024/07/08 merge latest lieonn, fix readme typo.
+2024/09/07 add pp3.cc .
 
