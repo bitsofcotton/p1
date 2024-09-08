@@ -26,26 +26,17 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int stat(68);
+  int stat(64);
   if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;
   assert(0 < stat);
-#if defined(_MULTI_)
   idFeeder<SimpleVector<num_t> > feed(abs(stat));
-#else
-  idFeeder<num_t> feed(abs(stat));
-#endif
   std::string s;
-#if defined(_MULTI_)
   SimpleVector<num_t> d;
-#else
-  num_t d(int(0));
-#endif
   auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
-#if defined(_MULTI_)
     int n(0);
     for(int i = 0; 0 <= i && i < s.size(); i ++)
       if(s[i] == ',') n ++;
@@ -57,7 +48,7 @@ int main(int argc, const char* argv[]) {
       ins >> d[i];
       ins.ignore(s.size(), ',');
     }
-    if(M.size() - 1 == d.size())
+    if(M.size() == d.size())
       for(int i = 0; i < d.size(); i ++)
         std::cout << d[i] * M[i] << ", ";
     else
@@ -69,7 +60,7 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-      M = predv<num_t>(feed.res.entity).second;
+      M = predv<num_t>(feed.res.entity);
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
         M[i] -= num_t(1);
@@ -81,11 +72,6 @@ int main(int argc, const char* argv[]) {
     for(int i = 0; i < M.size() - 1; i ++)
       std::cout << M[i] << ", ";
     std::cout << M[M.size() - 1] << std::endl << std::flush;
-#else
-    ins >> d;
-    std::cout << d * M << ", ";
-    std::cout << (M = PP3<num_t>().next(feed.next(d), feed.res.size() / 6)) << std::endl << std::flush;
-#endif
   }
   return 0;
 }
