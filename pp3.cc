@@ -48,7 +48,7 @@ int main(int argc, const char* argv[]) {
       ins >> d[i];
       ins.ignore(s.size(), ',');
     }
-    if(M.size() == d.size())
+    if(M.size() - 1 == d.size())
       for(int i = 0; i < d.size(); i ++)
         std::cout << d[i] * M[i] << ", ";
     else
@@ -60,11 +60,12 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-      SimpleVector<SimpleVector<num_t> > entity;
-      entity.entity = move(feed.res.entity);
 #define _PREDV_ 3
-      M = predvq<num_t, false>(entity);
-      feed.res.entity = move(entity.entity);
+#if defined(_PNOISE_)
+      M = predvq<num_t, false>(feed.res);
+#else
+      M = predv<num_t, false>(feed.res.entity);
+#endif
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
         M[i] -= num_t(1);
