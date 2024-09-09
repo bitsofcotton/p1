@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
-  int stat(64);
+  int stat(80);
   if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;
@@ -60,7 +60,11 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-      M = predv<num_t>(feed.res.entity);
+      SimpleVector<SimpleVector<num_t> > entity;
+      entity.entity = move(feed.res.entity);
+#define _PREDV_ 3
+      M = predvq<num_t, false>(entity);
+      feed.res.entity = move(entity.entity);
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
         M[i] -= num_t(1);
