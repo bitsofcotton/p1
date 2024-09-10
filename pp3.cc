@@ -62,9 +62,9 @@ int main(int argc, const char* argv[]) {
     if(feed.full) {
 #define _PREDV_ 3
 #if defined(_PNOISE_)
-      M = predvq<num_t, false>(feed.res);
+      M = predvq0<num_t, false>(feed.res);
 #else
-      M = predv<num_t, false>(feed.res.entity);
+      M = predv<  num_t, false>(feed.res.entity);
 #endif
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);

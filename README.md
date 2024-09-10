@@ -164,4 +164,5 @@ However, the invariant (or some types of the learning) makes some compressions s
 2024/07/08 merge latest lieonn, fix readme typo.
 2024/09/07 add pp3.cc .
 2024/09/09 merge some of the calculation result, p8 readme into lieonn predv0, predv also pp3.cc.
+2024/09/10 compat with ddpmopt latest lieonn.hh.
 
