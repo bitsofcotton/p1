@@ -15,6 +15,8 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
+// XXX: we don't need this by some of the test.
+//#define _PREDV_ 3
 #include "lieonn.hh"
 typedef myfloat num_t;
 
@@ -60,7 +62,6 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-#define _PREDV_ 3
 #if defined(_PNOISE_)
       M = predvq0<num_t, false>(feed.res);
 #else
