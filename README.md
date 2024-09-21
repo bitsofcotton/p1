@@ -108,7 +108,7 @@ So we only make the hypothesis invariant is continuous enough.
 
 So to shoot timing hack attack, we should take some of the eigen vector conditions on each of long enough input sliding window, however, they're better handled with ongoing deep learnings with large enough internal states. So it's none of our business (is too complex one we take).
 
-# Tips on Pperspective
+# Tips on Pprogression
 We use max rank of the input complexity with Pprogression predictor as a majority logic.
 
 This can copy the structure enough in surface (shallow) however not in deep.
@@ -120,7 +120,10 @@ Also, 4^7 is around 19683 this is around the tangled core f number.
 
 However, the invariant (or some types of the learning) makes some compressions someones says, also recursive of f is needed if the predicted stream is counter measured generated, there's no upper bound of the stream generation and prediction data amount chase.
 
-# Another Download Sites
+# Leave
+We leave this repository. However, some of the improvements or fixes appears, we can re open here.
+
+# Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
 * https://ja.osdn.net/users/bitsofcotton/
@@ -165,4 +168,5 @@ However, the invariant (or some types of the learning) makes some compressions s
 2024/09/07 add pp3.cc .
 2024/09/09 merge some of the calculation result, p8 readme into lieonn predv0, predv also pp3.cc.
 2024/09/10 compat with ddpmopt latest lieonn.hh.
+2024/09/22 update readme. some of the fixes.
 
