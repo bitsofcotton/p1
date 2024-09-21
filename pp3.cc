@@ -15,8 +15,9 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-// XXX: we don't need this by some of the test.
-//#define _PREDV_ 3
+// N.B. we need this with shorter range.
+//      after this, p0 [0-3] works well on some of tests.
+// #define _PREDV_ 3
 #include "lieonn.hh"
 typedef myfloat num_t;
 
