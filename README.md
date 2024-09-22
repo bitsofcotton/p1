@@ -169,4 +169,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/09 merge some of the calculation result, p8 readme into lieonn predv0, predv also pp3.cc.
 2024/09/10 compat with ddpmopt latest lieonn.hh.
 2024/09/22 update readme. some of the fixes.
+2024/09/22 append dft hack, releave.
 
