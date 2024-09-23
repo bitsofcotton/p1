@@ -15,13 +15,8 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-// N.B. after these, p0 [0-3] works well on some of tests.
-// N.B. we need this with shorter range but not in practical.
 // #define _PREDV_ 3
-// N.B. we need this to reduce gulf glitch around unobserved condition
-//      with self-similarity hack.
-//      we need this in practical.
-#define _PREDV_DFT_ 1
+// #define _PREDV_DFT_ 1
 #include "lieonn.hh"
 typedef myfloat num_t;
 
