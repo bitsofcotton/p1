@@ -41,6 +41,12 @@ We also get the result to make periods, this is because periodical data input ca
     PBond<double, P01<double> > q(P01<double>(/* variable */), /* status */);
     ...
       residue = q.next(/* value */);
+    // or
+    SimpleVector<SimpleVector<double> > input;
+    ...
+      auto resv(predv<num_t, false>(input.entity));
+      // or
+      auto resv(predvp00<num_t, false>(input, int(/* expected continuity */)));
 
 # How to use (command line):
     ./pp3n? <line>? < data.txt

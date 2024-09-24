@@ -60,6 +60,8 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
+      // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
+      //      M = predvp0<num_t, false>(feed.res, feed.res.entity.size() / 3);
       M = predv<num_t, false>(feed.res.entity);
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
