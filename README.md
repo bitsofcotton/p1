@@ -43,11 +43,6 @@ We also get the result to make periods, this is because periodical data input ca
       residue = q.next(/* value */);
 
 # How to use (command line):
-    ./p1 <progression>? < data.txt
-    # progression <  - 1 for next \|progression\| step prediction.
-    # progression == - 1 for flip one step backward.
-    # progression ==   0 for return to average prediction.
-    # 0    < progression  for next 1 step prediction with some deltas.
     ./pp3n? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
 
@@ -170,4 +165,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/10 compat with ddpmopt latest lieonn.hh.
 2024/09/22 update readme. some of the fixes.
 2024/09/22 append dft hack, releave.
+2024/09/24 merge latest ddpmopt result, eliminate p1.cc.
 

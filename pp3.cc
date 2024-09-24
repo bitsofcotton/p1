@@ -15,8 +15,6 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-// #define _PREDV_ 3
-// #define _PREDV_DFT_ 1
 #include "lieonn.hh"
 typedef myfloat num_t;
 
@@ -50,7 +48,7 @@ int main(int argc, const char* argv[]) {
       ins >> d[i];
       ins.ignore(s.size(), ',');
     }
-    if(M.size() - 1 == d.size())
+    if(d.size() <= M.size())
       for(int i = 0; i < d.size(); i ++)
         std::cout << d[i] * M[i] << ", ";
     else
@@ -62,11 +60,7 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-#if defined(_PNOISE_)
-      M = predvq0<num_t, false>(feed.res);
-#else
-      M = predv<  num_t, false>(feed.res.entity);
-#endif
+      M = predv<num_t, false>(feed.res.entity);
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
         M[i] -= num_t(1);
