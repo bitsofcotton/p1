@@ -44,9 +44,9 @@ We also get the result to make periods, this is because periodical data input ca
     // or
     SimpleVector<SimpleVector<double> > input;
     ...
-      auto resv(predv<num_t, false>(input.entity));
+      auto resv(predv<double, false>(input.entity, int(/* expected continuity */)));
       // or
-      auto resv(predvp00<num_t, false>(input, int(/* expected continuity */)));
+      auto resv(predvp0<double, false>(input, int(/* expected continuity */)));
 
 # How to use (command line):
     ./pp3n? <line>? < data.txt
@@ -172,4 +172,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/22 update readme. some of the fixes.
 2024/09/22 append dft hack, releave.
 2024/09/24 merge latest ddpmopt result, eliminate p1.cc.
+2024/09/25 elim dead code. update readme.
 
