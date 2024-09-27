@@ -60,11 +60,9 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
+      auto f(feed.res);
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      //      auto f(feed.res);
-      //      M = predvp0<num_t, false>(f, f.entity.size() / 3);
-      auto f(feed.res.entity);
-      M = predv<num_t, false>(f);
+      M = predv<num_t, false>(f, 0 /* f.entity.size() / 3 */);
       for(int i = 0; i < M.size(); i ++) {
         M[i] *= num_t(2);
         M[i] -= num_t(1);
