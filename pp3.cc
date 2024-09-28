@@ -27,15 +27,18 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int stat(80);
-  if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
+  int step(1);
+  if(argc < 2) std::cerr << argv[0] << " <lines>? <step>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << stat << std::endl;
-  assert(0 < stat);
-  idFeeder<SimpleVector<num_t> > feed(abs(stat));
+  if(2 < argc) step = std::atoi(argv[2]);
+  std::cerr << argv[0] << " " << stat << " " << step << std::endl;
+  assert(0 < stat && 0 < step);
+  idFeeder<SimpleVector<num_t> > feed(stat);
+  idFeeder<SimpleVector<num_t> > f(step);
   std::string s;
   SimpleVector<num_t> d;
-  auto  M(d);
   while(std::getline(std::cin, s, '\n')) {
+    const auto& M(f.res[0]);
     std::stringstream ins(s);
     int n(0);
     for(int i = 0; 0 <= i && i < s.size(); i ++)
@@ -60,20 +63,25 @@ int main(int argc, const char* argv[]) {
     }
     feed.next(d);
     if(feed.full) {
-      auto f(feed.res);
+      auto fin(feed.res);
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = predv<num_t, false>(f, 0 /* f.entity.size() / 3 */);
-      for(int i = 0; i < M.size(); i ++) {
-        M[i] *= num_t(2);
-        M[i] -= num_t(1);
+      f.next(predv1<num_t, false>(fin, 0 /* f.entity.size() / 3 */, step));
+      if(f.full) {
+        for(int i = 0; i < f.res[f.res.size() - 1].size(); i ++) {
+          f.res[f.res.size() - 1][i] *= num_t(2);
+          f.res[f.res.size() - 1][i] -= num_t(1);
+        }
+        for(int i = 0; i < f.res[f.res.size() - 1].size() - 1; i ++)
+          std::cout << f.res[f.res.size() - 1][i] << ", ";
+        std::cout <<
+          f.res[f.res.size() - 1][f.res[f.res.size() - 1].size() - 1] <<
+            std::endl << std::flush;
+        continue;
       }
-    } else {
-      M.resize(d.size());
-      M.O();
     }
-    for(int i = 0; i < M.size() - 1; i ++)
-      std::cout << M[i] << ", ";
-    std::cout << M[M.size() - 1] << std::endl << std::flush;
+    for(int i = 0; i < d.size(); i ++)
+      std::cout << "0, ";
+    std::cout << std::endl << std::flush;
   }
   return 0;
 }
