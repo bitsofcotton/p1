@@ -44,7 +44,7 @@ We also get the result to make periods, this is because periodical data input ca
     // or
     SimpleVector<SimpleVector<double> > input;
     ...
-      auto resv(predv<double, false>(input.entity, int(/* expected continuity */, step)));
+      auto resv(predv<double, false>(input.entity, int(/* expected continuity */), step));
       // or
       auto resv(predvp0<double, false>(input, int(/* expected continuity */), step));
 
@@ -176,4 +176,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/26 update lieonn so some rewrite is needed.
 2024/09/27 update lieonn so some rewrite is needed.
 2024/09/28 add step option.
+2024/09/29 fix readme.
 
