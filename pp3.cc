@@ -32,8 +32,9 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) stat = std::atoi(argv[1]);
   if(2 < argc) step = std::atoi(argv[2]);
   std::cerr << argv[0] << " " << stat << " " << step << std::endl;
-  assert(0 < stat && 0 < step);
+  assert(0 <= stat && 0 < step);
   idFeeder<SimpleVector<num_t> > feed(stat);
+  SimpleVector<SimpleVector<num_t> > feed0;
   idFeeder<SimpleVector<num_t> > f(step);
   std::string s;
   SimpleVector<num_t> d;
@@ -61,11 +62,12 @@ int main(int argc, const char* argv[]) {
       d[i] += num_t(1);
       d[i] /= num_t(2);
     }
-    feed.next(d);
-    if(feed.full) {
-      auto fin(feed.res);
+    if(stat) feed.next(d);
+    else feed0.entity.emplace_back(d);
+    if((stat && feed.full) || (! stat && 80 < feed0.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      f.next(predv1<num_t, false>(fin, 0 /* f.entity.size() / 3 */, step));
+      f.next(predv1<num_t, false>(stat ? feed.res : feed0,
+        0 /* f.entity.size() / 3 */, step));
       if(f.full) {
         for(int i = 0; i < f.res[f.res.size() - 1].size(); i ++) {
           f.res[f.res.size() - 1][i] *= num_t(2);
