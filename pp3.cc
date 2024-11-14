@@ -64,7 +64,7 @@ int main(int argc, const char* argv[]) {
     }
     if(stat) feed.next(d);
     else feed0.entity.emplace_back(d);
-    if((stat && feed.full) || (! stat && 80 < feed0.entity.size()) ) {
+    if((stat && feed.full) || (! stat && 80 + step < feed0.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
       f.next(predv1<num_t, false>(stat ? feed.res : feed0,
         0 /* f.entity.size() / 3 */, step));
