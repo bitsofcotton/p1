@@ -179,5 +179,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/28 add step option.
 2024/09/29 fix readme.
 2024/11/14 fix step \> 2 case, rename output base pp3n to p1, the name is from old implementation reason.
-2024/12/05 backport ddpmopt code brushup.
+2024/12/05 backport ddpmopt code brushup. exchanged argv[1] and argv[2] meaning.
 
