@@ -49,9 +49,12 @@ We also get the result to make periods, this is because periodical data input ca
       auto resv(predvp0<double, false>(input, int(/* expected continuity */), step));
 
 # How to use (command line):
-    ./p1(-(32|64))? <line>? <step>? < data.txt
+    ./p1(-(32|64))? <step>? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
+    #   this takes O(input lines) ratio calculation time.
+    # step == 0 && line == 0 to use persistent prediction.
+    #   this takes O((input lines)^2) ratio calculation time.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -180,4 +183,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/09/29 fix readme.
 2024/11/14 fix step \> 2 case, rename output base pp3n to p1, the name is from old implementation reason.
 2024/12/05 backport ddpmopt code brushup. exchanged argv[1] and argv[2] meaning.
+2024/12/08 new p1 0 0 command line option is default now.
 
