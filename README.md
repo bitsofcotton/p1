@@ -128,6 +128,8 @@ However, the invariant (or some types of the learning) makes some compressions s
 # Leave
 We leave this repository. However, some of the improvements or fixes appears, we can re open here.
 
+Should really leave here.
+
 # Another Download Sites (Leave)
 * https://drive.google.com/drive/folders/1B71X1BMttL6yyi76REeOTNRrpopO8EAR?usp=sharing
 * https://1drv.ms/u/s!AnqkwcwMjB_PaDIfXya_M3-aLXw?e=qzfKcU
@@ -184,4 +186,5 @@ We leave this repository. However, some of the improvements or fixes appears, we
 2024/11/14 fix step \> 2 case, rename output base pp3n to p1, the name is from old implementation reason.
 2024/12/05 backport ddpmopt code brushup. exchanged argv[1] and argv[2] meaning.
 2024/12/08 new p1 0 0 command line option is default now.
+2024/12/13 really leave, close readme.md.
 
