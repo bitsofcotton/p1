@@ -38,15 +38,11 @@ However, the worst case of right side minimum is max rank case. So we might alwa
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
 
 # How to use:
-    PBond<double, P01<double> > q(P01<double>(/* variable */), /* status */);
-    ...
-      residue = q.next(/* value */);
-    // or
     SimpleVector<SimpleVector<double> > input;
     ...
-      auto resv(predv<double, false>(input.entity, int(/* expected continuity */), step));
+      auto resv(predv0<double, 0>(input.entity, string(""), step));
       // or
-      auto resv(predvp0<double, false>(input, int(/* expected continuity */), step));
+      auto resv(predv<double, 0>(input));
 
 # How to use (command line):
     ./p1(-(32|64))? <step>? <line>? < data.txt
@@ -187,4 +183,5 @@ Should really leave here.
 2024/12/05 backport ddpmopt code brushup. exchanged argv[1] and argv[2] meaning.
 2024/12/08 new p1 0 0 command line option is default now.
 2024/12/13 really leave, close readme.md.
+2024/12/14 shoud last update readme.md.
 
