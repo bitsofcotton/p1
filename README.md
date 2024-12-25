@@ -184,4 +184,5 @@ Should really leave here.
 2024/12/08 new p1 0 0 command line option is default now.
 2024/12/13 really leave, close readme.md.
 2024/12/14 shoud last update readme.md.
+2024/12/26 merge latest ddpmopt result, no logic change.
 
