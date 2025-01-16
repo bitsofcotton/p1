@@ -92,9 +92,9 @@ int main(int argc, const char* argv[]) {
           heavy.emplace_back(SimpleVector<num_t>(d.size()).O());
           for(int i = 1; i <= heavy.size(); i ++) {
             auto work(predv0<num_t, 0>(feed0.entity, string(""), i).subVector(0, d.size()));
-            for(int i = 0; i < work.size(); i ++) {
-              work[i] *= num_t(2);
-              work[i] -= num_t(1);
+            for(int j = 0; j < work.size(); j ++) {
+              work[j] *= num_t(2);
+              work[j] -= num_t(1);
             }
             heavy[i - 1] += work;
           }

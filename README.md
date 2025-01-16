@@ -185,4 +185,5 @@ Should really leave here.
 2024/12/13 really leave, close readme.md.
 2024/12/14 shoud last update readme.md.
 2024/12/26 merge latest ddpmopt result, no logic change.
+2025/01/16 loop local variable name change, no binary meaning change with clang16 but might have change on another compilers.
 
