@@ -68,7 +68,7 @@ int main(int argc, const char* argv[]) {
     if((stat && feed.full) || (! stat && 8 + step < feed0.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
       if(step) {
-        auto work(predv0<num_t, 0>(stat ? feed.res.entity : feed0.entity, string(""), step));
+        auto work(predv0<num_t, 0>(stat ? feed.res.entity : feed0.entity, string(""), stat ? feed.res.entity.size() : feed0.entity.size(), step));
         for(int i = 0; i < work.size(); i ++) {
           work[i] *= num_t(2);
           work[i] -= num_t(1);
@@ -91,7 +91,7 @@ int main(int argc, const char* argv[]) {
         if(8 < feed0.entity.size()) {
           heavy.emplace_back(SimpleVector<num_t>(d.size()).O());
           for(int i = 1; i <= heavy.size(); i ++) {
-            auto work(predv0<num_t, 0>(feed0.entity, string(""), i).subVector(0, d.size()));
+            auto work(predv0<num_t, 0>(feed0.entity, string(""), feed0.entity.size(), i).subVector(0, d.size()));
             for(int j = 0; j < work.size(); j ++) {
               work[j] *= num_t(2);
               work[j] -= num_t(1);

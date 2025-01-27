@@ -38,9 +38,9 @@ However, the worst case of right side minimum is max rank case. So we might alwa
 We also get the result to make periods, this is because periodical data input causes mod n program, but this makes if ... status number == program.
 
 # How to use:
-    SimpleVector<SimpleVector<double> > input;
+    std::vector<SimpleVector<double> > input;
     ...
-      auto resv(predv0<double, 0>(input.entity, string(""), step));
+      auto resv(predv0<double, 0>(input, string(""), input.size(), step));
       // or
       auto resv(predv<double, 0>(input));
 
@@ -186,4 +186,5 @@ Should really leave here.
 2024/12/14 shoud last update readme.md.
 2024/12/26 merge latest ddpmopt result, no logic change.
 2025/01/16 loop local variable name change, no binary meaning change with clang16 but might have change on another compilers.
+2025/01/27 merge latest lieonn.
 
