@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <assert.h>
+#include <stdint.h>
 #include <sys/resource.h>
 
 #if defined(_FLOAT_BITS_)
