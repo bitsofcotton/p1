@@ -56,7 +56,11 @@ int main(int argc, const char* argv[]) {
     }
     if(d.size() <= M.size() && (f.full || heavy.size()) )
       for(int i = 0; i < d.size(); i ++)
+#if defined(_CHAIN_)
+        std::cout << d[i] - M[i] << ", ";
+#else
         std::cout << d[i] * M[i] << ", ";
+#endif
     else
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";
