@@ -10,8 +10,8 @@ CXXFLAGS+=	-Oz -mtune=native -gfull
 LDFLAGS+=	-lc++
 
 clean:
-	@rm -rf p1 p1-32 p1c p1c32
-all:	p1 p1-32 p1c p1c32
+	@rm -rf p1 p1-32
+all:	p1 p1-32
 p1:
 	${CXX} ${CXXFLAGS} -static -o p1 pp3.cc
 p1-32:
