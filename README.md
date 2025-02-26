@@ -45,12 +45,10 @@ We also get the result to make periods, this is because periodical data input ca
       auto resv(predv<double, 0>(input));
 
 # How to use (command line):
-    ./p1(-(32|64))? <step>? <line>? < data.txt
+    ./p1(-(32|64))? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     #   this takes O(input lines) ratio calculation time.
-    # step == 0 && line == 0 to use persistent prediction.
-    #   this takes O((input lines)^2) ratio calculation time.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -189,4 +187,5 @@ Should really leave here.
 2025/01/27 merge latest lieonn.
 2025/02/07 add _CHAIN_ compile option.
 2025/02/07 absent and integrate lastup into p2/persistent.cc.
+2025/02/27 elim step parameter on pp3.cc .
 
