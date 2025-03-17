@@ -27,18 +27,21 @@ int main(int argc, const char* argv[]) {
 #define int int64_t
 #endif
   std::cout << std::setprecision(30);
+  int step(1);
   int stat(0);
-  if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
-  if(1 < argc) stat = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << stat << std::endl;
-  assert(0 <= stat);
+  if(argc < 2) std::cerr << argv[0] << " <step>? <lines>? : continue with ";
+  if(1 < argc) step = std::atoi(argv[1]);
+  if(2 < argc) stat = std::atoi(argv[2]);
+  std::cerr << argv[0] << " " << step << " " << stat << std::endl;
+  assert(0 < step && 0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
+  idFeeder<SimpleVector<num_t> > f(step);
   SimpleVector<SimpleVector<num_t> > feed0;
   std::string s;
   SimpleVector<num_t> d;
-  auto M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
+    const auto& M(f.res[0]);
     int n(0);
     for(int i = 0; 0 <= i && i < s.size(); i ++)
       if(s[i] == ',') n ++;
@@ -68,14 +71,20 @@ int main(int argc, const char* argv[]) {
     else feed0.entity.emplace_back(d);
     if((stat && feed.full) || (! stat && 9 < feed0.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = predv0<num_t, 0>(stat ? feed.res.entity : feed0.entity, string(""), stat ? feed.res.entity.size() : feed0.entity.size());
-      for(int i = 0; i < M.size(); i ++) {
-        M[i] *= num_t(2);
-        M[i] -= num_t(1);
+      f.next(predv0<num_t, 0>(stat ? feed.res.entity : feed0.entity, string(""), stat ? feed.res.entity.size() : feed0.entity.size()));
+      for(int i = 0; i < f.res[f.res.size() - 1].size(); i ++) {
+        f.res[f.res.size() - 1][i] *= num_t(2);
+        f.res[f.res.size() - 1][i] -= num_t(1);
       }
-      for(int i = 0; i < M.size() - 1; i ++)
-        std::cout << M[i] << ", ";
-      std::cout << M[M.size() - 1] << std::endl << std::flush;
+      if(f.res[f.res.size() - 1].size()) {
+        for(int i = 0; i < f.res[f.res.size() - 1].size() - 1; i ++)
+          std::cout << f.res[f.res.size() - 1][i] << ", ";
+        std::cout << f.res[f.res.size() - 1][f.res[f.res.size() - 1].size() - 1] << std::endl << std::flush;
+      } else {
+        for(int i = 0; i < d.size() - 1; i ++)
+          std::cout << num_t(int(0)) << ", ";
+        std::cout << num_t(int(0)) << std::endl << std::flush;
+      }
     } else {
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";
