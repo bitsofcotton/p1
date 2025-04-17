@@ -40,12 +40,10 @@ We also get the result to make periods, this is because periodical data input ca
 # How to use:
     std::vector<SimpleVector<double> > input;
     ...
-      auto resv(predv0<double, 0>(input, string(""), input.size(), step));
-      // or
-      auto resv(predv<double, 0>(input));
+      auto resv(predv0<double, 0>(input, input.size()));
 
 # How to use (command line):
-    ./p1(-(32|64))? <step>? <line>? < data.txt
+    ./p1(-(32|64))? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     #   this takes O(input lines) ratio calculation time.
@@ -191,4 +189,5 @@ Should really leave here.
 2025/03/09 merge latest lieonn.
 2025/03/17 revert step param.
 2025/04/17 merge latest dimension auto tuner from ddpmopt. fixed step argv works well.
+2025/04/18 eliminate step parameter, they doesn't improve results.
 
