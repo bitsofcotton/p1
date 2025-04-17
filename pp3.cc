@@ -36,7 +36,6 @@ int main(int argc, const char* argv[]) {
   assert(0 < step && 0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
   idFeeder<SimpleVector<num_t> > f(step);
-  SimpleVector<SimpleVector<num_t> > feed0;
   std::string s;
   SimpleVector<num_t> d;
   while(std::getline(std::cin, s, '\n')) {
@@ -67,11 +66,10 @@ int main(int argc, const char* argv[]) {
       d[i] += num_t(1);
       d[i] /= num_t(2);
     }
-    if(0 < stat) feed.next(d);
-    else feed0.entity.emplace_back(d);
-    if((stat && feed.full) || (! stat && 9 < feed0.entity.size()) ) {
+    feed.next(d);
+    if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      f.next(predv0<num_t, 0>(stat ? feed.res.entity : feed0.entity, string(""), stat ? feed.res.entity.size() : feed0.entity.size()));
+      f.next(predv0<num_t, 0>(feed.res.entity, string(""), feed.res.entity.size(), step));
       for(int i = 0; i < f.res[f.res.size() - 1].size(); i ++) {
         f.res[f.res.size() - 1][i] *= num_t(2);
         f.res[f.res.size() - 1][i] -= num_t(1);

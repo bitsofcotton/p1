@@ -190,4 +190,5 @@ Should really leave here.
 2025/02/27 elim step parameter on pp3.cc .
 2025/03/09 merge latest lieonn.
 2025/03/17 revert step param.
+2025/04/17 merge latest dimension auto tuner from ddpmopt. fixed step argv works well.
 
