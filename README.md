@@ -47,6 +47,7 @@ We also get the result to make periods, this is because periodical data input ca
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
     #   this takes O(input lines) ratio calculation time.
+    # line == 'd' : for deep depth prediction.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:

@@ -66,7 +66,7 @@ int main(int argc, const char* argv[]) {
     feed.next(offsetHalf<num_t>(d));
     if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = argv[1][0] == 'd' ?
+      M = 1 < argc && argv[1][0] == 'd' ?
         unOffsetHalf<num_t>(predv0<num_t, 0, PPcultivatedDeep<num_t> >(
           feed.res.entity, feed.res.entity.size() )) :
         unOffsetHalf<num_t>(predv0<num_t, 0, PP<num_t> >(
