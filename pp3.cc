@@ -29,12 +29,8 @@ int main(int argc, const char* argv[]) {
   std::cout << std::setprecision(30);
   int stat(0);
   if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
-  if(1 < argc && argv[1][0] != 'd')
-    std::cerr << argv[0] << " " << (stat = std::atoi(argv[1])) << std::endl;
-  else if(argc <= 1)
-    std::cerr << argv[0] << " " << stat << std::endl;
-  else
-    std::cerr << argv[0] << " d" << std::endl;
+  if(1 < argc) stat = std::atoi(argv[1]);
+  std::cerr << argv[0] << " " << stat << std::endl;
   assert(0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
   std::string s;
@@ -66,10 +62,7 @@ int main(int argc, const char* argv[]) {
     feed.next(offsetHalf<num_t>(d));
     if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = 1 < argc && argv[1][0] == 'd' ?
-        unOffsetHalf<num_t>(predv0<num_t, 0, PPcultivatedDeep<num_t> >(
-          feed.res.entity, feed.res.entity.size() )) :
-        unOffsetHalf<num_t>(predv0<num_t, 0, PP<num_t> >(
+      M = unOffsetHalf<num_t>(predv0<num_t, 0>(
           feed.res.entity, feed.res.entity.size() ));
       if(M.size()) {
         for(int i = 0; i < M.size() - 1; i ++)

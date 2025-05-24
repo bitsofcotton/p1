@@ -46,8 +46,6 @@ We also get the result to make periods, this is because periodical data input ca
     ./p1(-(32|64))? <line>? < data.txt
     # 0 < line : number of back lines the predictor uses.
     # line == 0 to use whole input stream to predict next step.
-    #   this takes O(input lines) ratio calculation time.
-    # line == 'd' : for deep depth prediction.
 
 # Tips
 If we heavy tune original input with P1 alternative, we get the form:
@@ -193,4 +191,5 @@ Should really leave here.
 2025/04/18 eliminate step parameter, they doesn't improve results.
 2025/04/19 merge latest lieonn.
 2025/05/23 merge latest ddpmopt result also 'p1 d' argv1 can causes ddpmopt deep prediction result.
+2025/05/25 merge latest lieonn, code cleaning, use deep inspection.
 
