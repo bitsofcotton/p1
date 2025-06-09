@@ -1,3 +1,4 @@
+#if !defined(_ONEBINARY_)
 #include <cstdio>
 #include <cstring>
 #include <cmath>
@@ -32,9 +33,10 @@ int main(int argc, const char* argv[]) {
   if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;
+  std::string s;
+#endif
   assert(0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
-  std::string s;
   SimpleVector<num_t> d;
   auto M(d);
   while(std::getline(std::cin, s, '\n')) {
@@ -80,6 +82,8 @@ int main(int argc, const char* argv[]) {
       std::cout << std::endl << std::flush;
     }
   }
+#if !defined(_ONEBINARY_)
   return 0;
 }
+#endif
 
