@@ -34,6 +34,11 @@ int main(int argc, const char* argv[]) {
   if(1 < argc) stat = std::atoi(argv[1]);
   std::cerr << argv[0] << " " << stat << std::endl;
   std::string s;
+# if defined(_CHAIN_)
+  const bool chain(true);
+# else
+  const bool chain(false);
+# endif
 #endif
   assert(0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
@@ -54,11 +59,7 @@ int main(int argc, const char* argv[]) {
     }
     if(d.size() <= M.size())
       for(int i = 0; i < d.size(); i ++)
-#if defined(_CHAIN_)
-        std::cout << d[i] - M[i] << ", ";
-#else
-        std::cout << d[i] * M[i] << ", ";
-#endif
+        std::cout << (chain ? d[i] - M[i] : d[i] * M[i]) << ", ";
     else
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";
