@@ -10,7 +10,6 @@
 #include <map>
 #include <iomanip>
 #include <algorithm>
-#include <random>
 #include <assert.h>
 #include <stdint.h>
 #include <sys/resource.h>
@@ -43,7 +42,7 @@ int main(int argc, const char* argv[]) {
   assert(0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
   SimpleVector<num_t> d;
-  auto M(d);
+  SimpleVector<num_t> M(d);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     int n(0);

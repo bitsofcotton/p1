@@ -193,4 +193,5 @@ Should really leave here.
 2025/05/23 merge latest ddpmopt result also 'p1 d' argv1 can causes ddpmopt deep prediction result.
 2025/05/25 merge latest lieonn, code cleaning, use deep inspection.
 2025/06/08 merge latest lieonn.
+2025/06/11 compat compile option to gcc4.2.1.
 
