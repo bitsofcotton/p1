@@ -17,6 +17,7 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
+#define _COMPILE_PRED_
 #include "lieonn.hh"
 typedef myfloat num_t;
 
