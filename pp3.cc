@@ -40,8 +40,7 @@ int main(int argc, const char* argv[]) {
   const bool chain(false);
 # endif
 #endif
-  assert(0 <= stat);
-  idFeeder<SimpleVector<num_t> > feed(stat);
+  idFeeder<SimpleVector<num_t> > feed(abs(stat));
   SimpleVector<num_t> d;
   SimpleVector<num_t> M(d);
   while(std::getline(std::cin, s, '\n')) {
@@ -64,10 +63,11 @@ int main(int argc, const char* argv[]) {
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";
     feed.next(offsetHalf<num_t>(d));
-    if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
+    if((abs(stat) && feed.full) || (! abs(stat) && 9 < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = unOffsetHalf<num_t>(predv0<num_t, 0>(
-          feed.res.entity, feed.res.entity.size() ));
+      M = unOffsetHalf<num_t>(0 < stat ? predv0<num_t, true, 0>(
+          feed.res.entity, feed.res.entity.size() ) : predv0<num_t, false, 0>(
+          feed.res.entity, feed.res.entity.size() ) );
       if(M.size()) {
         for(int i = 0; i < M.size() - 1; i ++)
           std::cout << M[i] << ", ";
