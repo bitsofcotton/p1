@@ -90,4 +90,5 @@ Whole important tips is implanted into lieonn.hh as a comment.
 2025/06/12 compat compile option with one variant of gcc2.95.3.
 2025/06/25 readme.md moved into implatnt lieonn.hh comment.
 2025/06/28 refactor and fix around lieonn, re-compat with gcc2953.
+2025/06/29-30 merge latest ddpmopt result.
 
