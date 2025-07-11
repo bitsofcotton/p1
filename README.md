@@ -4,7 +4,7 @@ Generic predictor on \[- 1, 1\[-register consisted one function computed streams
 # How to use:
     std::vector<SimpleVector<double> > input;
     ...
-      auto resv(predv0<double, 0>(input, input.size()));
+      auto resv(pRS0<double, 0>(input, input.size()));
 
 # How to use (command line):
     ./p1(-(32|64))? <line>? < data.txt
