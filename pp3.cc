@@ -40,7 +40,6 @@ int main(int argc, const char* argv[]) {
   const bool chain(false);
 # endif
 #endif
-  assert(0 <= stat);
   idFeeder<SimpleVector<num_t> > feed(stat);
   SimpleVector<num_t> d;
   SimpleVector<num_t> M(d);
@@ -66,8 +65,7 @@ int main(int argc, const char* argv[]) {
     feed.next(offsetHalf<num_t>(d));
     if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = unOffsetHalf<num_t>(pRS0<num_t, 0>(feed.res.entity,
-            feed.res.entity.size() ) );
+      M = unOffsetHalf<num_t>(pRS0<num_t, 0>(feed.res.entity) );
       if(M.size()) {
         for(int i = 0; i < M.size() - 1; i ++)
           std::cout << M[i] << ", ";
