@@ -18,10 +18,4 @@ p1-32:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=32 -o p1-32 pp3.cc
 p1-64:
 	${CXX} ${CXXFLAGS} -static -D_FLOAT_BITS_=64 -o p1-64 pp3.cc
-p1c:
-	${CXX} ${CXXFLAGS} -D_CHAIN_ -static -o p1c pp3.cc
-p1c32:
-	${CXX} ${CXXFLAGS} -D_CHAIN_ -static -D_FLOAT_BITS_=32 -o p1c32 pp3.cc
-p1c64:
-	${CXX} ${CXXFLAGS} -D_CHAIN_ -static -D_FLOAT_BITS_=64 -o p1c64 pp3.cc
 
