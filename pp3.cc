@@ -17,7 +17,6 @@
 #if defined(_FLOAT_BITS_)
 #define int int64_t
 #endif
-#define _COMPILE_PRED_
 #include "lieonn.hh"
 typedef myfloat num_t;
 
@@ -30,9 +29,11 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   int stat(0);
-  if(argc < 2) std::cerr << argv[0] << " <lines>? : continue with ";
+  int step(0);
+  if(argc < 2) std::cerr << argv[0] << " <lines>? <step>? : continue with ";
   if(1 < argc) stat = std::atoi(argv[1]);
-  std::cerr << argv[0] << " " << stat << std::endl;
+  if(2 < argc) step = std::atoi(argv[2]);
+  std::cerr << argv[0] << " " << stat << " " << step << std::endl;
   std::string s;
 # if defined(_CHAIN_)
   const bool chain(true);
@@ -40,9 +41,9 @@ int main(int argc, const char* argv[]) {
   const bool chain(false);
 # endif
 #endif
-  idFeeder<SimpleVector<num_t> > feed(stat);
+  idFeeder<SimpleVector<num_t> > feed(stat * step);
   SimpleVector<num_t> d;
-  SimpleVector<num_t> M(d);
+  idFeeder<SimpleVector<num_t> > M(step);
   while(std::getline(std::cin, s, '\n')) {
     std::stringstream ins(s);
     int n(0);
@@ -56,25 +57,27 @@ int main(int argc, const char* argv[]) {
       ins >> d[i];
       ins.ignore(s.size(), ',');
     }
-    if(d.size() <= M.size())
+    if(M.full && d.size() <= M.res[0].size())
       for(int i = 0; i < d.size(); i ++)
-        std::cout << (chain ? d[i] - M[i] : d[i] * M[i]) << ", ";
+        std::cout << (chain ? d[i] - M.res[0][i] : d[i] * M.res[0][i]) << ", ";
     else
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";
     feed.next(offsetHalf<num_t>(d));
-    if((stat && feed.full) || (! stat && 9 < feed.res.entity.size()) ) {
+    if((stat && feed.full) || (! stat && 9 * step < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
-      M = unOffsetHalf<num_t>(pRS0<num_t, 0>(feed.res.entity) );
-      if(M.size()) {
-        for(int i = 0; i < M.size() - 1; i ++)
-          std::cout << M[i] << ", ";
-        std::cout << M[M.size() - 1] << std::endl << std::flush;
+      SimpleVector<num_t> MM(unOffsetHalf<num_t>(pRS0<num_t, 0>(
+        skipX<SimpleVector<num_t> >(feed.res.entity, step) ) ) );
+      if(MM.size()) {
+        for(int i = 0; i < MM.size() - 1; i ++)
+          std::cout << MM[i] << ", ";
+        std::cout << MM[MM.size() - 1] << std::endl << std::flush;
       } else {
         for(int i = 0; i < d.size() - 1; i ++)
           std::cout << num_t(int(0)) << ", ";
         std::cout << num_t(int(0)) << std::endl << std::flush;
       }
+      M.next(MM);
     } else {
       for(int i = 0; i < d.size(); i ++)
         std::cout << num_t(int(0)) << ", ";

@@ -7,7 +7,7 @@ Generic predictor on \[- 1, 1\[-register consisted one function computed streams
       SimpleVector<double> resv(pRS0<double, 0>(input));
 
 # How to use (command line):
-    ./p1(-(32|64))? <line>? < data.txt
+    ./p1(-(32|64))? <line>? <step>? < data.txt
     # line == 0 to use whole input stream to predict next step.
     # 0 < line : number of back lines the predictor uses.
 
@@ -103,4 +103,5 @@ Whole important tips is implanted into lieonn.hh as a comment.
 2025/07/25 merge latest lieonn.
 2025/07/26-28 merge latest lieonn.
 2025/08/01 merge latest lieonn.
+2025/08/01 re-enable step option.
 
