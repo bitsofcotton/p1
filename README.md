@@ -1,4 +1,4 @@
-# bitsofcotton/p1
+# bitsofcotton/p1 (closed)
 Generic predictor on \[- 1, 1\[-register consisted one function computed streams (up to aleph_0).
 
 # How to use:
@@ -111,4 +111,5 @@ Whole important tips is implanted into lieonn.hh as a comment.
 2025/08/17-23 merge latest lieonn.
 2025/08/25 merge latest lieonn.
 2025/09/01 merge latest lieonn.
+2025/09/05 merge latest lieonn.
 
