@@ -67,7 +67,7 @@ int main(int argc, const char* argv[]) {
     if((stat && feed.full) || (! stat && 9 * step < feed.res.entity.size()) ) {
       // N.B. exhaust of the resource, so we expect the chain pp3n | p0 .
       SimpleVector<num_t> MM(unOffsetHalf<num_t>(pRS0<num_t, 0>(
-        skipX<SimpleVector<num_t> >(feed.res.entity, step) ) ) );
+        skipX<SimpleVector<num_t> >(feed.res, step) ) ) );
       if(MM.size()) {
         for(int i = 0; i < MM.size() - 1; i ++)
           std::cout << MM[i] << ", ";
