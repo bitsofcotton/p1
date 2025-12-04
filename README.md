@@ -116,4 +116,5 @@ Whole important tips is implanted into lieonn.hh as a comment.
 2025/10/06 merge latest lieonn.
 2025/11/15 merge latest lieonn.
 2025/11/30 merge latest lieonn.
+2025/12/04 merge latest lieonn.
 
