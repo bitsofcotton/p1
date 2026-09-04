@@ -4,12 +4,13 @@ Generic predictor on \[- 1, 1\[-register consisted one function computed streams
 # How to use:
     std::vector<SimpleVector<double> > input;
     ...
-      SimpleVector<double> resv(pRS0<double, 0>(input));
+    SimpleVector<double> resv(pred<double, true, 0>(offsetHalf<double>(input),
+      2, string("") ));
 
 # How to use (command line):
-    ./p1(-(32|64))? <line>? <step>? < data.txt
-    # line == 0 to use whole input stream to predict next step.
-    # 0 < line : number of back lines the predictor uses.
+    ./p1(-(32|64))?c? <length>? < data.txt
+    # 0 < length : number of back lines the predictor uses.
+    # length < 0 : auto configure length.
 
 # Tips
 Whole important tips is implanted into lieonn.hh as a comment.
@@ -118,4 +119,5 @@ Whole important tips is implanted into lieonn.hh as a comment.
 2025/11/30 merge latest lieonn.
 2025/12/04 merge latest lieonn.
 2025/12/10 merge latest lieonn.
+2026/05/13 algorithm large change merge from p2.cc 'p' cmd.
 
