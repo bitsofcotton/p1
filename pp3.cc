@@ -44,11 +44,7 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   lieonnStaticInit();
-#if defined(_P_UNVEIL_)
-  const int len(39 + 2);
-#else
   const int len(loop22<num_t>() + 2);
-#endif
   std::string s;
 #if defined(_CHAIN_)
   const bool chain(true);
@@ -62,10 +58,14 @@ int main(int argc, const char* argv[]) {
   while(std::getline(std::cin, s, '\n')) {
     SimpleVector<num_t> d(s2sv<num_t>(s));
     if(M.size() < d.size()) {bd.resize(d.size()).O(); M.resize(d.size()).O(); }
-    const SimpleVector<num_t> MM(M);
     for(int i = 0; i < d.size(); i ++)
       std::cout << (chain ? d[i] - bd[i] - M[i] : M[i] * (d[i] - bd[i])) << ", ";
     std::cout << flush;
+    if(chain) {
+      for(int j = 0; j < M.size() - 1; j ++)
+        std::cout << M[j] << ", ";
+      std::cout << M[M.size() - 1] << endl << flush;
+    }
     b.next(d);
     if(b.full) {
       SimpleVector<vector<SimpleVector<num_t> > > work(b.res.size());
@@ -74,9 +74,11 @@ int main(int argc, const char* argv[]) {
           const_cast<const SimpleVector<num_t>&>(b.res[i]) ));
       M = unOffsetHalf<num_t>(predVec<num_t, 20, false>(move(work), 2)[0]);
     }
-    for(int j = 0; j < M.size() - 1; j ++)
-      std::cout << (chain ? MM[j] : M[j]) << ", ";
-    std::cout << (chain ? MM[MM.size() - 1] : M[M.size() - 1]) << endl << flush;
+    if(! chain) {
+      for(int j = 0; j < M.size() - 1; j ++)
+        std::cout << M[j] << ", ";
+      std::cout << M[M.size() - 1] << endl << flush;
+    }
   }
 #if !defined(_ONEBINARY_)
   lieonnStaticDestroy();
