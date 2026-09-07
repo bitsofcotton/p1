@@ -57,9 +57,14 @@ int main(int argc, const char* argv[]) {
   SimpleVector<num_t> bd;
   while(std::getline(std::cin, s, '\n')) {
     SimpleVector<num_t> d(s2sv<num_t>(s));
-    if(M.size() < d.size()) {bd.resize(d.size()).O(); M.resize(d.size()).O(); }
-    for(int i = 0; i < d.size(); i ++)
-      std::cout << (chain ? d[i] - bd[i] - M[i] : M[i] * (d[i] - bd[i])) << ", ";
+    if(M.size() < d.size()) {
+      bd.resize(d.size()).O();
+      M.resize(d.size() * 4).O();
+    }
+    for(int i = 0; i < d.size(); i ++) for(int j = 0; j < 4; j ++)
+      std::cout << (chain ? d[i] - bd[i] - M[i * 4 + j] :
+        M[i * 4 + j] * (d[i] - bd[i])) << ", ";
+    bd = d;
     std::cout << flush;
     if(chain) {
       for(int j = 0; j < M.size() - 1; j ++)
@@ -72,7 +77,7 @@ int main(int argc, const char* argv[]) {
       for(int i = 0; i < b.res.size(); i ++)
         work[i].resize(1, offsetHalf<num_t>(
           const_cast<const SimpleVector<num_t>&>(b.res[i]) ));
-      M = unOffsetHalf<num_t>(predVec<num_t, 20, false>(move(work), 2)[0]);
+      M = unOffsetHalf<num_t>(predVec4<num_t, 20, false>(move(work), 2)[0]);
     }
     if(! chain) {
       for(int j = 0; j < M.size() - 1; j ++)
