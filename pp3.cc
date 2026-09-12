@@ -44,9 +44,16 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   lieonnStaticInit();
-  const int len(loop22<num_t>() + 2);
+#if defined(_P_NOWALK_)
+  int len(loop22<num_t>() + 2);
+#else
+  int len(loop22<num_t>() + 4);
+#endif
+  if(1 < argc) len = std::atoi(argv[1]);
+  assert(loop22<num_t>() + 2 <= len);
+  cerr << argv[0] << " " << len << endl;
   std::string s;
-#if defined(_CHAIN_)
+#if defined(_P_NOWALK_)
   const bool chain(true);
 #else
   const bool chain(false);
@@ -54,34 +61,28 @@ int main(int argc, const char* argv[]) {
 #endif
   idFeeder<SimpleVector<num_t> > b(len);
   SimpleVector<num_t> M;
-  SimpleVector<num_t> bd;
   while(std::getline(std::cin, s, '\n')) {
     SimpleVector<num_t> d(s2sv<num_t>(s));
-    if(M.size() < d.size()) {
-      bd.resize(d.size()).O();
-      M.resize(d.size() * 4).O();
-    }
+    if(M.size() < d.size()) M.resize(d.size() * 4).O();
     for(int i = 0; i < d.size(); i ++) for(int j = 0; j < 4; j ++)
-      std::cout << (chain ? d[i] - bd[i] - M[i * 4 + j] :
-        M[i * 4 + j] * (d[i] - bd[i])) << ", ";
-    bd = d;
-    std::cout << flush;
+      std::cout << (chain ? d[i] - M[i * 4 + j] : d[i] * M[i * 4 + j]) << ", ";
     if(chain) {
-      for(int j = 0; j < M.size() - 1; j ++)
-        std::cout << M[j] << ", ";
+      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << endl << flush;
-    }
+    } else std::cout << flush;
     b.next(d);
     if(b.full) {
       SimpleVector<vector<SimpleVector<num_t> > > work(b.res.size());
       for(int i = 0; i < b.res.size(); i ++)
-        work[i].resize(1, offsetHalf<num_t>(
-          const_cast<const SimpleVector<num_t>&>(b.res[i]) ));
-      M = unOffsetHalf<num_t>(predVec4<num_t, 20, false>(move(work), 2)[0]);
+        work[i].resize(1, offsetHalf<num_t>(const_cast<const SimpleVector<
+          num_t>&>(b.res[i]) ) );
+      M = unOffsetHalf<num_t>(bitsG<num_t, false>(predVec4<num_t, 20,
+        false>(move(work), 2)[0], - 2));
+      // XXX:
+      for(int i = 0; i < M.size(); i ++) M[i] += num_t(int(1)) / num_t(int(4));
     }
     if(! chain) {
-      for(int j = 0; j < M.size() - 1; j ++)
-        std::cout << M[j] << ", ";
+      for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
       std::cout << M[M.size() - 1] << endl << flush;
     }
   }

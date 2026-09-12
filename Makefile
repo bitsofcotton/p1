@@ -1,4 +1,5 @@
 CXX=	clang++
+#CXX=	g++
 #CXX=	eg++
 #CXX=	c++
 #CXX=	icpx
@@ -17,7 +18,6 @@ CXXFLAGS+=	-Ofast -mtune=native -gfull
 #CXXFLAGS+=	-O0 -mtune=native -gfull
 #CXXFLAGS+=	-mno-sse2 -mno-sse -mno-3dnow -mno-mmx -msoft-float -fno-omit-frame-pointer
 # XXX: this worse decreases multi thread performance.
-#      also this flag needs compile with -c then link with ld.
 #CXXFLAGS+=	-pg
 #CXXFLAGS+=	--analyze
 #CXXFLAGS+=      -D_LIBCPP_HARDENING_MODE_DEBUG
@@ -34,35 +34,40 @@ LDFLAGS+=	-lc++ -L/usr/local/lib
 CXXFLAGS+=	-D_ARCFOUR_
 # N.B. this specify after to sum up results
 CXXFLAGS+=	-D_P_NOWALK_
+# N.B. orthogonalize meaning
+#CXXFLAGS+=	-D_P_SEPARATE_
 # N.B. on disk datastream with cache = _P_ONDISK_ elements.
 #CXXFLAGS+=	-D_P_ONDISK_=4194304
 # N.B. GPGPU offloading
-CXXFLAGS+=	-I/usr/local/include -D_P_VULKAN_
-LDFLAGS+=	-L/usr/local/lib -lvulkan
+#CXXFLAGS+=	-I/usr/local/include -D_P_VULKAN_
+#LDFLAGS+=	-L/usr/local/lib -lvulkan
 # N.B. _SIMPLEALLOC_=align needs env VM_LIEONN=(mem usage MB).
 # XXX: pred function needs huge memory with this because resize(0) doesn't
-#      release memory.
+#      release the memory.
 #CXXFLAGS+=	-D_SIMPLEALLOC_=64
 # cf. src_alloc.c.diff
 CXXFLAGS+=	-I/usr/local/include -D_MIMALLOC_
-LDFLAGS+=	-lmimalloc
+LDFLAGS+=	-L/usr/local/lib -lmimalloc
 # N.B. _FLOAT_BITS_=bits for internal integer only calculation.
+# N.B. this is NOT compatible with _P_VULKAN_.
 #CXXFLAGS+=	-D_FLOAT_BITS_=32
 #CXXFLAGS+=	-D_FLOAT_BITS_=64
 #CXXFLAGS+=	-D_FLOAT_BITS_=128
 # N.B. omit assertion, may have buggy but vasty speed up.
 #CXXFLAGS+=	-D_OMIT_ASSERT_
-# N.B. only use size_t and ssize_t for calculation, persistent.
+# N.B. only use size_t and ssize_t for calculation on first order logic and
+#      first order arithmetic operator + however memory reference needs
+#      multiply sum operation on operator [].
 #CXXFLAGS+=	-D_PERSISTENT_
 # N.B. sed -e s/static\ inline//g | sed -e s/inline//g
 #CXXFLAGS+=	-D_OLDCPP_ -ftemplate-depth-99
 
-CLEANFILES= *.o p1c p1c32 p1cmp p1c32mp
+CLEANFILES= *.o p1 p1-32 p1mp p1-32mp
 
 clean:
 	@rm -rf ${CLEANFILES}
 
-all:	p1c p1c32 p1cmp p1c32mp
+all:	p1 p1-32 p1mp p1-32mp
 
 p1:
 	${CXX} ${CXXFLAGS} -static -o p1.o -c pp3.cc
@@ -70,16 +75,10 @@ p1:
 p1-32:
 	${CXX} ${CXXFLAGS} -D_FLOAT_BITS_=32 -o p1-32.o -c pp3.cc
 	${CXX} p1-32.o ${LDFLAGS} -o p1-32
-p1c:
-	${CXX} ${CXXFLAGS} -D_CHAIN_ -o p1c.o -c pp3.cc
-	${CXX} p1c.o ${LDFLAGS} -o p1c
-p1c32:
-	${CXX} ${CXXFLAGS} -D_FLOAT_BITS_=32 -D_CHAIN_ -o p1c32.o -c pp3.cc
-	${CXX} p1c32.o ${LDFLAGS} -o p1c32
-p1cmp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_CHAIN_ -o p1cmp.o -c pp3.cc
-	${CXX} p1cmp.o ${LDFLAGS} ${MPFLAGS} -o p1cmp
-p1c32mp:
-	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -D_CHAIN_ -o p1c32mp.o -c pp3.cc
-	${CXX} p1c32mp.o ${LDFLAGS} ${MPFLAGS} -o p1c32mp
+p1mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -o p1mp.o -c pp3.cc
+	${CXX} p1mp.o ${LDFLAGS} ${MPFLAGS} -o p1mp
+p1-32mp:
+	${CXX} ${CXXFLAGS} ${MPFLAGS} -D_FLOAT_BITS_=32 -o p1-32mp.o -c pp3.cc
+	${CXX} p1-32mp.o ${LDFLAGS} ${MPFLAGS} -o p1-32mp
 

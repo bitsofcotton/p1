@@ -8,9 +8,7 @@ Generic predictor on \[- 1, 1\[-register consisted one function computed streams
       2, string("") ));
 
 # How to use (command line):
-    ./p1(-(32|64))?c? <length>? < data.txt
-    # 0 < length : number of back lines the predictor uses.
-    # length < 0 : auto configure length.
+    ./p1c?(mp)? < data.txt
 
 # Tips
 Whole important tips is implanted into lieonn.hh as a comment.
