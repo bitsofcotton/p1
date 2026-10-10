@@ -18,10 +18,6 @@
 #include <omp.h>
 #endif
 
-#if defined(_P_VULKAN_)
-#include <vulkan/vulkan.h>
-#endif
-
 #if defined(_MIMALLOC_)
 #define MIMALLOC_OVERRIDE_H
 #define MIMALLOC_NEW_DELETE_H
@@ -44,13 +40,14 @@ int main(int argc, const char* argv[]) {
 #endif
   std::cout << std::setprecision(30);
   lieonnStaticInit();
-#if defined(_P_RAW_)
-  int len(loop22<num_t>() + 1 + 3);
-#else
-  int len(loop22<num_t>() + 3 + 3);
-#endif
+  int len(1);
   if(1 < argc) len = std::atoi(argv[1]);
   cerr << argv[0] << " " << len << endl;
+#if defined(_P_RAW_)
+  len = loop22<num_t>() + 1 + (int(1) << len);
+#else
+  len = loop22<num_t>() + 3 + (int(1) << len);
+#endif
   std::string s;
 #if defined(_P_RAW_)
   const bool chain(true);
@@ -76,7 +73,7 @@ int main(int argc, const char* argv[]) {
       SimpleVector<vector<SimpleVector<num_t> > > work(bb.first.size());
       for(int i = 0; i < b.res.size(); i ++)
         work[i].resize(1, offsetHalf<num_t>(bb.first[i]));
-      M = unOffsetHalf<num_t>(predVec0<num_t, 20>(move(work), 2)[0]) * bb.second;
+      M = unOffsetHalf<num_t>(predVec<num_t, 20, false>(move(work), 2)[0]) * bb.second;
     }
     if(! chain) {
       for(int j = 0; j < M.size() - 1; j ++) std::cout << M[j] << ", ";
